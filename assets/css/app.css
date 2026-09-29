@@ -1,1 +1,7 @@
+/** ./assets/css/app.css */
+
 @import "tailwindcss";
+
+@theme {
+    --font-sans: 'Exo 2', sans-serif;
+}
