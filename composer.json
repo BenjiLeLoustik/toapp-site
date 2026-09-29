@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "neophp/framework": "^1.0"
+        "neophp/framework": "^1.0",
+        "twig/twig": "^3.30"
     },
     "autoload": {
         "psr-4": {
