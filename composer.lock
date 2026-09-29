@@ -1,0 +1,101 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "bb999cc989beb941d4735ab64360cdc5",
+    "packages": [
+        {
+            "name": "neophp/framework",
+            "version": "v1.33.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NeoPHP-Framework/neophp.git",
+                "reference": "d933f1239e0e06a057b902f3e61b00e009562d44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NeoPHP-Framework/neophp/zipball/d933f1239e0e06a057b902f3e61b00e009562d44",
+                "reference": "d933f1239e0e06a057b902f3e61b00e009562d44",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "conflict": {
+                "twig/twig": "<3.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "twig/twig": "^3.0"
+            },
+            "suggest": {
+                "ext-apcu": "Required by the \"apcu\" adapter of the Cache component (in-memory shared cache pools; set apc.enable_cli=1 to use it from the console)",
+                "ext-curl": "Recommended by the HttpClient component (faster transport, parallel requests with requestMany()); the stream transport is used without it",
+                "ext-dom": "Required by the Serializer XML encoder, to convert HTML to Markdown (Markdown package: parse() and convert()) and to read XLIFF translation files (Translation package)",
+                "ext-fileinfo": "Required to detect the mime type of uploaded files (File and Image constraints) and of email attachments",
+                "ext-mbstring": "Required by the Markdown package (heading anchors) and recommended for UTF-8 text",
+                "ext-openssl": "Required to send emails over SSL/TLS (smtps:// or STARTTLS) and to download the Tailwind CLI (tailwind:install)",
+                "ext-pdo": "Required to use the Database component",
+                "ext-pdo_mysql": "Required to connect to MySQL / MariaDB databases",
+                "ext-pdo_pgsql": "Required to connect to PostgreSQL databases",
+                "ext-pdo_sqlite": "Required to connect to SQLite databases",
+                "ext-zip": "Required to archive log files as .zip",
+                "twig/twig": "Required to render .twig templates (^3.0)"
+            },
+            "bin": [
+                "bin/neo"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/packages/Debug/Resources/Functions.php"
+                ],
+                "psr-4": {
+                    "NeoPHP\\Package\\": "src/packages/",
+                    "NeoPHP\\Process\\": "src/process/",
+                    "NeoPHP\\Component\\": "src/components/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "NeoPHP - an ultra modular PHP framework.",
+            "keywords": [
+                "api",
+                "database",
+                "debug",
+                "form",
+                "framework",
+                "http",
+                "http-client",
+                "mailer",
+                "neophp",
+                "openapi",
+                "orm",
+                "routing",
+                "security",
+                "twig",
+                "yaml"
+            ],
+            "support": {
+                "issues": "https://github.com/NeoPHP-Framework/neophp/issues",
+                "source": "https://github.com/NeoPHP-Framework/neophp/tree/v1.33.0"
+            },
+            "time": "2026-09-29T17:14:50+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.2"
+    },
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+}
