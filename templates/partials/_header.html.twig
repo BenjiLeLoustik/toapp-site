@@ -3,6 +3,13 @@
 {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
 {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
+{% set headerNavItems = [
+    { label: 'home', routeName: 'home_index' },
+    { label: 'categories', routeName: '#' },
+    { label: 'trends', routeName: '#' },
+    { label: 'about', routeName: '#' }
+] %}
+
 <header class="header">
     <div class="header__inner">
         <div class="header__logo">
@@ -18,40 +25,26 @@
         </div>
         <nav class="header__nav">
 
-            {{ Button.render('Home', {
-                href: '#',
-                variant: 'primary',
-                size: 'sm'
-            }) }}
+            {% for item in headerNavItems %}
 
-            {{ Button.render('Categories', {
-                href: '#',
-                variant: 'ghost',
-                size: 'sm'
-            }) }}
+                {{ Button.render(translate('header.nav.links.' ~ item.label, domain: 'header'), {
+                    href: item.routeName != '#' ? path(item.routeName) : '#',
+                    variant: app.current_route == item.routeName or app.current_route starts with item.routeName ? 'primary' : 'ghost',
+                    size: 'sm'
+                }) }}
 
-            {{ Button.render('Trends', {
-                href: '#',
-                variant: 'ghost',
-                size: 'sm'
-            }) }}
-
-            {{ Button.render('About', {
-                href: '#',
-                variant: 'ghost',
-                size: 'sm'
-            }) }}
+            {% endfor %}
 
         </nav>
         <div class="header__actions">
 
-            {{ Button.render('Login', {
+            {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
                 href: '#',
                 variant: 'primary-outline',
                 size: 'sm'
             }) }}
 
-            {{ Button.render('Register', {
+            {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
                 href: '#',
                 variant: 'primary',
                 size: 'sm'

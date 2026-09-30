@@ -1,0 +1,10 @@
+header:
+    nav:
+        links:
+            home: "Home"
+            categories: "Categories"
+            trends: "Trends"
+            about: "About"
+        actions:
+            login: "Login"
+            register: "Register"
