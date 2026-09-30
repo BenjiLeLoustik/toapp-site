@@ -1,46 +1,22 @@
 {# ./templates/components/macros/_Button.macro.html.twig #}
 
 {#
-    Usage :
+Usage :
 
     {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
     Button.render('Créer');
 
-    Button.render('Créer', {
-        variant: 'primary',
-        size: 'base'
-    });
-
     Button.render('Suivant', {
         variant: 'primary',
-        iconRight: 'arrow-right'
+        iconRight: 'arrow-right',
+        iconSize: 'sm'
     });
 
-    Button.render('Supprimer', {
-        variant: 'danger',
+    Button.render(null, {
         iconLeft: 'trash',
-        iconRight: 'arrow-right'
-    })
-
-    Button.render('Documentation', {
-        href: '/docs',
-        variant: 'secondary'
-    })
-
-    Button.render('Enregistrer', {
-        type: 'submit',
-        disabled: true,
-        align: 'right',
-        class: 'w-full'
-    })
-
-    Button.render('Action', {
-        attributes: {
-            'data-action': 'test',
-            'aria-label': 'Effectuer une action'
-        }
-    })
+        iconOptions: { color: 'accent', size: 'lg' }
+    });
 #}
 
 {% macro render(label, options = {}) %}
@@ -52,6 +28,9 @@
 
     {% set iconLeft = options.iconLeft ?? null %}
     {% set iconRight = options.iconRight ?? null %}
+
+    {% set iconSize = options.iconSize ?? null %}
+    {% set iconOptions = options.iconOptions ?? {} %}
 
     {% set type = options.type ?? 'button' %}
     {% set disabled = options.disabled ?? false %}
@@ -73,15 +52,15 @@
 
     {% if href %}
         <a
-                href="{{ href }}"
-                class="{{ classes }}"
-                {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
-                {% for name, value in attributes %}
-                    {{ name }}="{{ value }}"
-                {% endfor %}
+            href="{{ href }}"
+            class="{{ classes }}"
+            {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+            {% for name, value in attributes %}
+                {{ name }}="{{ value }}"
+            {% endfor %}
         >
             {% if iconLeft %}
-                {{ _self.icon(iconLeft) }}
+                {{ _self.render_icon(iconLeft, size, iconSize, iconOptions) }}
             {% endif %}
 
             {% if label %}
@@ -91,7 +70,7 @@
             {% endif %}
 
             {% if iconRight %}
-                {{ _self.icon(iconRight) }}
+                {{ _self.render_icon(iconRight, size, iconSize, iconOptions) }}
             {% endif %}
         </a>
     {% else %}
@@ -104,7 +83,7 @@
             {% endfor %}
         >
             {% if iconLeft %}
-                {{ _self.icon(iconLeft) }}
+                {{ _self.render_icon(iconLeft, size, iconSize, iconOptions) }}
             {% endif %}
 
             {% if label %}
@@ -114,13 +93,21 @@
             {% endif %}
 
             {% if iconRight %}
-                {{ _self.icon(iconRight) }}
+                {{ _self.render_icon(iconRight, size, iconSize, iconOptions) }}
             {% endif %}
         </button>
     {% endif %}
 
 {% endmacro %}
 
-{% macro icon(name) %}
-    <i data-lucide="{{ name }}" class="button__icon"></i>
+{% macro render_icon(name, buttonSize, customIconSize, extraOptions) %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set finalSize = customIconSize ?? extraOptions.size ?? buttonSize %}
+
+    {% set iconConfig = extraOptions|merge({
+        size: finalSize
+    }) %}
+
+    {{ Icon.lucide(name, iconConfig) }}
 {% endmacro %}

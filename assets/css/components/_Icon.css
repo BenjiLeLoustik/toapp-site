@@ -4,7 +4,7 @@
 
     .icon {
         @apply inline-flex items-center justify-center;
-        color: var(--theme-foreground);
+        color: inherit;
     }
 
     /* Spacing */
