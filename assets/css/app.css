@@ -22,7 +22,7 @@
 @layer base {
 
     html, body {
-        @apply w-full h-dvh overflow-hidden;
+        @apply w-full h-dvh overflow-hidden text-base;
         background-color: var(--theme-background);
         color: var(--theme-foreground);
     }
