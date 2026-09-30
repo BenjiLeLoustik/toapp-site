@@ -6,6 +6,7 @@
 @import "./partials/_main.css";
 @import "./partials/_footer.css";
 
+@import "./components/init.css";
 @import "./pages/init.css";
 
 :root {

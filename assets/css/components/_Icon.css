@@ -1,0 +1,47 @@
+/** ./assets/css/components/_Icon.css */
+
+@layer component {
+
+    .icon {
+        @apply inline-flex items-center justify-center text-neutral-950;
+    }
+
+    /* Spacing */
+
+    .icon--spacing {
+        @apply p-1;
+    }
+
+    /* Color */
+
+    .icon--accent {
+        @apply text-indigo-500;
+    }
+
+    .icon--accent-bg {
+        @apply bg-indigo-500 text-white rounded-md;
+    }
+
+    /* Sizing */
+
+    .icon--xs svg {
+        @apply w-4 h-4;
+    }
+
+    .icon--sm svg {
+        @apply w-5 h-5;
+    }
+
+    .icon--base svg {
+        @apply w-6 h-6;
+    }
+
+    .icon--lg svg {
+        @apply w-8 h-8;
+    }
+
+    .icon--xl svg {
+        @apply w-10 h-10;
+    }
+
+}

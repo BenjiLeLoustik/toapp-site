@@ -1,0 +1,37 @@
+{# ./templates/components/macros/_Icon.macro.html.twig #}
+
+{#
+    Usage :
+
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    Icon.lucide(name = 'x', options = {})
+
+    Icon.lucide(name = 'x', options = {
+        color: 'accent',
+        background: true,
+        spacing: true
+        size: 'sm'
+    })
+
+#}
+
+{% macro lucide(name, options = {}) %}
+
+    {% set color = options.color ?? '' %}
+    {% set background = options.background ?? false %}
+    {% set spacing = options.spacing ?? false %}
+    {% set size = options.size ?? 'base' %}
+
+    {% set classes = [
+        'icon',
+        'icon--' ~ size,
+        color ? 'icon--' ~ color ~ (background ? '-bg' : ''),
+        spacing ? 'icon--spacing' : null
+    ]|filter(v => v)|join(' ') %}
+
+    <span class="{{ classes }}">
+        <i data-lucide="{{ name }}"></i>
+    </span>
+
+{% endmacro %}
