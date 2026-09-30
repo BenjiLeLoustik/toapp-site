@@ -1,0 +1,8 @@
+/** ./assets/css/themes/light/accents/indigo/_colors.css */
+
+[data-theme="light"][data-accent="indigo"] {
+    --theme-accent: var(--color-indigo-500);
+    --theme-accent-hover: var(--color-indigo-600);
+    --theme-accent-active: var(--color-indigo-700);
+    --theme-accent-foreground: var(--color-white);
+}

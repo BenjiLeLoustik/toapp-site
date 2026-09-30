@@ -1,0 +1,20 @@
+/** ./assets/css/themes/dark/_colors.css */
+
+@import "./accents/init.css";
+
+[data-theme="dark"] {
+    --theme-background: var(--color-neutral-950);
+    --theme-background-secondary: var(--color-neutral-900);
+    --theme-background-tertiary: var(--color-neutral-800);
+
+    --theme-foreground: var(--color-white);
+    --theme-foreground-secondary: var(--color-neutral-200);
+    --theme-foreground-muted: var(--color-neutral-400);
+
+    --theme-border: var(--color-neutral-800);
+    --theme-border-secondary: var(--color-neutral-700);
+
+    --theme-surface: var(--color-neutral-900);
+    --theme-surface-hover: var(--color-neutral-800);
+    --theme-surface-active: var(--color-neutral-700);
+}

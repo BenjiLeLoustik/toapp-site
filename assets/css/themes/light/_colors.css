@@ -1,0 +1,20 @@
+/** ./assets/css/themes/light/_colors.css */
+
+@import "./accents/init.css";
+
+[data-theme="light"] {
+    --theme-background: var(--color-white);
+    --theme-background-secondary: var(--color-neutral-50);
+    --theme-background-tertiary: var(--color-neutral-100);
+
+    --theme-foreground: var(--color-neutral-950);
+    --theme-foreground-secondary: var(--color-neutral-700);
+    --theme-foreground-muted: var(--color-neutral-500);
+
+    --theme-border: var(--color-neutral-200);
+    --theme-border-secondary: var(--color-neutral-300);
+
+    --theme-surface: var(--color-white);
+    --theme-surface-hover: var(--color-neutral-50);
+    --theme-surface-active: var(--color-neutral-100);
+}
