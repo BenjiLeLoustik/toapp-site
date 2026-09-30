@@ -1,0 +1,32 @@
+{# ./templates/components/embeds/_Modal.embed.html.twig #}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+<div class="modal" data-modal-name="{{ modalName }}">
+    <div class="modal__overlay" data-modal-close></div>
+    <div class="modal__wrapper">
+
+        <header class="modal__header">
+            <span class="modal__title">
+                {{ modalTitle }}
+            </span>
+
+            {{ Button.render(null, {
+                iconLeft: 'x',
+                variant: 'ghost',
+                size: 'sm',
+                iconOptions: { size: 'sm' },
+                attributes: {
+                    'data-modal-close': ''
+                }
+            }) }}
+        </header>
+
+        <div class="modal__separator"></div>
+
+        <div class="modal__content">
+            {% block modalContent %}{% endblock %}
+        </div>
+
+    </div>
+</div>
