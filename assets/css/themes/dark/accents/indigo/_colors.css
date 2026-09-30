@@ -4,5 +4,5 @@
     --theme-accent: var(--color-indigo-400);
     --theme-accent-hover: var(--color-indigo-300);
     --theme-accent-active: var(--color-indigo-200);
-    --theme-accent-foreground: var(--color-neutral-950);
+    --theme-accent-foreground: var(--color-white);
 }
