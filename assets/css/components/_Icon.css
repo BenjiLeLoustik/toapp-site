@@ -3,7 +3,8 @@
 @layer component {
 
     .icon {
-        @apply inline-flex items-center justify-center text-neutral-950;
+        @apply inline-flex items-center justify-center;
+        color: var(--theme-foreground);
     }
 
     /* Spacing */
@@ -15,11 +16,13 @@
     /* Color */
 
     .icon--accent {
-        @apply text-indigo-500;
+        color: var(--theme-accent);
     }
 
     .icon--accent-bg {
-        @apply bg-indigo-500 text-white rounded-md;
+        @apply rounded-md;
+        background-color: var(--theme-accent);
+        color: var(--theme-accent-foreground);
     }
 
     /* Sizing */
