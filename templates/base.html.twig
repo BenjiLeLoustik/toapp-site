@@ -1,7 +1,11 @@
 {# ./templates/base.html.twig #}
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-accent="indigo" data-scale="medium">
+<html lang="{{ locale() }}"
+      data-theme="{{ session('theme', 'light') }}"
+      data-accent="{{ session('accent', 'indigo') }}"
+      data-scale="{{ session('scale', 'medium') }}"
+>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
