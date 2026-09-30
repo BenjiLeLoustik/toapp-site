@@ -1,9 +1,19 @@
 {# ./templates/partials/_header.html.twig #}
 
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
 <header class="header">
     <div class="header__inner">
         <div class="header__logo">
-            [LOGO]
+            {{ Icon.lucide('terminal', {
+                color: 'accent',
+                background: true,
+                spacing: true,
+                size: 'md'
+            }) }}
+            <span class="header__title">
+                {{ config('framework.app.name') }}
+            </span>
         </div>
         <nav class="header__nav">
             [NAV]

@@ -11,4 +11,12 @@
         @apply h-full w-full max-w-7xl mx-auto flex items-center justify-between;
     }
 
+    .header__logo {
+        @apply flex items-center justify-center gap-2
+    }
+
+    span.header__title {
+        @apply text-lg font-semibold;
+    }
+
 }
