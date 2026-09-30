@@ -9,6 +9,10 @@ session_scale: '%env(APP_SESSION_SCALE)%'
 session_accent: '%env(APP_SESSION_ACCENT)%'
 session_theme: '%env(APP_SESSION_THEME)%'
 
+default_scale: '%env(APP_DEFAULT_SCALE)%'
+default_theme: '%env(APP_DEFAULT_THEME)%'
+default_accent: '%env(APP_DEFAULT_ACCENT)%'
+
 environment: '%kernel.environment%'
 debug: '%kernel.debug%'
 root_path: '%kernel.root_path%'
