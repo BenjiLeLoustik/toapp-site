@@ -24,11 +24,11 @@
     }
 
     .screen--margin {
-        @apply max-w-7xl bg-red-100;
+        @apply max-w-7xl;
     }
 
     .screen--no-margin {
-        @apply max-w-full bg-blue-100;
+        @apply max-w-full;
     }
 
 }
