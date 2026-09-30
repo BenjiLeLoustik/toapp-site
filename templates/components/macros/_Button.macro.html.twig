@@ -1,0 +1,126 @@
+{# ./templates/components/macros/_Button.macro.html.twig #}
+
+{#
+    Usage :
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    Button.render('Créer');
+
+    Button.render('Créer', {
+        variant: 'primary',
+        size: 'base'
+    });
+
+    Button.render('Suivant', {
+        variant: 'primary',
+        iconRight: 'arrow-right'
+    });
+
+    Button.render('Supprimer', {
+        variant: 'danger',
+        iconLeft: 'trash',
+        iconRight: 'arrow-right'
+    })
+
+    Button.render('Documentation', {
+        href: '/docs',
+        variant: 'secondary'
+    })
+
+    Button.render('Enregistrer', {
+        type: 'submit',
+        disabled: true,
+        align: 'right',
+        class: 'w-full'
+    })
+
+    Button.render('Action', {
+        attributes: {
+            'data-action': 'test',
+            'aria-label': 'Effectuer une action'
+        }
+    })
+#}
+
+{% macro render(label, options = {}) %}
+
+    {% set href = options.href ?? null %}
+    {% set variant = options.variant ?? 'primary' %}
+    {% set size = options.size ?? 'base' %}
+    {% set align = options.align ?? 'center' %}
+
+    {% set iconLeft = options.iconLeft ?? null %}
+    {% set iconRight = options.iconRight ?? null %}
+
+    {% set type = options.type ?? 'button' %}
+    {% set disabled = options.disabled ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+
+    {% set iconOnly = not label and (iconLeft or iconRight) %}
+
+    {% set classes = [
+        'button',
+        'button--' ~ variant,
+        'button--' ~ size,
+        'button--align-' ~ align,
+        iconOnly ? 'button--icon-only' : null,
+        disabled ? 'button--disabled' : null,
+        class
+    ]|filter(v => v)|join(' ') %}
+
+    {% if href %}
+        <a
+                href="{{ href }}"
+                class="{{ classes }}"
+                {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+                {% for name, value in attributes %}
+                    {{ name }}="{{ value }}"
+                {% endfor %}
+        >
+            {% if iconLeft %}
+                {{ _self.icon(iconLeft) }}
+            {% endif %}
+
+            {% if label %}
+                <span class="button__label">
+                    {{ label|raw }}
+                </span>
+            {% endif %}
+
+            {% if iconRight %}
+                {{ _self.icon(iconRight) }}
+            {% endif %}
+        </a>
+    {% else %}
+        <button
+            type="{{ type }}"
+            class="{{ classes }}"
+            {% if disabled %}disabled{% endif %}
+            {% for name, value in attributes %}
+                {{ name }}="{{ value }}"
+            {% endfor %}
+        >
+            {% if iconLeft %}
+                {{ _self.icon(iconLeft) }}
+            {% endif %}
+
+            {% if label %}
+                <span class="button__label">
+                    {{ label|raw }}
+                </span>
+            {% endif %}
+
+            {% if iconRight %}
+                {{ _self.icon(iconRight) }}
+            {% endif %}
+        </button>
+    {% endif %}
+
+{% endmacro %}
+
+{% macro icon(name) %}
+    <i data-lucide="{{ name }}" class="button__icon"></i>
+{% endmacro %}
