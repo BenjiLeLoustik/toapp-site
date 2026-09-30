@@ -1,5 +1,14 @@
 # Application settings (key framework.app). Values in '%env(...)%' come from .env / .env.local.
 name: '%env(APP_NAME)%'
+icon: '%env(APP_ICON)%'
+design_scales: '%env(APP_DESIGN_SCALES)%'
+design_accents: '%env(APP_DESIGN_ACCENTS)%'
+design_themes: '%env(APP_DESIGN_THEMES)%'
+
+session_scale: '%env(APP_SESSION_SCALE)%'
+session_accent: '%env(APP_SESSION_ACCENT)%'
+session_theme: '%env(APP_SESSION_THEME)%'
+
 environment: '%kernel.environment%'
 debug: '%kernel.debug%'
 root_path: '%kernel.root_path%'
@@ -7,7 +16,6 @@ root_path: '%kernel.root_path%'
 secret: '%env(APP_SECRET)%'
 # Base URL of absolute URLs generated outside of a request (console, emails), e.g. https://example.com
 url: '%env(APP_URL)%'
-icon: 'terminal'
 
 # Reverse proxies (Nginx, load balancer, Cloudflare...) whose X-Forwarded-* headers are trusted:
 # comma separated IPs / CIDR ranges in TRUSTED_PROXIES, e.g. 127.0.0.1,10.0.0.0/8 (empty = no proxy).
