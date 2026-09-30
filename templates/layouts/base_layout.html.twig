@@ -4,6 +4,14 @@
 
 {% block layout %}
 
-    {% block content %}{% endblock %}
+    {% include 'partials/_header.html.twig' %}
+
+    <main class="main">
+        <div class="main__content">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% include 'partials/_footer.html.twig' %}
+    </main>
 
 {% endblock %}

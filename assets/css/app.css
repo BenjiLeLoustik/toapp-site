@@ -2,6 +2,22 @@
 
 @import "tailwindcss";
 
+@import "./partials/_header.css";
+@import "./partials/_main.css";
+@import "./partials/_footer.css";
+
+:root {
+    --header-height: 50px;
+}
+
 @theme {
     --font-sans: 'Exo 2', sans-serif;
+}
+
+@layer base {
+
+    html, body {
+        @apply w-full h-dvh overflow-hidden bg-neutral-50;
+    }
+
 }

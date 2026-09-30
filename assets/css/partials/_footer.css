@@ -1,0 +1,31 @@
+/** ./assets/css/partials/_footer.css */
+
+@layer components {
+
+    footer.footer {
+        @apply w-full h-auto py-6 bg-white flex flex-col gap-6
+        border-t-1 border-neutral-300;
+    }
+
+    .footer__top {
+        @apply w-full max-w-7xl mx-auto h-auto flex items-center justify-between;
+    }
+
+    section.footer__about {
+        @apply w-full h-full flex items-start justify-start;
+    }
+
+    section.footer__links {
+        @apply w-full h-auto flex items-center justify-end gap-2;
+    }
+
+    nav.footer__link-block {
+        @apply w-full h-full flex flex-col gap-2;
+    }
+
+    .footer__copyright {
+        @apply w-full max-w-7xl mx-auto h-auto flex items-center justify-center pt-6
+        border-t-1 border-neutral-300;
+    }
+
+}

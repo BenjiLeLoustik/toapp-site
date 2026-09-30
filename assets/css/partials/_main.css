@@ -1,0 +1,34 @@
+/** ./assets/css/partials/_main.css */
+
+@layer components {
+
+    main.main {
+        @apply w-full max-h-full overflow-auto;
+        height: calc(100dvh - var(--header-height));
+    }
+
+    .main__content {
+        @apply w-full h-auto;
+    }
+
+    .screen {
+        @apply w-full mx-auto;
+    }
+
+    .screen--half {
+        height: calc((100dvh - var(--header-height)) / 2);
+    }
+
+    .screen--full {
+        height: calc(100dvh - var(--header-height));
+    }
+
+    .screen--margin {
+        @apply max-w-7xl bg-red-100;
+    }
+
+    .screen--no-margin {
+        @apply max-w-full bg-blue-100;
+    }
+
+}

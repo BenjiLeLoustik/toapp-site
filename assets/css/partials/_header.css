@@ -1,0 +1,14 @@
+/** ./assets/css/partials/_header.css */
+
+@layer components {
+
+    header.header {
+        @apply w-full bg-white p-2 border-b-1 border-neutral-300;
+        height: var(--header-height);
+    }
+
+    .header__inner {
+        @apply h-full w-full max-w-7xl mx-auto flex items-center justify-between;
+    }
+
+}
