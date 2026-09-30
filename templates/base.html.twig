@@ -2,9 +2,9 @@
 
 <!DOCTYPE html>
 <html lang="{{ locale() }}"
-      data-theme="{{ session('theme', 'light') }}"
-      data-accent="{{ session('accent', 'indigo') }}"
-      data-scale="{{ session('scale', 'medium') }}"
+      data-theme="{{ session(config('framework.app.session_theme'), 'light') }}"
+      data-accent="{{ session(config('framework.app.session_accent'), 'indigo') }}"
+      data-scale="{{ session(config('framework.app.session_scale'), 'medium') }}"
 >
     <head>
         <meta charset="UTF-8">
