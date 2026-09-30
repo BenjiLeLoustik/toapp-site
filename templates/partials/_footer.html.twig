@@ -1,20 +1,78 @@
 {# ./templates/partials/_footer.html.twig #}
 
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+{% set footerNavItems = {
+    'platform': [
+        { label: 'discover', routeName: '#' },
+        { label: 'categories', routeName: '#' },
+        { label: 'trendings', routeName: '#' },
+        { label: 'publish_project', routeName: '#' }
+    ],
+    'enterprise': [
+        { label: 'about', routeName: '#' },
+        { label: 'contact', routeName: '#' },
+        { label: 'careers', routeName: '#' },
+        { label: 'help_center', routeName: '#' }
+    ]
+} %}
+
 <footer class="footer">
     <div class="footer__top">
         <section class="footer__about">
-            [ABOUT]
+            <div class="footer__logo">
+                {{ Icon.lucide(config('framework.app.icon'), {
+                    color: 'accent',
+                    background: true,
+                    spacing: true,
+                    size: 'sm'
+                }) }}
+                <span class="footer__title">
+                    {{ config('framework.app.name') }}
+                </span>
+            </div>
+            <p class="footer__description">
+                {{ translate('footer.about.description', domain: 'footer') }}
+            </p>
         </section>
         <section class="footer__links">
-            <nav class="footer__link-block">
-                [LINK BLOCK]
-            </nav>
-            <nav class="footer__link-block">
-                [LINK BLOCK]
-            </nav>
+            {% for category, items in footerNavItems %}
+                <nav class="footer__link-block">
+                    <span class="footer__link-block-title">
+                        {{ translate('footer.nav.categories.' ~ category, domain: 'footer') }}
+                    </span>
+                    <ul class="footer__link-block-list">
+
+                        {% for item in items %}
+                            <a class="footer__link-block-list-item" href="{{ item.routeName != '#' ? path(item.routeName) : '#' }}">
+                                {{ translate('footer.nav.links.' ~ item.label, domain: 'footer') }}
+                            </a>
+                        {% endfor %}
+
+                    </ul>
+                </nav>
+            {% endfor %}
         </section>
     </div>
-    <div class="footer__copyright">
-        [COPYRIGHT]
+    <div class="footer__bottom">
+        <section class="footer__copyright">
+            {{ translate('footer.copyright', {
+                'year': 'now'|date('Y'),
+                'appName': config('framework.app.name')
+            }, domain: 'footer')|raw }}
+        </section>
+        <section class="footer__links">
+
+            <a class="footer__link-block-list-item" href="#">
+                {{ translate('footer.nav.links.privacy_policy', domain: 'footer') }}
+            </a>
+
+            &bullet;
+
+            <a class="footer__link-block-list-item" href="#">
+                {{ translate('footer.nav.links.terms_of_use', domain: 'footer') }}
+            </a>
+
+        </section>
     </div>
 </footer>
