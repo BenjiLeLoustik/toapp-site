@@ -70,7 +70,38 @@
 } %}
     {% block modalContent %}
 
-        [ModalContent]
+        <div class="">
+            {% for theme in config('framework.app.design_themes')|json_decode %}
+                <button data-theme-change="{{ theme }}">{{ theme }}</button>
+            {% endfor %}
+        </div>
+
+        <div class="">
+            {% for accent in config('framework.app.design_accents')|json_decode %}
+                <button data-accent-change="{{ accent }}">{{ accent }}</button>
+            {% endfor %}
+        </div>
+
+        <div class="">
+            {% for scale in config('framework.app.design_scales')|json_decode %}
+                <button data-scale-change="{{ scale }}">{{ scale }}</button>
+            {% endfor %}
+        </div>
+
+        <div class="">
+            {% for locale in locales() %}
+                <button data-locale-change="{{ locale }}">{{ locale }}</button>
+            {% endfor %}
+        </div>
+
+        <script type="text/javascript">
+
+            window.initPreferenceChange('theme', '{{ path("preference_api_change_theme") }}', 'data-theme');
+            window.initPreferenceChange('accent', '{{ path("preference_api_change_accent") }}', 'data-accent');
+            window.initPreferenceChange('scale', '{{ path("preference_api_change_scale") }}', 'data-scale');
+            window.initPreferenceChange('locale', '{{ path("preference_api_change_locale") }}', 'data-locale', true);
+
+        </script>
 
     {% endblock %}
 {% endembed %}
