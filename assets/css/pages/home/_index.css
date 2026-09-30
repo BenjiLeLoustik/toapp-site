@@ -1,0 +1,17 @@
+/** ./assets/css/pages/home/_index.css */
+
+@layer base {
+
+    section.hero {
+        @apply flex items-center justify-center;
+    }
+
+    section.stats {
+        @apply h-50 flex items-center justify-center bg-white;
+    }
+
+    section.popular-projects {
+        @apply h-auto flex items-center justify-center py-6;
+    }
+
+}
