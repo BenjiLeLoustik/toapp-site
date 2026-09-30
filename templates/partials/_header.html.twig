@@ -52,12 +52,25 @@
 
             {{ Button.render(null, {
                 iconLeft: 'cog',
-                href: '#',
                 variant: 'ghost-outline',
                 size: 'sm',
-                iconOptions: { size: 'sm' }
+                iconOptions: { size: 'sm' },
+                attributes: {
+                    'data-modal-open': 'settings'
+                }
             }) }}
 
         </div>
     </div>
 </header>
+
+{% embed 'components/embeds/_Modal.embed.html.twig' with {
+    modalName: 'settings',
+    modalTitle: 'Settings'
+} %}
+    {% block modalContent %}
+
+        [ModalContent]
+
+    {% endblock %}
+{% endembed %}
