@@ -1,6 +1,7 @@
 {# ./templates/partials/_header.html.twig #}
 
 {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
 
 <header class="header">
     <div class="header__inner">
@@ -16,10 +17,53 @@
             </span>
         </div>
         <nav class="header__nav">
-            [NAV]
+
+            {{ Button.render('Home', {
+                href: '#',
+                variant: 'primary',
+                size: 'sm'
+            }) }}
+
+            {{ Button.render('Categories', {
+                href: '#',
+                variant: 'ghost',
+                size: 'sm'
+            }) }}
+
+            {{ Button.render('Trends', {
+                href: '#',
+                variant: 'ghost',
+                size: 'sm'
+            }) }}
+
+            {{ Button.render('About', {
+                href: '#',
+                variant: 'ghost',
+                size: 'sm'
+            }) }}
+
         </nav>
         <div class="header__actions">
-            [ACTIONS]
+
+            {{ Button.render('Login', {
+                href: '#',
+                variant: 'primary-outline',
+                size: 'sm'
+            }) }}
+
+            {{ Button.render('Register', {
+                href: '#',
+                variant: 'primary',
+                size: 'sm'
+            }) }}
+
+            {{ Button.render(null, {
+                iconLeft: 'cog',
+                href: '#',
+                variant: 'ghost-outline',
+                size: 'sm'
+            }) }}
+
         </div>
     </div>
 </header>
