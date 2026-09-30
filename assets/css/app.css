@@ -22,7 +22,9 @@
 @layer base {
 
     html, body {
-        @apply w-full h-dvh overflow-hidden bg-neutral-50;
+        @apply w-full h-dvh overflow-hidden;
+        background-color: var(--theme-background);
+        color: var(--theme-foreground);
     }
 
 }

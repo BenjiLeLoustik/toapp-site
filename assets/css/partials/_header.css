@@ -3,8 +3,11 @@
 @layer components {
 
     header.header {
-        @apply w-full bg-white p-2 border-b-1 border-neutral-300;
+        @apply w-full p-2 border-b-1;
         height: var(--header-height);
+        background-color: var(--theme-surface);
+        border-bottom: solid 1px var(--theme-border);
+        color: var(--theme-foreground);
     }
 
     .header__inner {

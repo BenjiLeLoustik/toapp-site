@@ -7,7 +7,8 @@
     }
 
     section.stats {
-        @apply h-50 flex items-center justify-center bg-white;
+        @apply h-50 flex items-center justify-center;
+        background-color: var(--theme-surface);
     }
 
     section.popular-projects {
