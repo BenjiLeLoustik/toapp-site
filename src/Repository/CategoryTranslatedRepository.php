@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\CategoryTranslated;
-use NeoPHP\Package\Orm\Contract\AbstractRepository;
+use App\Repository\Contract\AbstractTranslatedRepository;
 
-class CategoryTranslatedRepository extends AbstractRepository
+class CategoryTranslatedRepository extends AbstractTranslatedRepository
 {
     protected string $entityClass = CategoryTranslated::class;
 }
