@@ -7,7 +7,7 @@
     }
 
     h1.hero__title {
-        @apply text-5xl font-bold;
+        @apply text-5xl font-bold max-w-7xl mx-auto text-center;
         color: var(--theme-foreground);
     }
 
