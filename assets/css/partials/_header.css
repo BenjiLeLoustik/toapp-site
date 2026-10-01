@@ -188,4 +188,19 @@
         @apply w-full;
     }
 
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        .modal__change--accent .modal__change-content {
+            @apply grid-cols-6 gap-3;
+        }
+
+        .modal__change--scale .modal__change-content {
+            @apply grid-cols-1;
+        }
+
+    }
+
 }

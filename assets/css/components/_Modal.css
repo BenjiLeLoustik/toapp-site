@@ -35,7 +35,18 @@
     }
 
     .modal__content {
-        @apply w-full h-full;
+        @apply w-full flex-1 min-h-0 overflow-y-auto;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        .modal__wrapper {
+            @apply w-full;
+        }
+
     }
 
 }
