@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
+use App\Entity\CategoryTranslated;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
@@ -19,24 +19,18 @@ class HomeController extends AbstractController
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
+        $translations = $this->getOrm()
+            ->getRepository(CategoryTranslated::class)
+            ->findAllTranslated($this->translator->getLocale());
 
-        $getCategories = $this->getOrm()->getRepository(Category::class)->findAllTranslated(
-            $this->translator->getLocale()
-        );
-
-        $categories = array_reduce($getCategories, static function (array $options, Category $category): array {
-            $translation = $category->getTranslations()->first();
-
-            if ($translation !== false) {
-                $options[$category->getSlug()] = $translation->getName();
-            }
-
+        $categories = array_reduce($translations, static function (array $options, CategoryTranslated $translation): array {
+            $options[$translation->getCategory()->getSlug()] = $translation->getName();
             return $options;
         }, []);
 
         $categories = [
-            'all' => $this->translator->translate('categories.all')
-            ] + $categories;
+            'all' => $this->translator->translate('categories.all'),
+        ] + $categories;
 
         return $this->render('pages/home/index.html.twig', [
             'categories' => $categories,
@@ -46,7 +40,7 @@ class HomeController extends AbstractController
                 'listed_technologies' => 441,
                 'user_statisfaction' => 98,
             ],
-            'popular_projects' => []
+            'popular_projects' => [],
         ]);
     }
 
