@@ -71,4 +71,67 @@
         color: var(--theme-foreground-muted);
     }
 
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.hero {
+            @apply px-4 gap-3;
+        }
+
+        h1.hero__title {
+            @apply text-3xl;
+        }
+
+        p.hero__sub-title {
+            @apply text-base;
+        }
+
+        .hero__search-bar {
+            @apply w-full max-w-full;
+        }
+
+        .hero__actions {
+            @apply w-full max-w-full flex-col;
+        }
+
+        .hero__actions > * {
+            @apply w-full;
+        }
+
+        section.stats {
+            @apply h-auto grid-cols-2 gap-0;
+        }
+
+        .stat__block {
+            @apply py-6;
+        }
+
+        span.stat__icon {
+            @apply w-12 h-12;
+        }
+
+        span.stat__value {
+            @apply text-lg;
+        }
+
+        span.stat__title {
+            @apply text-sm text-center;
+        }
+
+        section.popular-projects {
+            @apply px-4 py-8;
+        }
+
+        h2.popular-projects__title {
+            @apply text-2xl;
+        }
+
+        p.popular-projects__description {
+            @apply text-base;
+        }
+
+    }
+
 }
