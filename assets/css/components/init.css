@@ -1,5 +1,6 @@
 /** ./assets/css/components/init.css */
 
 @import "./_Button.css";
+@import "./_Form.css";
 @import "./_Modal.css";
 @import "./_Icon.css";

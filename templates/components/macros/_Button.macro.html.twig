@@ -1,22 +1,22 @@
 {# ./templates/components/macros/_Button.macro.html.twig #}
 
 {#
-Usage :
+    Usage :
 
-    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+        {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
-    Button.render('Créer');
+        Button.render('Créer');
 
-    Button.render('Suivant', {
-        variant: 'primary',
-        iconRight: 'arrow-right',
-        iconSize: 'sm'
-    });
+        Button.render('Suivant', {
+            variant: 'primary',
+            iconRight: 'arrow-right',
+            iconSize: 'sm'
+        });
 
-    Button.render(null, {
-        iconLeft: 'trash',
-        iconOptions: { color: 'accent', size: 'lg' }
-    });
+        Button.render(null, {
+            iconLeft: 'trash',
+            iconOptions: { color: 'accent', size: 'lg' }
+        });
 #}
 
 {% macro render(label, options = {}) %}

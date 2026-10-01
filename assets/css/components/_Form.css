@@ -1,0 +1,68 @@
+/** ./assets/css/components/_Form.css */
+
+@layer component {
+
+    /* Field */
+
+    .form__field {
+        @apply w-full flex flex-col gap-2;
+    }
+
+    /* Label */
+
+    .form__label {
+        @apply block text-sm font-medium;
+        color: var(--theme-foreground);
+    }
+
+    /* Control */
+
+    .form__control {
+        @apply relative flex items-center w-full;
+    }
+
+    /* Select */
+
+    .form__select {
+        @apply w-full h-10 px-3 pr-10 rounded-md border appearance-none cursor-pointer outline-none transition-colors;
+        background-color: var(--theme-surface);
+        border-color: var(--theme-border);
+        color: var(--theme-foreground);
+    }
+
+    .form__select:hover {
+        background-color: var(--theme-surface-hover);
+    }
+
+    .form__select:focus {
+        border-color: var(--theme-accent);
+    }
+
+    .form__select:disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    /* Icons */
+
+    .form__control .icon {
+        @apply absolute shrink-0 pointer-events-none;
+        color: var(--theme-foreground-muted);
+    }
+
+    .form__control .icon:first-child {
+        @apply left-3;
+    }
+
+    .form__control .icon:last-child {
+        @apply right-3;
+    }
+
+    .form__control:has(.icon:first-child) .form__select {
+        @apply pl-10;
+    }
+
+    .form__control:has(.icon:last-child) .form__select {
+        @apply pr-10;
+    }
+
+}
