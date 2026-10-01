@@ -4,10 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 });
 
-window.initPreferenceChange = function (name, route, attribute, reload = false, callback = false) {
-    document.querySelectorAll(`[data-${name}-change]`).forEach(btn => {
-        btn.addEventListener('click', event => {
-            const value = event.currentTarget.dataset[`${name}Change`];
+window.initPreferenceChange = function (name, route, attribute, reload = false, callback = null) {
+    document.querySelectorAll(`[data-${name}-change]`).forEach(element => {
+
+        const eventName = element.matches('select, input, textarea') ? 'change' : 'click';
+
+        element.addEventListener(eventName, event => {
+            const value = event.currentTarget.matches('select, input, textarea')
+                ? event.currentTarget.value
+                : event.currentTarget.dataset[`${name}Change`];
+
+            console.log(value);
 
             window._Request.GET(route, {
                 [name]: value,
@@ -22,7 +29,7 @@ window.initPreferenceChange = function (name, route, attribute, reload = false, 
                 if (callback) {
                     callback(response[name]);
                 }
-            })
+            });
         });
     });
 };
