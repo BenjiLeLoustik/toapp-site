@@ -29,8 +29,32 @@
     }
 
     section.stats {
-        @apply h-50 flex items-center justify-center;
+        @apply h-50 grid items-center justify-center grid-cols-4 gap-4;
         background-color: var(--theme-surface);
+    }
+
+    .stat__block {
+        @apply flex flex-col items-center justify-center gap-2 w-full h-full;
+    }
+
+    span.stat__icon {
+        @apply w-14 h-14 rounded-full flex items-center justify-center;
+        background-color: var(--theme-accent);
+    }
+
+    span.stat__icon svg {
+        @apply w-5 h-5;
+        color: var(--theme-accent-foreground);
+    }
+
+    span.stat__value {
+        @apply text-xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    span.stat__title {
+        @apply text-base;
+        color: var(--theme-foreground-muted);
     }
 
     section.popular-projects {
