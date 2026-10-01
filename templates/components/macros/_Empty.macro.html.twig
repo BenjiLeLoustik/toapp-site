@@ -12,16 +12,27 @@ Usage :
 
 #}
 
-{% macro render(icon, title, descriptions = []) %}
+{% macro render(icon, title, descriptions = [], actions = {}) %}
     <div class="empty">
         <div class="empty__icon">
             <i data-lucide="{{ icon }}"></i>
         </div>
         <h3 class="empty__title">{{ title }}</h3>
-        {% for description in descriptions %}
-            <p class="empty__description">
-                {{ description }}
-            </p>
-        {% endfor %}
+        {% if descriptions is not empty %}
+            <div class="empty__descriptions">
+                {% for description in descriptions %}
+                    <p class="empty__description">
+                        {{ description }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if actions is not empty %}
+            <div class="empty__actions">
+                {% for action in actions %}
+                    {{ action|raw }}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endmacro %}

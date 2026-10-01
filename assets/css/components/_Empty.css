@@ -22,9 +22,17 @@
         color: var(--theme-foreground);
     }
 
+    .empty__descriptions {
+        @apply flex flex-col;
+    }
+
     p.empty__description {
         @apply text-sm font-medium w-full text-center;
         color: var(--theme-foreground-muted);
+    }
+
+    .empty__actions {
+        @apply w-full max-w-7xl mx-auto flex items-center justify-center gap-4;
     }
 
 }
