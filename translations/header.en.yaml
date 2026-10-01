@@ -8,3 +8,9 @@ header:
         actions:
             login: "Login"
             register: "Register"
+    modal:
+        settings:
+            scale:
+                small: "Small"
+                medium: "Medium"
+                large: "Large"
