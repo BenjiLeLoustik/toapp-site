@@ -12,6 +12,7 @@
 
 <header class="header">
     <div class="header__inner">
+
         <div class="header__logo">
             {{ Icon.lucide(config('framework.app.icon'), {
                 color: 'accent',
@@ -23,44 +24,66 @@
                 {{ config('framework.app.name') }}
             </span>
         </div>
-        <nav class="header__nav">
 
-            {% for item in headerNavItems %}
+        {{ Button.render(null, {
+            iconLeft: 'menu',
+            variant: 'ghost-outline',
+            size: 'sm',
+            iconOptions: {
+                size: 'sm'
+            },
+            attributes: {
+                'aria-label': 'Menu',
+                'aria-expanded': 'false',
+                'data-header-menu-toggle': ''
+            },
+            class: 'header__menu-toggle'
+        }) }}
 
-                {{ Button.render(translate('header.nav.links.' ~ item.label, domain: 'header'), {
-                    href: item.routeName != '#' ? path(item.routeName) : '#',
-                    variant: app.current_route == item.routeName or app.current_route starts with item.routeName ? 'primary' : 'ghost',
+        <div class="header__menu" data-header-menu>
+
+            <nav class="header__nav">
+
+                {% for item in headerNavItems %}
+
+                    {{ Button.render(translate('header.nav.links.' ~ item.label, domain: 'header'), {
+                        href: item.routeName != '#' ? path(item.routeName) : '#',
+                        variant: app.current_route == item.routeName or app.current_route starts with item.routeName ? 'primary' : 'ghost',
+                        size: 'sm'
+                    }) }}
+
+                {% endfor %}
+
+            </nav>
+
+            <div class="header__actions">
+
+                {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
+                    href: '#',
+                    variant: 'primary-outline',
                     size: 'sm'
                 }) }}
 
-            {% endfor %}
+                {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
+                    href: '#',
+                    variant: 'primary',
+                    size: 'sm'
+                }) }}
 
-        </nav>
-        <div class="header__actions">
+                {{ Button.render(null, {
+                    iconLeft: 'cog',
+                    variant: 'ghost-outline',
+                    size: 'sm',
+                    iconOptions: { size: 'sm' },
+                    attributes: {
+                        'data-modal-open': 'settings'
+                    }
+                }) }}
 
-            {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
-                href: '#',
-                variant: 'primary-outline',
-                size: 'sm'
-            }) }}
-
-            {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
-                href: '#',
-                variant: 'primary',
-                size: 'sm'
-            }) }}
-
-            {{ Button.render(null, {
-                iconLeft: 'cog',
-                variant: 'ghost-outline',
-                size: 'sm',
-                iconOptions: { size: 'sm' },
-                attributes: {
-                    'data-modal-open': 'settings'
-                }
-            }) }}
+            </div>
 
         </div>
+
     </div>
 </header>
 

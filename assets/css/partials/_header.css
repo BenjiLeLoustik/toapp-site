@@ -1,9 +1,7 @@
-/** ./assets/css/partials/_header.css */
-
 @layer components {
 
     header.header {
-        @apply w-full p-2 border-b-1;
+        @apply relative w-full p-2 border-b-1 flex items-center justify-center;
         height: var(--header-height);
         background-color: var(--theme-surface);
         border-bottom: solid 1px var(--theme-border);
@@ -15,12 +13,82 @@
     }
 
     .header__logo {
-        @apply flex items-center justify-center gap-2
+        @apply flex items-center justify-center gap-2;
     }
 
     span.header__title {
         @apply text-lg font-semibold;
     }
+
+    .header__menu {
+        @apply flex items-center justify-between flex-1;
+    }
+
+    .header__nav {
+        @apply flex items-center justify-center gap-1 mx-auto;
+    }
+
+    .header__actions {
+        @apply flex items-center gap-1;
+    }
+
+    .header__menu-toggle {
+        @apply !hidden;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        header.header {
+            height: var(--header-height);
+        }
+
+        .header__inner {
+            @apply flex items-center justify-between;
+        }
+
+        .header__logo {
+            @apply flex items-center justify-start gap-2;
+        }
+
+        .header__menu-toggle {
+            @apply ml-auto !flex;
+        }
+
+        .header__menu {
+            @apply hidden z-100 fixed left-0 h-full right-0 w-full bottom-0 flex-col items-stretch gap-3 p-2 border-b;
+            top: var(--header-height);
+            height: calc(100dvh - var(--header-height));
+            background-color: var(--theme-surface);
+            border-bottom-color: var(--theme-border);
+        }
+
+        .header__menu.is-open {
+            display: flex;
+        }
+
+        .header__nav {
+            @apply w-full flex-col items-stretch gap-1;
+            margin: 0;
+        }
+
+        .header__nav > * {
+            @apply w-full;
+        }
+
+        .header__actions {
+            @apply w-full flex-col items-stretch gap-1;
+        }
+
+        .header__actions > * {
+            @apply w-full;
+        }
+    }
+
+
+    /* Modal */
 
     .modal__change-blocks {
         @apply flex flex-col gap-2 items-start justify-start;
@@ -117,7 +185,7 @@
     }
 
     .modal__change--scale button[data-scale-change] {
-        @apply w-full
+        @apply w-full;
     }
 
 }
