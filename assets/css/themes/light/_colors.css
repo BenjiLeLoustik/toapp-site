@@ -2,7 +2,8 @@
 
 @import "./accents/init.css";
 
-[data-theme="light"] {
+[data-theme="light"],
+[data-theme-preview="light"] {
     --theme-background: var(--color-neutral-100);
     --theme-background-secondary: var(--color-neutral-200);
     --theme-background-tertiary: var(--color-neutral-300);

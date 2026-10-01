@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/yellow/_colors.css */
+
+[data-theme="dark"][data-accent="yellow"] {
+    --theme-accent: var(--color-yellow-400);
+    --theme-accent-hover: var(--color-yellow-300);
+    --theme-accent-active: var(--color-yellow-200);
+    --theme-accent-foreground: var(--color-white);
+}
