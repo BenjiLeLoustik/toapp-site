@@ -13,7 +13,14 @@ class HomeController extends AbstractController
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
-        return $this->render('pages/home/index.html.twig', []);
+        return $this->render('pages/home/index.html.twig', [
+            'stats' => [
+                'published_projects' => 1500000,
+                'active_developers' => 1290,
+                'listed_technologies' => 441,
+                'user_statisfaction' => 98,
+            ]
+        ]);
     }
 
 }
