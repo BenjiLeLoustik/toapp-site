@@ -1,0 +1,17 @@
+main:
+    hero:
+        sub_title: "Explore millions of web projects, mobile apps, APIs, and much more. Join a community of passionate developers."
+        title:
+            first_part: "Find your"
+            second_part: "next project"
+        search_bar:
+            input: "Search project, technology, framework..."
+            submit: "Search"
+        actions:
+            publish_project: "Publish project"
+            show_projects: "Explore Projects"
+    stats:
+        active_developers: "Active developers"
+        listed_technologies: "Listed technologies"
+        published_project: "Published projects"
+        user_satisfaction: "User satisfaction"

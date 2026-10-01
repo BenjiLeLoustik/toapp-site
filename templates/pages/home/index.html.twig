@@ -10,12 +10,14 @@
     <section class="hero screen screen--full screen--no-margin">
 
         <h1 class="hero__title">
-            Find your <span class="hero__title--colored">next project</span>
+            {{ translate('main.hero.title.first_part') }}
+            <span class="hero__title--colored">
+                {{ translate('main.hero.title.second_part') }}
+            </span>
         </h1>
 
         <p class="hero__sub-title">
-            Explore millions of web projects, mobile apps, APIs, and much more.
-            Join a community of passionate developers.
+            {{ translate('main.hero.sub_title') }}
         </p>
 
         <div class="hero__search-bar">
@@ -23,7 +25,7 @@
                 Form.input('search', {
                     iconLeft: 'search',
                     iconSize: 'sm',
-                    placeholder: 'Search project, technology, framework...',
+                    placeholder: translate('main.hero.search_bar.input'),
                     columns: 6
                 }),
                 Form.select('category', {
@@ -33,7 +35,7 @@
                     },
                     columns: 4
                 }),
-                Form.submit('Search', {
+                Form.submit(translate('main.hero.search_bar.submit'), {
                     columns: 2
                 })
             ], { columns: 12, gap: 'xs' }) }}
@@ -41,12 +43,12 @@
 
         <div class="hero__actions">
 
-            {{ Button.render('Explore projects', {
+            {{ Button.render(translate('main.hero.actions.show_projects'), {
                 href: '#',
                 variant: 'primary'
             }) }}
 
-            {{ Button.render('Publish project', {
+            {{ Button.render(translate('main.hero.actions.publish_project'), {
                 href: '#',
                 variant: 'ghost-outline'
             }) }}
@@ -64,7 +66,7 @@
                 +12.000
             </span>
             <span class="stat__title">
-                Published projects
+                {{ translate('main.stats.published_project') }}
             </span>
         </div>
         <div class="stat__block">
@@ -75,7 +77,7 @@
                 +45.000
             </span>
             <span class="stat__title">
-                Active developers
+                {{ translate('main.stats.active_developers') }}
             </span>
         </div>
         <div class="stat__block">
@@ -86,7 +88,7 @@
                 +200
             </span>
             <span class="stat__title">
-                Listed technologies
+                {{ translate('main.stats.listed_technologies') }}
             </span>
         </div>
         <div class="stat__block">
@@ -97,7 +99,7 @@
                 98%
             </span>
             <span class="stat__title">
-                User satisfaction
+                {{ translate('main.stats.user_satisfaction') }}
             </span>
         </div>
     </section>
