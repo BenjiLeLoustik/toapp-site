@@ -14,6 +14,9 @@ trait TranslatedTrait
     #[ORM\Column(type: 'string', length: 10, nullable: false)]
     private string $locale;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
+    private string $name;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -27,6 +30,18 @@ trait TranslatedTrait
     public function setLocale(string $locale): self
     {
         $this->locale = $locale;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
         return $this;
     }
 }

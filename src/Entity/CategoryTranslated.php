@@ -17,9 +17,6 @@ class CategoryTranslated
     #[ORM\ManyToOne(target: Category::class, inversedBy: 'translations', nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: false)]
-    private string $name;
-
     #[ORM\Column(type: 'text', nullable: false)]
     private string $description;
 
@@ -31,17 +28,6 @@ class CategoryTranslated
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-        return $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
         return $this;
     }
 
