@@ -22,4 +22,102 @@
         @apply text-lg font-semibold;
     }
 
+    .modal__change-blocks {
+        @apply flex flex-col gap-2 items-start justify-start;
+    }
+
+    .modal__change-block {
+        @apply w-full h-auto flex flex-col gap-2;
+    }
+
+    .modal__change-title {
+        @apply w-full h-auto font-semibold text-base;
+        color: var(--theme-foreground);
+    }
+
+    .modal__change-content {
+        @apply w-full h-auto;
+    }
+
+    .modal__change--theme .modal__change-content {
+        @apply grid grid-cols-2 gap-2;
+    }
+
+    .modal__change--theme .theme-preview {
+        @apply relative w-full min-w-0 grid grid-cols-[20%_1fr] grid-rows-[12px_1fr] gap-1 overflow-hidden rounded-lg border p-1;
+        background: var(--theme-background);
+        border-color: var(--theme-border);
+    }
+
+    .modal__change--theme .theme-preview__header {
+        @apply col-span-2 block rounded-sm;
+        background: var(--theme-surface);
+    }
+
+    .modal__change--theme .theme-preview__sidebar {
+        @apply block rounded-sm;
+        background: var(--theme-background-secondary);
+    }
+
+    .modal__change--theme .theme-preview__content {
+        @apply flex flex-col gap-1 rounded-sm p-2;
+        background: var(--theme-surface);
+    }
+
+    .modal__change--theme .theme-preview__title {
+        @apply block h-2 w-1/2 rounded-sm;
+        background: var(--theme-foreground);
+    }
+
+    .modal__change--theme .theme-preview__line {
+        @apply block h-1 w-full rounded-sm;
+        background: var(--theme-foreground-muted);
+    }
+
+    .modal__change--theme .theme-preview__button {
+        @apply mt-auto block h-3 w-1/3 rounded-sm;
+        background: var(--theme-accent);
+    }
+
+    .modal__change--theme .theme-preview.theme-active::after {
+        @apply absolute inset-1 rounded-md;
+        content: '';
+        border: 1px solid var(--theme-accent);
+        pointer-events: none;
+    }
+
+    .modal__change--theme .theme-preview.theme-active {
+        @apply relative;
+        border: 2px solid var(--theme-accent) !important;
+    }
+
+    .modal__change--accent .modal__change-content {
+        @apply grid grid-cols-10 gap-4;
+    }
+
+    .modal__change--accent .modal__change-content button[data-accent-change] {
+        @apply !rounded-full shrink-0;
+        background-color: var(--accent-preview) !important;
+    }
+
+    .modal__change--accent .modal__change-content button[data-accent-change].accent-active {
+        @apply relative;
+        background: transparent !important;
+        border: 2px solid var(--accent-preview) !important;
+    }
+
+    .modal__change--accent .modal__change-content button[data-accent-change].accent-active::after {
+        @apply absolute inset-1 rounded-full;
+        content: '';
+        background: var(--accent-preview);
+    }
+
+    .modal__change--scale .modal__change-content {
+        @apply grid grid-cols-3 gap-2;
+    }
+
+    .modal__change--scale button[data-scale-change] {
+        @apply w-full
+    }
+
 }
