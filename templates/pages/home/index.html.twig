@@ -4,6 +4,7 @@
 
 {% import 'components/macros/_Button.macro.html.twig' as Button %}
 {% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
 
 {% block content %}
 
@@ -105,7 +106,20 @@
     </section>
 
     <section class="popular-projects screen screen--margin">
-        [POPULAR PROJECTS SECTION]
+        <h2 class="popular-projects__title">
+            {{ translate('main.popular_projects.title') }}
+        </h2>
+        <p class="popular-projects__description">
+            {{ translate('main.popular_projects.description') }}
+        </p>
+
+        {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
+            translate('main.popular_projects.empty.description_line_1'),
+            translate('main.popular_projects.empty.description_line_2')
+        ], [
+            Button.render(translate('main.popular_projects.empty.actions.create_project'), { href: '#' })
+        ]) }}
+
     </section>
 
 {% endblock %}

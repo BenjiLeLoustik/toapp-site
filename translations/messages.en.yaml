@@ -15,3 +15,12 @@ main:
         listed_technologies: "Listed technologies"
         published_project: "Published projects"
         user_satisfaction: "User satisfaction"
+    popular_projects:
+        description: "Discover the projects most appreciated by the developer community"
+        title: "Popular projects"
+        empty:
+            title: "No projects available"
+            description_line_1: "No project has been published on the platform yet."
+            description_line_2: "Be the first to share your project !"
+            actions:
+                create_project: "Create project"

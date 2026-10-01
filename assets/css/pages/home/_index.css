@@ -58,7 +58,17 @@
     }
 
     section.popular-projects {
-        @apply h-auto flex items-center justify-center py-6;
+        @apply h-auto flex flex-col items-center justify-center gap-4 py-12;
+    }
+
+    h2.popular-projects__title {
+        @apply w-full max-w-2xl text-center text-3xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.popular-projects__description {
+        @apply w-full max-w-xl text-center text-lg;
+        color: var(--theme-foreground-muted);
     }
 
 }
