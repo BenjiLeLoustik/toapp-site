@@ -22,6 +22,8 @@
         </p>
 
         <div class="hero__search-bar">
+            {% set categories = {'all': 'All'}|merge(categories) %}
+
             {{ Form.group([
                 Form.input('search', {
                     iconLeft: 'search',
@@ -31,9 +33,7 @@
                 }),
                 Form.select('category', {
                     value: 'all',
-                    options: {
-                        'all': 'All categories'
-                    },
+                    options: categories,
                     columns: 4
                 }),
                 Form.submit(translate('main.hero.search_bar.submit'), {
@@ -113,12 +113,16 @@
             {{ translate('main.popular_projects.description') }}
         </p>
 
-        {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
-            translate('main.popular_projects.empty.description_line_1'),
-            translate('main.popular_projects.empty.description_line_2')
-        ], [
-            Button.render(translate('main.popular_projects.empty.actions.create_project'), { href: '#' })
-        ]) }}
+        {% if popular_projects is not empty %}
+            {{ dump(popular_projects) }}
+        {% else %}
+            {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
+                translate('main.popular_projects.empty.description_line_1'),
+                translate('main.popular_projects.empty.description_line_2')
+            ], [
+                Button.render(translate('main.popular_projects.empty.actions.create_project'), { href: '#' })
+            ]) }}
+        {% endif %}
 
     </section>
 

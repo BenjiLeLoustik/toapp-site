@@ -14,12 +14,14 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('pages/home/index.html.twig', [
+            'categories' => ['framework', 'cms', 'mobile', 'api_backend', 'ui_ux', 'ia', 'game'],
             'stats' => [
                 'published_projects' => 1500000,
                 'active_developers' => 1290,
                 'listed_technologies' => 441,
                 'user_statisfaction' => 98,
-            ]
+            ],
+            'popular_projects' => []
         ]);
     }
 
