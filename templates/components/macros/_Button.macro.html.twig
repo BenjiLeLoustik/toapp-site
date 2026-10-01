@@ -36,9 +36,11 @@ Usage :
     {% set disabled = options.disabled ?? false %}
 
     {% set class = options.class ?? '' %}
-    {% set attributes = options.attributes ?? {} %}
+    {% set attributes = (options.attributes ?? {})|merge({
+        'data-variant': variant
+    }) %}
 
-    {% set iconOnly = not label and (iconLeft or iconRight) %}
+    {% set iconOnly = options.iconOnly ?? (not label and (iconLeft or iconRight)) %}
 
     {% set classes = [
         'button',
