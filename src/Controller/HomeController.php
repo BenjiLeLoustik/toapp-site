@@ -6,20 +6,37 @@ use App\Entity\Category;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
+use NeoPHP\Package\Translation\Contract\TranslatorInterface;
 
 #[Route(path: '/', name: 'home_')]
 class HomeController extends AbstractController
 {
+    public function __construct(
+        protected TranslatorInterface $translator,
+    ) {
+    }
+
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
-        $getCategories = $this->getOrm()->getRepository(Category::class)->findAll();
-        $categories = array_reduce($getCategories, static function (array $options, Category $category) {
-            $options[$category->getSlug()] = $category->getName();
+
+        $getCategories = $this->getOrm()->getRepository(Category::class)->findAllTranslated(
+            $this->translator->getLocale()
+        );
+
+        $categories = array_reduce($getCategories, static function (array $options, Category $category): array {
+            $translation = $category->getTranslations()->first();
+
+            if ($translation !== false) {
+                $options[$category->getSlug()] = $translation->getName();
+            }
+
             return $options;
         }, []);
 
-        $categories = ['all' => 'all'] + $categories;
+        $categories = [
+            'all' => $this->translator->translate('categories.all')
+            ] + $categories;
 
         return $this->render('pages/home/index.html.twig', [
             'categories' => $categories,
