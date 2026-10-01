@@ -1,28 +1,67 @@
 {# ./templates/components/macros/_Form.macro.html.twig #}
 
-{#
-    Usage:
+{% macro input(name, options = {}) %}
 
-    {% import 'components/macros/_Form.macro.html.twig' as Form %}
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? null %}
+    {% set placeholder = options.placeholder ?? null %}
+    {% set type = options.type ?? 'text' %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+    {% set autocomplete = options.autocomplete ?? null %}
 
-    Form.select('theme', {
-        label: 'Thème',
-        iconLeft: 'palette',
-        options: {
-            'light': 'Light',
-            'dark': 'Dark'
-        }
-    });
+    {% set iconLeft = options.iconLeft ?? null %}
+    {% set iconRight = options.iconRight ?? null %}
+    {% set iconSize = options.iconSize ?? 'sm' %}
+    {% set iconOptions = options.iconOptions ?? {} %}
 
-    Form.select('theme', {
-        label: 'Thème',
-        iconRight: 'chevron-down',
-        options: {
-            'light': 'Light',
-            'dark': 'Dark'
-        }
-    });
-#}
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+
+    <div class="form__field {{ class }}">
+
+        {% if label %}
+            <label for="{{ id }}" class="form__label">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <div class="form__control">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="{{ type }}"
+                    class="form__input"
+                    {% if value is not null %}value="{{ value }}"{% endif %}
+                    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                    {% if disabled %}disabled{% endif %}
+                    {% if required %}required{% endif %}
+                    {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+                    {% for attribute, attributeValue in attributes %}
+                        {{ attribute }}="{{ attributeValue }}"
+                    {% endfor %}
+            >
+
+            {% if iconLeft %}
+                <span class="form__icon form__icon--left">
+                    {{ _self.render_icon(iconLeft, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+            {% if iconRight %}
+                <span class="form__icon form__icon--right">
+                    {{ _self.render_icon(iconRight, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endmacro %}
+
 
 {% macro select(name, options = {}) %}
 
@@ -50,9 +89,6 @@
         {% endif %}
 
         <div class="form__control">
-            {% if iconLeft %}
-                {{ _self.render_icon(iconLeft, iconSize, iconOptions) }}
-            {% endif %}
 
             <select
                     id="{{ id }}"
@@ -61,7 +97,7 @@
                     {% if disabled %}disabled{% endif %}
                     {% if required %}required{% endif %}
                     {% for attribute, attributeValue in attributes %}
-                    {{ attribute }}="{{ attributeValue }}"
+                        {{ attribute }}="{{ attributeValue }}"
                     {% endfor %}
             >
                 {% if placeholder %}
@@ -69,6 +105,7 @@
                         {{ placeholder }}
                     </option>
                 {% endif %}
+
                 {% for optionValue, optionLabel in choices %}
                     <option value="{{ optionValue }}" {% if optionValue == value %}selected{% endif %}>
                         {{ optionLabel }}
@@ -76,14 +113,65 @@
                 {% endfor %}
             </select>
 
-            {{ _self.render_icon('chevron-down', iconSize, {}) }}
+            {% if iconLeft %}
+                <span class="form__icon form__icon--left">
+                    {{ _self.render_icon(iconLeft, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+            <span class="form__icon form__icon--right form__select-arrow">
+                {{ _self.render_icon('chevron-down', iconSize) }}
+            </span>
+
         </div>
-        
+
     </div>
 
 {% endmacro %}
 
-{% macro render_icon(name, size, options) %}
+
+{% macro submit(label = 'Submit', options = {}) %}
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    {% set buttonOptions = options|merge({
+        type: 'submit'
+    }) %}
+
+    {{ Button.render(label, buttonOptions) }}
+
+{% endmacro %}
+
+
+{% macro reset(label = 'Reset', options = {}) %}
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    {% set buttonOptions = options|merge({
+        type: 'reset'
+    }) %}
+
+    {{ Button.render(label, buttonOptions) }}
+
+{% endmacro %}
+
+
+{% macro group(fields, options = {}) %}
+
+    {% set class = options.class ?? '' %}
+
+    <div class="form__group {{ class }}">
+
+        {% for field in fields %}
+            {{ field|raw }}
+        {% endfor %}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro render_icon(name, size, options = {}) %}
 
     {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
 
