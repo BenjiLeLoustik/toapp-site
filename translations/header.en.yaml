@@ -14,3 +14,6 @@ header:
                 small: "Small"
                 medium: "Medium"
                 large: "Large"
+            locales:
+                en: 'English'
+                fr: 'French'
