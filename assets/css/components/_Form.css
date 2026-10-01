@@ -28,7 +28,6 @@
         grid-template-columns: repeat(var(--form-group-columns), minmax(0, 1fr));
     }
 
-
     .form__group--gap-none {
         @apply gap-0;
     }
@@ -51,11 +50,6 @@
 
     .form__group--gap-xl {
         @apply gap-8;
-    }
-
-    .form__group > * {
-        @apply min-w-0;
-        grid-column: span var(--form-group-item-columns);
     }
 
     .form__group > * {
@@ -140,6 +134,29 @@
 
     .form__control:has(.form__icon--right) .form__input {
         @apply pr-10;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        .form__group {
+            grid-template-columns: 1fr;
+        }
+
+        .form__group > * {
+            @apply w-full min-w-0;
+            grid-column: 1 / -1;
+        }
+
+        .form__group .form__field,
+        .form__group .form__control,
+        .form__group button,
+        .form__group a {
+            @apply !w-full;
+        }
+
     }
 
 }
