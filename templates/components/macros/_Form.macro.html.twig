@@ -18,8 +18,9 @@
 
     {% set class = options.class ?? '' %}
     {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
 
-    <div class="form__field {{ class }}">
+    <div class="form__field {{ class }}" style="--form-group-item-columns: {{ columns }};">
 
         {% if label %}
             <label for="{{ id }}" class="form__label">
@@ -79,8 +80,9 @@
     {% set class = options.class ?? '' %}
     {% set attributes = options.attributes ?? {} %}
     {% set choices = options.options ?? {} %}
+    {% set columns = options.columns ?? 1 %}
 
-    <div class="form__field {{ class }}">
+    <div class="form__field {{ class }}" style="--form-group-item-columns: {{ columns }};">
 
         {% if label %}
             <label for="{{ id }}" class="form__label">
@@ -134,11 +136,14 @@
 
     {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
+    {% set columns = options.columns ?? 1 %}
     {% set buttonOptions = options|merge({
         type: 'submit'
     }) %}
 
-    {{ Button.render(label, buttonOptions) }}
+    <div class="form__group-item" style="--form-group-item-columns: {{ columns }};">
+        {{ Button.render(label, buttonOptions) }}
+    </div>
 
 {% endmacro %}
 
@@ -147,25 +152,28 @@
 
     {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
+    {% set columns = options.columns ?? 1 %}
     {% set buttonOptions = options|merge({
         type: 'reset'
     }) %}
 
-    {{ Button.render(label, buttonOptions) }}
+    <div class="form__group-item" style="--form-group-item-columns: {{ columns }};">
+        {{ Button.render(label, buttonOptions) }}
+    </div>
 
 {% endmacro %}
 
 
 {% macro group(fields, options = {}) %}
 
+    {% set columns = options.columns ?? 12 %}
     {% set class = options.class ?? '' %}
+    {% set gap = options.gap ?? 'none' %}
 
-    <div class="form__group {{ class }}">
-
+    <div class="form__group form__group--gap-{{ gap }} {{ class }}" style="--form-group-columns: {{ columns }};">
         {% for field in fields %}
             {{ field|raw }}
         {% endfor %}
-
     </div>
 
 {% endmacro %}

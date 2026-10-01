@@ -24,19 +24,43 @@
     /* Group */
 
     .form__group {
-        @apply w-full flex items-stretch;
+        @apply grid w-full items-stretch;
+        grid-template-columns: repeat(var(--form-group-columns), minmax(0, 1fr));
+    }
+
+
+    .form__group--gap-none {
+        @apply gap-0;
+    }
+
+    .form__group--gap-xs {
+        @apply gap-1;
+    }
+
+    .form__group--gap-sm {
+        @apply gap-2;
+    }
+
+    .form__group--gap-base {
+        @apply gap-4;
+    }
+
+    .form__group--gap-lg {
+        @apply gap-6;
+    }
+
+    .form__group--gap-xl {
+        @apply gap-8;
     }
 
     .form__group > * {
         @apply min-w-0;
+        grid-column: span var(--form-group-item-columns);
     }
 
-    .form__group > *:not(:first-child) {
-        @apply -ml-px;
-    }
-
-    .form__group > .form__field {
-        @apply flex-1;
+    .form__group > * {
+        @apply min-w-0;
+        grid-column: span var(--form-group-item-columns);
     }
 
     /* Input */
