@@ -71,6 +71,7 @@
     {% block modalContent %}
 
         {% import 'components/macros/_Button.macro.html.twig' as Button %}
+        {% import 'components/macros/_Form.macro.html.twig' as Form %}
 
         <div class="modal__change-blocks">
 
@@ -135,10 +136,28 @@
                 </div>
             </div>
 
-            <div class="">
-                {% for locale in locales() %}
-                    <button data-locale-change="{{ locale }}">{{ locale }}</button>
-                {% endfor %}
+            <div class="modal__change-block modal__change--locale">
+                <div class="modal__change-title">
+                    Language
+                </div>
+                <div class="modal__change-content">
+                    {% set localeOptions = {} %}
+
+                    {% for locale in locales() %}
+                        {% set localeOptions = localeOptions|merge({
+                            (locale): translate('header.modal.settings.locales.' ~ locale, domain: 'header')
+                        }) %}
+                    {% endfor %}
+
+                    {{ Form.select('locale', {
+                        iconLeft: 'languages',
+                        value: locale(),
+                        options: localeOptions,
+                        attributes: {
+                            'data-locale-change': ''
+                        }
+                    }) }}
+                </div>
             </div>
 
         </div>
