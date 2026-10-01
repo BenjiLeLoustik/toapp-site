@@ -24,3 +24,5 @@ main:
             description_line_2: "Be the first to share your project !"
             actions:
                 create_project: "Create project"
+categories:
+    all: "All categories"
