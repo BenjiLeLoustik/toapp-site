@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 });
 
-window.initPreferenceChange = function (name, route, attribute, reload = false) {
+window.initPreferenceChange = function (name, route, attribute, reload = false, callback = false) {
     document.querySelectorAll(`[data-${name}-change]`).forEach(btn => {
         btn.addEventListener('click', event => {
             const value = event.currentTarget.dataset[`${name}Change`];
@@ -18,7 +18,22 @@ window.initPreferenceChange = function (name, route, attribute, reload = false) 
                 }
 
                 document.documentElement.setAttribute(attribute, response[name]);
+
+                if (callback) {
+                    callback(response[name]);
+                }
             })
         });
     });
+};
+
+window.changeButtonVariant = function (button, variant) {
+    const currentVariant = button.dataset.variant;
+
+    if (currentVariant) {
+        button.classList.remove(`button--${currentVariant}`);
+    }
+
+    button.classList.add(`button--${variant}`);
+    button.dataset.variant = variant;
 };
