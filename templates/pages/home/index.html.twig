@@ -63,7 +63,7 @@
                 <i data-lucide="folder"></i>
             </span>
             <span class="stat__value">
-                +12.000
+                +{{ stats.published_projects|format_number }}
             </span>
             <span class="stat__title">
                 {{ translate('main.stats.published_project') }}
@@ -74,7 +74,7 @@
                 <i data-lucide="users-round"></i>
             </span>
             <span class="stat__value">
-                +45.000
+                +{{ stats.active_developers|format_number }}
             </span>
             <span class="stat__title">
                 {{ translate('main.stats.active_developers') }}
@@ -85,7 +85,7 @@
                 <i data-lucide="cpu"></i>
             </span>
             <span class="stat__value">
-                +200
+                {{ stats.listed_technologies|format_number }}
             </span>
             <span class="stat__title">
                 {{ translate('main.stats.listed_technologies') }}
@@ -96,7 +96,7 @@
                 <i data-lucide="rocket"></i>
             </span>
             <span class="stat__value">
-                98%
+                {{ stats.user_statisfaction }}%
             </span>
             <span class="stat__title">
                 {{ translate('main.stats.user_satisfaction') }}
