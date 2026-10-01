@@ -1,0 +1,27 @@
+{# ./templates/components/macros/_Empty.macro.html.twig #}
+
+{#
+Usage :
+
+    {% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+
+    {{ Empty.render('search-x', 'Empty results', [
+        'No projects found',
+        'Create your own project'
+    ]) }}
+
+#}
+
+{% macro render(icon, title, descriptions = []) %}
+    <div class="empty">
+        <div class="empty__icon">
+            <i data-lucide="{{ icon }}"></i>
+        </div>
+        <h3 class="empty__title">{{ title }}</h3>
+        {% for description in descriptions %}
+            <p class="empty__description">
+                {{ description }}
+            </p>
+        {% endfor %}
+    </div>
+{% endmacro %}
