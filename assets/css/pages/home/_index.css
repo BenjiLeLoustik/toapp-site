@@ -3,7 +3,29 @@
 @layer base {
 
     section.hero {
-        @apply flex items-center justify-center;
+        @apply flex items-center justify-center flex flex-col gap-4;
+    }
+
+    h1.hero__title {
+        @apply text-5xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    span.hero__title--colored {
+        color: var(--theme-accent);
+    }
+
+    p.hero__sub-title {
+        @apply max-w-xl mx-auto text-center font-semibold text-lg;
+        color: var(--theme-foreground-muted);
+    }
+
+    .hero__search-bar {
+        @apply max-w-3xl w-3xl mx-auto;
+    }
+
+    .hero__actions {
+        @apply max-w-2xl mx-auto flex items-center justify-center gap-2;
     }
 
     section.stats {

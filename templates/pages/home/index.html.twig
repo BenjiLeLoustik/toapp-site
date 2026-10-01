@@ -2,10 +2,55 @@
 
 {% extends 'layouts/base_layout.html.twig' %}
 
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+
 {% block content %}
 
     <section class="hero screen screen--full screen--no-margin">
-        [HERO SECTION]
+
+        <h1 class="hero__title">
+            Find your <span class="hero__title--colored">next project</span>
+        </h1>
+
+        <p class="hero__sub-title">
+            Explore millions of web projects, mobile apps, APIs, and much more.
+            Join a community of passionate developers.
+        </p>
+
+        <div class="hero__search-bar">
+            {{ Form.group([
+                Form.input('search', {
+                    iconLeft: 'search',
+                    iconSize: 'sm',
+                    placeholder: 'Search project, technology, framework...',
+                    columns: 6
+                }),
+                Form.select('category', {
+                    value: 'all',
+                    options: {
+                        'all': 'All categories'
+                    },
+                    columns: 4
+                }),
+                Form.submit('Search', {
+                    columns: 2
+                })
+            ], { columns: 12, gap: 'xs' }) }}
+        </div>
+
+        <div class="hero__actions">
+
+            {{ Button.render('Explore projects', {
+                variant: 'primary'
+            }) }}
+
+            {{ Button.render('Publish project', {
+                variant: 'ghost-outline'
+            }) }}
+
+        </div>
+
     </section>
 
     <section class="stats screen screen--no-margin">
