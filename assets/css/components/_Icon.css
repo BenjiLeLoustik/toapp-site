@@ -19,6 +19,16 @@
         color: var(--theme-accent);
     }
 
+    .icon--muted-bg {
+        @apply rounded-md;
+        background-color: var(--theme-foreground-muted);
+        color: var(--theme-background);
+    }
+
+    .icon--muted {
+        color: var(--theme-foreground-muted);
+    }
+
     .icon--accent-bg {
         @apply rounded-md;
         background-color: var(--theme-accent);
