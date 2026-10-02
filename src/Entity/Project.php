@@ -71,6 +71,17 @@ class Project
         return $this;
     }
 
+    public function getCover(): ?string
+    {
+        return $this->cover;
+    }
+
+    public function setCover(?string $cover): self
+    {
+        $this->cover = $cover;
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
