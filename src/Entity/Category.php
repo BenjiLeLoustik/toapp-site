@@ -29,10 +29,14 @@ class Category
     #[ORM\OneToMany(target: CategoryTranslated::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private CollectionInterface $translations;
 
+    #[ORM\OneToMany(target: Project::class, mappedBy: 'category')]
+    private CollectionInterface $projects;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->translations = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,5 +80,31 @@ class Category
     public function getTranslations(): CollectionInterface
     {
         return $this->translations;
+    }
+
+    public function getProjects(): CollectionInterface
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->removeElement($project)) {
+            if ($project->getCategory() === $this) {
+                $project->setCategory(null);
+            }
+        }
+
+        return $this;
     }
 }
