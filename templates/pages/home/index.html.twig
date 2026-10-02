@@ -115,26 +115,7 @@
 
         {% if popular_projects is not empty %}
 
-            {{ Card.projects([
-                {
-                    name: 'CloudSync Dashboard',
-                    image: '',
-                    description: 'A modern dashboard for managing cloud infrastructure and services.',
-                    likes: 150,
-                    technologies: [
-                        { name: 'PHP' },
-                        { name: 'NeoPHP' },
-                        { name: 'TailwindCss' }
-                    ],
-                    remainingTechnologies: 3,
-                    author: {
-                        avatar: null,
-                        name: 'Benjamin',
-                        username: '@BenjiLeLoustik',
-                        certified: true
-                    }
-                },
-            ]) }}
+            {{ Card.projects(popular_projects) }}
 
         {% else %}
             {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
