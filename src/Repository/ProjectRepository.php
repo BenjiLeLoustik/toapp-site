@@ -11,8 +11,8 @@ class ProjectRepository extends AbstractRepository
 {
     protected string $entityClass = Project::class;
 
-    public function findPopular(): array
+    public function findPopular(int $limit): array
     {
-        return $this->findBy([], ['createdAt' => 'ASC']);
+        return $this->findBy([], ['createdAt' => 'ASC'], $limit);
     }
 }

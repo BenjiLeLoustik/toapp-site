@@ -33,7 +33,7 @@ class HomeController extends AbstractController
             'all' => $this->translator->translate('categories.all'),
         ] + $categories;
 
-        $projects = $this->getOrm()->getRepository(Project::class)->findPopular();
+        $projects = $this->getOrm()->getRepository(Project::class)->findPopular(6);
 
         return $this->render('pages/home/index.html.twig', [
             'categories' => $categories,
