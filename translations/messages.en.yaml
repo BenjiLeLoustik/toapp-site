@@ -14,7 +14,7 @@ main:
         active_developers: "Active developers"
         listed_technologies: "Listed technologies"
         published_project: "Published projects"
-        user_satisfaction: "User satisfaction"
+        categories: "Categories"
     popular_projects:
         description: "Discover the projects most appreciated by the developer community"
         title: "Popular projects"

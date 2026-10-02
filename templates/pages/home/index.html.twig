@@ -94,13 +94,13 @@
         </div>
         <div class="stat__block">
             <span class="stat__icon">
-                <i data-lucide="rocket"></i>
+                <i data-lucide="tag"></i>
             </span>
             <span class="stat__value">
-                {{ stats.user_statisfaction }}%
+                {{ stats.categories|format_number }}
             </span>
             <span class="stat__title">
-                {{ translate('main.stats.user_satisfaction') }}
+                {{ translate('main.stats.categories') }}
             </span>
         </div>
     </section>
