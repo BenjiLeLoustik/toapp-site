@@ -22,6 +22,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: false, unique: false)]
+    private string $firstname;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: false, unique: false)]
+    private string $lastname;
+
+    #[ORM\Column(type: 'string', length: 150, nullable: false, unique: true)]
+    private string $slug;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: false)]
+    private ?string $avatar = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
+    private string $username;
+
+    #[ORM\Column(type: 'boolean', nullable: false, default: 0)]
+    private bool $certified = false;
+
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
@@ -87,6 +105,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): static
+    {
+        $this->lastname = $lastname;
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
+    }
+
+    public function setCertified(bool $certified): static
+    {
+        $this->certified = $certified;
         return $this;
     }
 
