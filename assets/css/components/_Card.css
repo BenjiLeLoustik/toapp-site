@@ -1,0 +1,66 @@
+/** ./assets/css/components/_Card.css */
+
+@layer component {
+
+    /* Project */
+
+    .cards--projects {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card--project {
+        @apply flex flex-col items-start justify-start gap-2 overflow-hidden;
+    }
+
+    .card--project .project__image {
+        @apply w-full h-50 shrink-0;
+        background-color: var(--theme-surface-active);
+    }
+
+    .card--project .project__inner {
+        @apply w-full h-auto flex flex-col items-start justify-start gap-2 px-4;
+    }
+
+    .card--project .project__header {
+        @apply w-full h-10 flex items-center justify-between;
+    }
+
+    .card--project .project__title {
+        @apply w-auto h-full flex items-center justify-start text-lg font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    .card--project .project__stats {
+        @apply w-auto h-full flex items-center justify-end gap-2;
+    }
+
+    .card--project .project__description {
+        @apply w-full h-auto line-clamp-2 leading-normal;
+        min-height: calc(2 * var(--text-base--line-height));
+        color: var(--theme-foreground-muted);
+    }
+
+    .card--project .project__technologies {
+        @apply w-full h-10 shrink-0 flex items-center justify-start gap-2;
+    }
+
+    .card--project .project__footer {
+        @apply w-full h-auto flex items-center justify-between py-4;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    .card--project .project__actions {
+        @apply w-auto h-auto flex items-center justify-end gap-2 shrink-0;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 767px) {
+
+        .cards--projects {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+}

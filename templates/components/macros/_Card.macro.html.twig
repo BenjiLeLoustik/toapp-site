@@ -1,0 +1,92 @@
+{# ./templates/components/macros/_Card.macro.html.twig #}
+
+{#
+    Usage :
+
+    {% import 'components/macros/_Card.macro.html.twig' as Card %}
+
+    Card.projects(projects)
+#}
+
+{% macro projects(projects = []) %}
+    {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+    {% import 'components/macros/_User.macro.html.twig' as User %}
+
+    <div class="cards cards--projects">
+
+        {% for project in projects %}
+
+            <div class="card card--project">
+
+                <div class="project__image">
+                    {% if project.image %}
+                        <img src="{{ project.image }}" alt="{{ project.name }}">
+                    {% endif %}
+                </div>
+
+                <div class="project__inner">
+
+                    <header class="project__header">
+
+                        <div class="project__title">
+                            {{ project.name }}
+                        </div>
+
+                        <div class="project__stats">
+                            {{ project.likes }} likes
+                        </div>
+
+                    </header>
+
+                    <p class="project__description">
+                        {{ project.description }}
+                    </p>
+
+                    <div class="project__technologies">
+
+                        {% for technology in project.technologies %}
+                            {{ Badge.render(technology.name, {
+                                variant: 'secondary',
+                                size: 'sm'
+                            }) }}
+                        {% endfor %}
+
+                        {% if project.remainingTechnologies > 0 %}
+                            {{ Badge.render('+' ~ project.remainingTechnologies, {
+                                variant: 'secondary',
+                                size: 'sm'
+                            }) }}
+                        {% endif %}
+
+                    </div>
+
+                    <footer class="project__footer">
+
+                        {{ User.render({
+                            avatar: project.author.avatar,
+                            name: project.author.name,
+                            username: project.author.username,
+                            certified: project.author.certified
+                        }) }}
+
+                        <div class="project__actions">
+
+                            {{ Button.render('Show', {
+                                size: 'sm',
+                                variant: 'primary'
+                            }) }}
+
+                        </div>
+
+                    </footer>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endmacro %}
