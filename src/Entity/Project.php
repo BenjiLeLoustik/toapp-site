@@ -38,10 +38,14 @@ class Project
     #[ORM\ManyToMany(target: Technology::class, inversedBy: 'projects')]
     private CollectionInterface $technologies;
 
+    #[ORM\OneToMany(target: ProjectLike::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private CollectionInterface $likes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->technologies = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +130,28 @@ class Project
     public function removeTechnology(Technology $technology): self
     {
         $this->technologies->removeElement($technology);
+        return $this;
+    }
+
+    public function getLikes(): CollectionInterface
+    {
+        return $this->likes;
+    }
+
+    public function addLike(ProjectLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(ProjectLike $like): self
+    {
+        $this->likes->removeElement($like);
+
         return $this;
     }
 }
