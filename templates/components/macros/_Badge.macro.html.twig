@@ -1,0 +1,62 @@
+{# ./templates/components/macros/_Badge.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+
+Badge.render('PHP')
+
+Badge.render('PHP', {
+    iconLeft: 'code',
+    variant: 'primary',
+    size: 'sm'
+})
+
+Badge.render(null, {
+    iconLeft: 'code',
+    iconOnly: true,
+    variant: 'primary'
+})
+#}
+
+{% macro render(label = null, options = {}) %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set iconLeft = options.iconLeft ?? null %}
+    {% set iconRight = options.iconRight ?? null %}
+    {% set iconOnly = options.iconOnly ?? false %}
+    {% set variant = options.variant ?? 'secondary' %}
+    {% set size = options.size ?? 'sm' %}
+    {% set iconOptions = options.iconOptions ?? {} %}
+
+    {% set classes = [
+        'badge',
+        'badge--' ~ variant,
+        'badge--' ~ size,
+        iconOnly ? 'badge--icon-only' : null
+    ]|filter(v => v)|join(' ') %}
+
+    <span class="{{ classes }}">
+
+        {% if iconLeft %}
+            <span class="badge__icon">
+                {{ Icon.lucide(iconLeft, iconOptions) }}
+            </span>
+        {% endif %}
+
+        {% if not iconOnly and label is not null %}
+            <span class="badge__label">
+                {{ label }}
+            </span>
+        {% endif %}
+
+        {% if iconRight %}
+            <span class="badge__icon">
+                {{ Icon.lucide(iconRight, iconOptions) }}
+            </span>
+        {% endif %}
+
+    </span>
+
+{% endmacro %}

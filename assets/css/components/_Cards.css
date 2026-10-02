@@ -1,0 +1,15 @@
+/** ./assets/css/components/_Cards.css */
+
+@layer components {
+
+    .cards {
+        @apply w-full h-auto grid items-stretch justify-start gap-4;
+    }
+
+    .card {
+        @apply w-full h-auto bg-red-100 rounded-lg;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+}

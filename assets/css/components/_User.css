@@ -1,0 +1,41 @@
+/** ./assets/css/components/_User.css */
+
+@layer component {
+
+    .user {
+        @apply w-auto h-auto flex items-center justify-start gap-2 min-w-0;
+    }
+
+    .user__avatar {
+        @apply w-10 h-10 aspect-square rounded-full overflow-hidden shrink-0 flex items-center justify-center font-semibold;
+        background-color: var(--theme-background);
+        color: var(--theme-foreground);
+    }
+
+    .user__avatar img {
+        @apply w-full h-full object-cover;
+    }
+
+    .user__avatar-initial {
+        @apply flex items-center justify-center w-full h-full;
+    }
+
+    .user__avatar img {
+        @apply w-full h-full object-cover;
+    }
+
+    .user__about {
+        @apply flex flex-col min-w-0;
+    }
+
+    .user__name {
+        @apply w-full h-auto flex items-center gap-1 font-semibold text-base;
+        color: var(--theme-foreground);
+    }
+
+    .user__username {
+        @apply w-full h-auto text-sm truncate;
+        color: var(--theme-foreground-muted);
+    }
+
+}
