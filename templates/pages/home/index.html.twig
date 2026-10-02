@@ -117,6 +117,17 @@
 
             {{ Card.projects(popular_projects) }}
 
+            {% if popular_projects|length > 6 %}
+                <div class="popular-projects__show-more">
+                    {{ Button.render(translate('main.popular_projects.show_more'), {
+                        iconRight: 'arrow-right',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+                </div>
+            {% endif %}
+
         {% else %}
             {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
                 translate('main.popular_projects.empty.description_line_1'),

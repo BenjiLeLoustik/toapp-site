@@ -71,6 +71,10 @@
         color: var(--theme-foreground-muted);
     }
 
+    .popular-projects__show-more {
+        @apply w-full h-auto mt-4 flex items-center justify-center;
+    }
+
     /* Mobile */
 
     @media (max-width: 767px) {
