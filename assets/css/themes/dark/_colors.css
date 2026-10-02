@@ -18,4 +18,7 @@
     --theme-surface: var(--color-neutral-900);
     --theme-surface-hover: var(--color-neutral-800);
     --theme-surface-active: var(--color-neutral-700);
+
+    --theme-danger: var(--color-red-500);
+    --theme-danger-foreground: var(--color-white);
 }

@@ -29,6 +29,16 @@
         color: var(--theme-foreground-muted);
     }
 
+    .icon--danger {
+        color: var(--theme-danger);
+    }
+
+    .icon--danger-bg {
+        @apply rounded-md;
+        background-color: var(--theme-danger);
+        color: var(--theme-danger-foreground);
+    }
+
     .icon--accent-bg {
         @apply rounded-md;
         background-color: var(--theme-accent);
