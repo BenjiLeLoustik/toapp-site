@@ -6,9 +6,9 @@ providers:
     #         class: App\Entity\User
     #         property: email
     users:
-        memory:
-            # e.g. admin: { password: '<hash from `php bin/neo security:hash-password`>', roles: [ROLE_ADMIN] }
-            users: {}
+        entity:
+            class: App\Entity\User
+            property: email
 
 password_hashers:
     # auto = best algorithm available (bcrypt / argon2), rehashed automatically on login
