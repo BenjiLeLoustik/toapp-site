@@ -5,6 +5,7 @@
 {% import 'components/macros/_Button.macro.html.twig' as Button %}
 {% import 'components/macros/_Form.macro.html.twig' as Form %}
 {% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
 
 {% block content %}
 
@@ -113,7 +114,28 @@
         </p>
 
         {% if popular_projects is not empty %}
-            {{ dump(popular_projects) }}
+
+            {{ Card.projects([
+                {
+                    name: 'CloudSync Dashboard',
+                    image: '',
+                    description: 'A modern dashboard for managing cloud infrastructure and services.',
+                    likes: 150,
+                    technologies: [
+                        { name: 'PHP' },
+                        { name: 'NeoPHP' },
+                        { name: 'TailwindCss' }
+                    ],
+                    remainingTechnologies: 3,
+                    author: {
+                        avatar: null,
+                        name: 'Benjamin',
+                        username: '@BenjiLeLoustik',
+                        certified: true
+                    }
+                },
+            ]) }}
+
         {% else %}
             {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
                 translate('main.popular_projects.empty.description_line_1'),
