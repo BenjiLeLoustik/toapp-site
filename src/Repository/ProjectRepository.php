@@ -10,4 +10,9 @@ use NeoPHP\Package\Orm\Contract\AbstractRepository;
 class ProjectRepository extends AbstractRepository
 {
     protected string $entityClass = Project::class;
+
+    public function findPopular(): array
+    {
+        return $this->findBy([], ['createdAt' => 'ASC']);
+    }
 }
