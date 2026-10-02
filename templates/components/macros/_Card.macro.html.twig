@@ -40,7 +40,11 @@
                         </div>
 
                         <div class="project__stats">
-                            0 likes
+                            {{ Icon.lucide('heart', {
+                                size: 'xs',
+                                color: 'danger'
+                            }) }}
+                            {{ project.likes|length|format_number(1) }}
                         </div>
 
                     </header>
