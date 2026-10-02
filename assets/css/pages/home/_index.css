@@ -71,7 +71,6 @@
         color: var(--theme-foreground-muted);
     }
 
-
     /* Mobile */
 
     @media (max-width: 767px) {
@@ -130,6 +129,10 @@
 
         p.popular-projects__description {
             @apply text-base;
+        }
+
+        .cards.cards--projects {
+            @apply grid-cols-1;
         }
 
     }
