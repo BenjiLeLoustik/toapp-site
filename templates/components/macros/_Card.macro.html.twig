@@ -11,6 +11,7 @@
 {% macro projects(projects = []) %}
     {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
     {% import 'components/macros/_Button.macro.html.twig' as Button %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
     {% import 'components/macros/_User.macro.html.twig' as User %}
 
     <div class="cards cards--projects">
@@ -20,8 +21,13 @@
             <div class="card card--project">
 
                 <div class="project__image">
-                    {% if project.image %}
-                        <img src="{{ project.image }}" alt="{{ project.name }}">
+                    {% if project.cover %}
+                        <img src="{{ project.cover }}" alt="{{ project.name }}">
+                    {% else %}
+                        {{ Icon.lucide('image', {
+                            size: 'lg',
+                            color: 'muted'
+                        }) }}
                     {% endif %}
                 </div>
 
@@ -34,7 +40,7 @@
                         </div>
 
                         <div class="project__stats">
-                            {{ project.likes }} likes
+                            0 likes
                         </div>
 
                     </header>
@@ -43,17 +49,20 @@
                         {{ project.description }}
                     </p>
 
+                    {% set technologies = project.technologies|slice(0, 3) %}
+                    {% set remainingTechnologies = project.technologies|length - technologies|length %}
+
                     <div class="project__technologies">
 
-                        {% for technology in project.technologies %}
+                        {% for technology in technologies %}
                             {{ Badge.render(technology.name, {
                                 variant: 'secondary',
                                 size: 'sm'
                             }) }}
                         {% endfor %}
 
-                        {% if project.remainingTechnologies > 0 %}
-                            {{ Badge.render('+' ~ project.remainingTechnologies, {
+                        {% if remainingTechnologies > 0 %}
+                            {{ Badge.render('+' ~ remainingTechnologies, {
                                 variant: 'secondary',
                                 size: 'sm'
                             }) }}
@@ -64,10 +73,10 @@
                     <footer class="project__footer">
 
                         {{ User.render({
-                            avatar: project.author.avatar,
-                            name: project.author.name,
-                            username: project.author.username,
-                            certified: project.author.certified
+                            avatar: null,
+                            name: 'Root',
+                            username: '@rootSystem',
+                            certified: true
                         }) }}
 
                         <div class="project__actions">
