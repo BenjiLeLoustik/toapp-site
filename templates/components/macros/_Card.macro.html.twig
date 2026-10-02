@@ -17,7 +17,6 @@
     <div class="cards cards--projects">
 
         {% for project in projects %}
-
             <div class="card card--project">
 
                 <div class="project__image">
@@ -77,10 +76,10 @@
                     <footer class="project__footer">
 
                         {{ User.render({
-                            avatar: null,
-                            name: 'Root',
-                            username: '@rootSystem',
-                            certified: true
+                            avatar: project.user.avatar ?? null,
+                            name: project.user.firstname,
+                            username: project.user.username,
+                            certified: project.user.isCertified ? true : false
                         }) }}
 
                         <div class="project__actions">
