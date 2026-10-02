@@ -32,6 +32,9 @@ class Project
     #[ORM\ManyToOne(target: Category::class, inversedBy: 'projects', nullable: true)]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(target: User::class, inversedBy: 'projects', nullable: false)]
+    private ?User $user = null;
+
     #[ORM\Column(type: 'datetime', nullable: false)]
     private \DateTime $createdAt;
 
@@ -105,6 +108,17 @@ class Project
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 
