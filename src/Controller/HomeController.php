@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CategoryTranslated;
+use App\Entity\Project;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
@@ -32,6 +33,8 @@ class HomeController extends AbstractController
             'all' => $this->translator->translate('categories.all'),
         ] + $categories;
 
+        $projects = $this->getOrm()->getRepository(Project::class)->findPopular();
+
         return $this->render('pages/home/index.html.twig', [
             'categories' => $categories,
             'stats' => [
@@ -40,7 +43,7 @@ class HomeController extends AbstractController
                 'listed_technologies' => 441,
                 'user_statisfaction' => 98,
             ],
-            'popular_projects' => [],
+            'popular_projects' => $projects,
         ]);
     }
 
