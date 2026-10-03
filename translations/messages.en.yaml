@@ -25,6 +25,39 @@ main:
             actions:
                 create_project: "Create project"
         show_more: "Show all projects"
-        
 categories:
     all: "All categories"
+project:
+    show:
+        actions:
+            like: "Like"
+            save_favorite: "Favorite"
+            share: "Share"
+            visit_website: "Visit website"
+        stats:
+            likes: "{count, plural, =0 {like} one {like} other {likes}}"
+            published_at: "Published at"
+            shares: "{count, plural, =0 {share} one {share} other {shares}}"
+            views: "{count, plural, =0 {view} one {views} other {views}}"
+        author:
+            button_show_profile: "Show profile"
+            empty_biography: "This user does not have a biography."
+        description: "project.show.description"
+        features: "project.show.features"
+        informations:
+            category:
+                title: "Category"
+            published_at:
+                title: "Published at"
+            status:
+                not_published: "Not published"
+                published: "Published"
+                title: "Status"
+            updated_at:
+                title: "Updated at"
+            title: "Informations"
+            visibility:
+                title: "Visibility"
+        links: "Links"
+        screenshots: "Screenshots"
+        technologies: "Technologies"

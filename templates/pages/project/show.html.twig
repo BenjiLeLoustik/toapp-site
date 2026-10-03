@@ -37,7 +37,7 @@
                 </p>
 
                 <div class="project-header__actions">
-                    {{ Button.render('J\'aime', {
+                    {{ Button.render(translate('project.show.actions.like'), {
                         variant: 'ghost-outline',
                         size: 'sm',
                         iconLeft: 'heart',
@@ -46,7 +46,7 @@
                         }
                     }) }}
 
-                    {{ Button.render('Partager', {
+                    {{ Button.render(translate('project.show.actions.share'), {
                         variant: 'ghost-outline',
                         size: 'sm',
                         iconLeft: 'share-2',
@@ -55,7 +55,7 @@
                         }
                     }) }}
 
-                    {{ Button.render('Favoris', {
+                    {{ Button.render(translate('project.show.actions.save_favorite'), {
                         variant: 'ghost-outline',
                         size: 'sm',
                         iconLeft: 'bookmark',
@@ -64,7 +64,7 @@
                         }
                     }) }}
 
-                    {{ Button.render('Visiter le site', {
+                    {{ Button.render(translate('project.show.actions.visit_website'), {
                         href: '#',
                         variant: 'ghost-outline',
                         size: 'sm',
@@ -86,11 +86,11 @@
                     </span>
 
                     <span class="project-stats__item-value">
-                        {{ project.likes|length }}
+                        {{ (project.likes|length)|format_number }}
                     </span>
 
                     <span class="project-stats__item-name">
-                        j'aime
+                        {{ translate('project.show.stats.likes', {count: project.likes|length}) }}
                     </span>
                 </div>
 
@@ -106,11 +106,11 @@
                     </span>
 
                     <span class="project-stats__item-value">
-                        2 450
+                        {{ 2500|format_number }}
                     </span>
 
                     <span class="project-stats__item-name">
-                        vues
+                         {{ translate('project.show.stats.views', {count: 2500}) }}
                     </span>
                 </div>
 
@@ -126,11 +126,11 @@
                     </span>
 
                     <span class="project-stats__item-value">
-                        32
+                        {{ 32|format_number }}
                     </span>
 
                     <span class="project-stats__item-name">
-                        partages
+                         {{ translate('project.show.stats.shares', {count: 32}) }}
                     </span>
                 </div>
 
@@ -140,7 +140,7 @@
 
                 <div class="project-stats__item">
                     <span class="project-stats__item-name">
-                        Publié le
+                         {{ translate('project.show.stats.published_at') }}
                     </span>
 
                     <span class="project-stats__item-value">
@@ -152,7 +152,7 @@
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    Description
+                    {{ translate('project.show.description') }}
                 </h2>
 
                 <div class="project-section__content">
@@ -163,40 +163,50 @@
             <section class="project-section">
                 <h2 class="project-section__title">
                     Fonctionnalités
+                    {{ translate('project.show.features') }}
                 </h2>
 
-                <ul class="project-features">
+                {% if project.features|length > 0 %}
+                    <ul class="project-features">
 
-                    {% for feature in project.features %}
-                        <li class="project-features__item">
-                            {{ Icon.lucide('check', {
-                                size: 'xs',
-                                color: 'accent'
-                            }) }}
-                            {{ feature }}
-                        </li>
-                    {% endfor %}
+                        {% for feature in project.features %}
+                            <li class="project-features__item">
+                                {{ Icon.lucide('check', {
+                                    size: 'xs',
+                                    color: 'accent'
+                                }) }}
+                                {{ feature }}
+                            </li>
+                        {% endfor %}
 
-                </ul>
+                    </ul>
+                {% else %}
+                    {{ Empty.render('ghost', 'No features for this project.') }}
+                {% endif %}
             </section>
 
             <section class="project-section">
                 <h2 class="project-section__title">
                     Technologies
+                    {{ translate('project.show.technologies') }}
                 </h2>
 
-                <div class="project-technologies">
+                {% if project.technologies|length > 0 %}
+                    <div class="project-technologies">
 
-                    {% for technology in project.technologies %}
-                        {{ Badge.render(technology.name) }}
-                    {% endfor %}
+                        {% for technology in project.technologies %}
+                            {{ Badge.render(technology.name) }}
+                        {% endfor %}
 
-                </div>
+                    </div>
+                {% else %}
+                    {{ Empty.render('ghost', 'No technologies for this project.') }}
+                {% endif %}
             </section>
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    Captures d'écran
+                    {{ translate('project.show.screenshots') }}
                 </h2>
 
                 {% if project.screenshots|length > 0 %}
@@ -215,26 +225,30 @@
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    Liens
+                    {{ translate('project.show.links') }}
                 </h2>
 
-                <div class="project-links">
+                {% if project.externalLinks is not empty %}
+                    <div class="project-links">
 
-                    {% for externalLink in project.externalLinks %}
-                        {{ Button.render(externalLink, {
-                            href: externalLink,
-                            variant: 'ghost',
-                            iconLeft: 'external-link',
-                            iconOptions: {
-                                size: 'xs'
-                            },
-                            attributes: {
-                                'target': '_blank'
-                            }
-                        }) }}
-                    {% endfor %}
+                        {% for externalLink in project.externalLinks %}
+                            {{ Button.render(externalLink, {
+                                href: externalLink,
+                                variant: 'ghost',
+                                iconLeft: 'external-link',
+                                iconOptions: {
+                                    size: 'xs'
+                                },
+                                attributes: {
+                                    'target': '_blank'
+                                }
+                            }) }}
+                        {% endfor %}
 
-                </div>
+                    </div>
+                {% else %}
+                    {{ Empty.render('ghost', 'No links for this project.') }}
+                {% endif %}
             </section>
 
         </div>
@@ -250,11 +264,15 @@
                 }) }}
 
                 <p class="project-information-card__biography">
-                    {{ project.user.biography ?? '<i>Cet utilisateur ne possède pas de biographie.</i>' }}
+                    {% if project.user.biography is not null %}
+                        {{ project.user.biography }}
+                    {% else %}
+                        {{ translate('project.show.author.empty_biography') }}
+                    {% endif %}
                 </p>
 
                 <div class="project-information-card__actions">
-                    {{ Button.render('Show profile', {
+                    {{ Button.render(translate('project.show.author.button_show_profile'), {
                         href: '#',
                         size: 'sm',
                         variant: 'ghost-outline'
@@ -265,7 +283,7 @@
             <div class="project-information-card">
                 <header class="project-information-card__header">
                     <span class="project-information-card__title">
-                        Informations
+                        {{ translate('project.show.informations.title') }}
                     </span>
                 </header>
 
@@ -280,7 +298,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-title">
-                            Catégorie
+                            {{ translate('project.show.informations.category.title') }}
                         </span>
 
                         <span class="project-information-card__list-item-value">
@@ -297,7 +315,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-title">
-                            Visibilité
+                            {{ translate('project.show.informations.visibility.title') }}
                         </span>
 
                         <span class="project-information-card__list-item-value">
@@ -314,14 +332,14 @@
                         </span>
 
                         <span class="project-information-card__list-item-title">
-                            Statut
+                            {{ translate('project.show.informations.status.title') }}
                         </span>
 
                         <span class="project-information-card__list-item-value">
                             {% if project.publishedAt is not null %}
-                                Publié
+                                {{ translate('project.show.informations.status.published') }}
                             {% else %}
-                                Non publié
+                                {{ translate('project.show.informations.status.not_published') }}
                             {% endif %}
                         </span>
                     </li>
@@ -335,7 +353,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-title">
-                            Publié le
+                            {{ translate('project.show.informations.published_at.title') }}
                         </span>
 
                         <span class="project-information-card__list-item-value">
@@ -352,7 +370,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-title">
-                            Dernière mise à jour
+                            {{ translate('project.show.informations.updated_at.title') }}
                         </span>
 
                         <span class="project-information-card__list-item-value">
