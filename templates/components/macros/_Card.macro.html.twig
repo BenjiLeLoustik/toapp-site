@@ -85,6 +85,10 @@
                         <div class="project__actions">
 
                             {{ Button.render('Show', {
+                                href: path('project_show', {
+                                    id: project.id,
+                                    slug: project.slug
+                                }),
                                 size: 'sm',
                                 variant: 'primary'
                             }) }}
