@@ -162,8 +162,7 @@
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    Fonctionnalités
-                    {{ translate('project.show.features') }}
+                    {{ translate('project.show.features.title') }}
                 </h2>
 
                 {% if project.features|length > 0 %}
@@ -181,14 +180,14 @@
 
                     </ul>
                 {% else %}
-                    {{ Empty.render('ghost', 'No features for this project.') }}
+                    {{ Empty.render('list', translate('project.show.features.empty')) }}
                 {% endif %}
             </section>
 
             <section class="project-section">
                 <h2 class="project-section__title">
                     Technologies
-                    {{ translate('project.show.technologies') }}
+                    {{ translate('project.show.technologies.title') }}
                 </h2>
 
                 {% if project.technologies|length > 0 %}
@@ -200,13 +199,13 @@
 
                     </div>
                 {% else %}
-                    {{ Empty.render('ghost', 'No technologies for this project.') }}
+                    {{ Empty.render('cpu', translate('project.show.technologies.empty')) }}
                 {% endif %}
             </section>
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    {{ translate('project.show.screenshots') }}
+                    {{ translate('project.show.screenshots.title') }}
                 </h2>
 
                 {% if project.screenshots|length > 0 %}
@@ -218,14 +217,14 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ Empty.render('ghost', 'No screenshots for this projects.') }}
+                    {{ Empty.render('image', translate('project.show.screenshots.empty')) }}
                 {% endif %}
 
             </section>
 
             <section class="project-section">
                 <h2 class="project-section__title">
-                    {{ translate('project.show.links') }}
+                    {{ translate('project.show.links.title') }}
                 </h2>
 
                 {% if project.externalLinks is not empty %}
@@ -247,7 +246,7 @@
 
                     </div>
                 {% else %}
-                    {{ Empty.render('ghost', 'No links for this project.') }}
+                    {{ Empty.render('link', translate('project.show.links.empty')) }}
                 {% endif %}
             </section>
 

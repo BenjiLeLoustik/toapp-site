@@ -42,8 +42,6 @@ project:
         author:
             button_show_profile: "Show profile"
             empty_biography: "This user does not have a biography."
-        description: "project.show.description"
-        features: "project.show.features"
         informations:
             category:
                 title: "Category"
@@ -58,6 +56,16 @@ project:
             title: "Informations"
             visibility:
                 title: "Visibility"
-        links: "Links"
-        screenshots: "Screenshots"
-        technologies: "Technologies"
+        description: "project.show.description"
+        features:
+            empty: "This project has no features."
+            title: "Features"
+        screenshots:
+            empty: "This project has no screenshots"
+            title: "Screenshots"
+        technologies:
+            empty: "This project has not involve technologies."
+            title: "Technologies"
+        links:
+            empty: "This project has no links."
+            title: "Links"
