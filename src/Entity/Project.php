@@ -62,11 +62,16 @@ class Project extends AbstractEntity
     #[ORM\OneToMany(target: ProjectView::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private CollectionInterface $views;
 
+    #[ORM\OneToMany(target: ProjectShare::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private CollectionInterface $shares;
+
     public function __construct()
     {
         $this->technologies = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->screenshots = new ArrayCollection();
+        $this->views = new ArrayCollection();
+        $this->shares = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -286,6 +291,27 @@ class Project extends AbstractEntity
     public function removeView(ProjectView $view): self
     {
         $this->views->removeElement($view);
+        return $this;
+    }
+
+    public function getShares(): CollectionInterface
+    {
+        return $this->shares;
+    }
+
+    public function addShare(ProjectShare $share): self
+    {
+        if (!$this->shares->contains($share)) {
+            $this->shares->add($share);
+            $share->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShare(ProjectShare $share): self
+    {
+        $this->shares->removeElement($share);
         return $this;
     }
 }
