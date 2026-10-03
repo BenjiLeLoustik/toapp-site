@@ -1,0 +1,9 @@
+{# ./templates/pages/project/show.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% block content %}
+
+    ProjectController::show('{{ id }}', '{{ slug }}');
+
+{% endblock %}
