@@ -2,8 +2,371 @@
 
 {% extends 'layouts/base_layout.html.twig' %}
 
+{% import 'components/macros/_User.macro.html.twig' as User %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+
 {% block content %}
 
-    ProjectController::show('{{ id }}', '{{ slug }}');
+    <section class="project-banner screen screen--no-margin">
+        {% if project.cover %}
+            <img src="{{ project.cover }}" alt="{{ project.name }}">
+        {% else %}
+            <span>
+                {{ Icon.lucide('image', {
+                    size: 'lg',
+                    color: 'muted'
+                }) }}
+            </span>
+        {% endif %}
+    </section>
+
+    <section class="project-content screen screen--margin">
+
+        <div class="project-content__general">
+
+            <header class="project-header">
+                <h1 class="project-header__title">
+                    {{ project.name }}
+                </h1>
+
+                <p class="project-header__description">
+                    {{ project.shortDescription }}
+                </p>
+
+                <div class="project-header__actions">
+                    {{ Button.render('J\'aime', {
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconLeft: 'heart',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+
+                    {{ Button.render('Partager', {
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconLeft: 'share-2',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+
+                    {{ Button.render('Favoris', {
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconLeft: 'bookmark',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+
+                    {{ Button.render('Visiter le site', {
+                        href: '#',
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconLeft: 'external-link',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+                </div>
+            </header>
+
+            <div class="project-stats">
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('heart', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        {{ project.likes|length }}
+                    </span>
+
+                    <span class="project-stats__item-name">
+                        j'aime
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('eye', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        2 450
+                    </span>
+
+                    <span class="project-stats__item-name">
+                        vues
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('share-2', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        32
+                    </span>
+
+                    <span class="project-stats__item-name">
+                        partages
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-name">
+                        Publié le
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        {{ project.publishedAt|date('d M. Y') }}
+                    </span>
+                </div>
+
+            </div>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    Description
+                </h2>
+
+                <div class="project-section__content">
+                    {{ project.description }}
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    Fonctionnalités
+                </h2>
+
+                <ul class="project-features">
+
+                    {% for feature in project.features %}
+                        <li class="project-features__item">
+                            {{ Icon.lucide('check', {
+                                size: 'xs',
+                                color: 'accent'
+                            }) }}
+                            {{ feature }}
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    Technologies
+                </h2>
+
+                <div class="project-technologies">
+
+                    {% for technology in project.technologies %}
+                        {{ Badge.render(technology.name) }}
+                    {% endfor %}
+
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    Captures d'écran
+                </h2>
+
+                <div class="project-screenshots">
+
+                    <div class="project-screenshots__item"></div>
+
+                    <div class="project-screenshots__item"></div>
+
+                    <div class="project-screenshots__item"></div>
+
+                    <div class="project-screenshots__item"></div>
+
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    Liens
+                </h2>
+
+                <div class="project-links">
+
+                    {% for externalLink in project.externalLinks %}
+                        {{ Button.render(externalLink, {
+                            href: externalLink,
+                            variant: 'ghost',
+                            iconLeft: 'external-link',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: {
+                                'target': '_blank'
+                            }
+                        }) }}
+                    {% endfor %}
+
+                </div>
+            </section>
+
+        </div>
+
+        <div class="project-content__informations">
+
+            <div class="project-information-card">
+                {{ User.render({
+                    avatar: project.user.avatar,
+                    name: project.user.firstname,
+                    username: project.user.username,
+                    certified: project.user.certified
+                }) }}
+
+                <p class="project-information-card__biography">
+                    {{ project.user.biography ?? '<i>Cet utilisateur ne possède pas de biographie.</i>' }}
+                </p>
+
+                <div class="project-information-card__actions">
+                    {{ Button.render('Show profile', {
+                        href: '#',
+                        size: 'sm',
+                        variant: 'ghost-outline'
+                    }) }}
+                </div>
+            </div>
+
+            <div class="project-information-card">
+                <header class="project-information-card__header">
+                    <span class="project-information-card__title">
+                        Informations
+                    </span>
+                </header>
+
+                <ul class="project-information-card__list">
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('tag', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            Catégorie
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.category.translation(locale()).name ?? '-' }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('globe', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            Visibilité
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.visibility }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('info', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            Statut
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {% if project.publishedAt is not null %}
+                                Publié
+                            {% else %}
+                                Non publié
+                            {% endif %}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('calendar', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            Publié le
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.publishedAt|date('d M. Y') }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('refresh-cw', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            Dernière mise à jour
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {% if project.updatedAt is not null %}
+                                {{ project.updatedAt|date('d M. Y') }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
+    </section>
 
 {% endblock %}
