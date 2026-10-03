@@ -4,40 +4,27 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Contract\AbstractEntity;
 use App\Repository\TechnologyRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
 use NeoPHP\Package\Orm\Contract\CollectionInterface;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: TechnologyRepository::class)]
-class Technology
+class Technology extends AbstractEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 150, nullable: false, unique: true)]
     private string $slug;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private \DateTime $createdAt;
-
     #[ORM\ManyToMany(target: Project::class, mappedBy: 'technologies')]
     private CollectionInterface $projects;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->projects = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -60,11 +47,6 @@ class Technology
     {
         $this->slug = $slug;
         return $this;
-    }
-
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
     }
 
     public function getProjects(): CollectionInterface

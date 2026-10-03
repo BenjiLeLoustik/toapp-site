@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Contract\TranslatedTrait;
+use App\Entity\Contract\AbstractEntity;
+use App\Entity\Contract\AbstractTranslatedEntity;
 use App\Repository\CategoryTranslatedRepository;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: CategoryTranslatedRepository::class)]
 #[ORM\Index(columns: ['category', 'locale'], unique: true)]
-class CategoryTranslated
+class CategoryTranslated extends AbstractTranslatedEntity
 {
-    use TranslatedTrait;
-
     #[ORM\ManyToOne(target: Category::class, inversedBy: 'translations', nullable: false)]
     private ?Category $category = null;
 

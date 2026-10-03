@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Contract\AbstractEntity;
 use App\Repository\UserRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
 use NeoPHP\Package\Orm\Contract\CollectionInterface;
@@ -12,13 +13,8 @@ use NeoPHP\Package\Security\Contract\PasswordAuthenticatedUserInterface;
 use NeoPHP\Package\Security\Contract\UserInterface;
 
 #[ORM\Entity(repository: UserRepository::class)]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -46,9 +42,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
-    private \DateTime $createdAt;
-
     #[ORM\OneToMany(target: Project::class, mappedBy: 'user')]
     private CollectionInterface $projects;
 
@@ -57,14 +50,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->projects = new ArrayCollection();
         $this->projectLikes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -172,11 +159,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->certified = $certified;
         return $this;
-    }
-
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
     }
 
     public function getProjects(): CollectionInterface
