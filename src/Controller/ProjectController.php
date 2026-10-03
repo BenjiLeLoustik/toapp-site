@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Project;
 use App\Project\Helper\ProjectHelper;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Response\Response;
@@ -20,13 +21,13 @@ class ProjectController extends AbstractController
     #[Route('/{id}/{slug}', name: 'show')]
     public function showProject(int $id, string $slug): Response
     {
-        if ($response = $this->projectHelper->validateProject($id, $slug)) {
-            return $response;
+        $project = $this->projectHelper->validateProject($id, $slug);
+        if (!$project) {
+            return $this->redirectToRoute('home_index');
         }
 
         return $this->render('pages/project/show.html.twig', [
-            'slug' => $slug,
-            'id' => $id,
+            'project' => $project,
         ]);
     }
 }
