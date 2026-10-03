@@ -7,7 +7,7 @@ enum ProjectShareEnum: string
     case LINK = 'link';
     case EMAIL = 'email';
     case FACEBOOK = 'facebook';
-    case X = 'x';
+    case X_TWITTER = 'x_twitter';
     case LINKEDIN = 'linkedin';
     case DISCORD = 'discord';
 
@@ -17,7 +17,7 @@ enum ProjectShareEnum: string
             self::LINK => 'link',
             self::EMAIL => 'email',
             self::FACEBOOK => 'facebook',
-            self::X => 'x',
+            self::X_TWITTER => 'x_twitter',
             self::LINKEDIN => 'linkedin',
             self::DISCORD => 'discord',
         };
