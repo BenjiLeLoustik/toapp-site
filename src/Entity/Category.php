@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Contract\AbstractEntity;
+use App\Entity\Contract\TranslatableInterface;
+use App\Entity\Contract\TranslatableTrait;
 use App\Repository\CategoryRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
 use NeoPHP\Package\Orm\Contract\CollectionInterface;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: CategoryRepository::class)]
-class Category extends AbstractEntity
+class Category extends AbstractEntity implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     #[ORM\Column(type: 'string', length: 150, nullable: false, unique: true)]
     private string $slug;
 

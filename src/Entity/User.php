@@ -42,6 +42,9 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private ?string $biography = null;
+
     #[ORM\OneToMany(target: Project::class, mappedBy: 'user')]
     private CollectionInterface $projects;
 
@@ -59,7 +62,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -76,7 +79,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return array_values(array_unique([...$this->roles, 'ROLE_USER']));
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -88,7 +91,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -100,7 +103,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->firstname;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
         return $this;
@@ -111,7 +114,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->lastname;
     }
 
-    public function setLastname(string $lastname): static
+    public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
         return $this;
@@ -122,7 +125,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
         return $this;
@@ -133,7 +136,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): static
+    public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
         return $this;
@@ -144,7 +147,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->username;
     }
 
-    public function setUsername(string $username): static
+    public function setUsername(string $username): self
     {
         $this->username = $username;
         return $this;
@@ -155,9 +158,20 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->certified;
     }
 
-    public function setCertified(bool $certified): static
+    public function setCertified(bool $certified): self
     {
         $this->certified = $certified;
+        return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): self
+    {
+        $this->biography = $biography;
         return $this;
     }
 
