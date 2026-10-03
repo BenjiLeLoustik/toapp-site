@@ -1,3 +1,5 @@
 /** ./assets/css/pages/init.css */
 
 @import "./home/_index.css";
+
+@import "./project/_show.css";
