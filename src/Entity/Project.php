@@ -59,6 +59,9 @@ class Project extends AbstractEntity
     #[ORM\OneToMany(target: ProjectLike::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private CollectionInterface $likes;
 
+    #[ORM\OneToMany(target: ProjectView::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private CollectionInterface $views;
+
     public function __construct()
     {
         $this->technologies = new ArrayCollection();
@@ -236,7 +239,6 @@ class Project extends AbstractEntity
     public function removeLike(ProjectLike $like): self
     {
         $this->likes->removeElement($like);
-
         return $this;
     }
 
@@ -263,6 +265,27 @@ class Project extends AbstractEntity
             }
         }
 
+        return $this;
+    }
+
+    public function getViews(): CollectionInterface
+    {
+        return $this->views;
+    }
+
+    public function addView(ProjectView $view): self
+    {
+        if (!$this->views->contains($view)) {
+            $this->views->add($view);
+            $view->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(ProjectView $view): self
+    {
+        $this->views->removeElement($view);
         return $this;
     }
 }
