@@ -50,6 +50,9 @@ class Project extends AbstractEntity
     #[ORM\Column(enumType: ProjectVisibilityEnum::class)]
     private ?ProjectVisibilityEnum $visibility;
 
+    #[ORM\OneToMany(target: ProjectScreenshot::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true, orderBy: ['position' => 'ASC'])]
+    private CollectionInterface $screenshots;
+
     #[ORM\ManyToMany(target: Technology::class, inversedBy: 'projects')]
     private CollectionInterface $technologies;
 
@@ -60,6 +63,7 @@ class Project extends AbstractEntity
     {
         $this->technologies = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->screenshots = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -232,6 +236,32 @@ class Project extends AbstractEntity
     public function removeLike(ProjectLike $like): self
     {
         $this->likes->removeElement($like);
+
+        return $this;
+    }
+
+    public function getScreenshots(): CollectionInterface
+    {
+        return $this->screenshots;
+    }
+
+    public function addScreenshot(ProjectScreenshot $screenshot): self
+    {
+        if (!$this->screenshots->contains($screenshot)) {
+            $this->screenshots->add($screenshot);
+            $screenshot->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScreenshot(ProjectScreenshot $screenshot): self
+    {
+        if ($this->screenshots->removeElement($screenshot)) {
+            if ($screenshot->getProject() === $this) {
+                $screenshot->setProject(null);
+            }
+        }
 
         return $this;
     }
