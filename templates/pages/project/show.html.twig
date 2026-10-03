@@ -6,6 +6,7 @@
 {% import 'components/macros/_Button.macro.html.twig' as Button %}
 {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
 {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
 
 {% block content %}
 
@@ -198,17 +199,18 @@
                     Captures d'écran
                 </h2>
 
-                <div class="project-screenshots">
+                {% if project.screenshots|length > 0 %}
+                    <div class="project-screenshots">
+                        {% for screenshot in project.screenshots %}
+                            <div class="project-screenshots__item">
+                                <img src="{{ screenshot.image }}" alt="{{ screenshot.title }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ Empty.render('ghost', 'No screenshots for this projects.') }}
+                {% endif %}
 
-                    <div class="project-screenshots__item"></div>
-
-                    <div class="project-screenshots__item"></div>
-
-                    <div class="project-screenshots__item"></div>
-
-                    <div class="project-screenshots__item"></div>
-
-                </div>
             </section>
 
             <section class="project-section">
