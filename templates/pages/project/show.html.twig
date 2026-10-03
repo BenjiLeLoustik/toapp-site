@@ -106,11 +106,11 @@
                     </span>
 
                     <span class="project-stats__item-value">
-                        {{ 2500|format_number }}
+                        {{ (project.views|length)|format_number }}
                     </span>
 
                     <span class="project-stats__item-name">
-                         {{ translate('project.show.stats.views', {count: 2500}) }}
+                         {{ translate('project.show.stats.views', {count: project.views|length}) }}
                     </span>
                 </div>
 
