@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "neophp/framework",
-            "version": "v1.39.2",
+            "version": "v1.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NeoPHP-Framework/neophp.git",
-                "reference": "fc2f023a7a838a566efda2af4ced2393ce54dc1c"
+                "reference": "6c6207a9a55ba0a07d35dadad0ef5a8f660648a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NeoPHP-Framework/neophp/zipball/fc2f023a7a838a566efda2af4ced2393ce54dc1c",
-                "reference": "fc2f023a7a838a566efda2af4ced2393ce54dc1c",
+                "url": "https://api.github.com/repos/NeoPHP-Framework/neophp/zipball/6c6207a9a55ba0a07d35dadad0ef5a8f660648a6",
+                "reference": "6c6207a9a55ba0a07d35dadad0ef5a8f660648a6",
                 "shasum": ""
             },
             "require": {
@@ -84,9 +84,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NeoPHP-Framework/neophp/issues",
-                "source": "https://github.com/NeoPHP-Framework/neophp/tree/v1.39.2"
+                "source": "https://github.com/NeoPHP-Framework/neophp/tree/v1.40.0"
             },
-            "time": "2026-10-04T07:10:47+00:00"
+            "time": "2026-10-04T11:27:07+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
