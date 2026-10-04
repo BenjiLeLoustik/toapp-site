@@ -33,8 +33,8 @@ firewalls:
             target: /
             # A CSRF token is required and only POST is accepted: another site cannot log your users out.
             # In the templates: {{ logout_form('Logout') }} (a small form with a button)
-            enable_csrf: true
-            methods: [POST]
+            enable_csrf: false
+            methods: [POST, GET]
         remember_me:
             # "Remember me" checkbox (_remember_me): 604800 s = 7 days
             lifetime: 604800
