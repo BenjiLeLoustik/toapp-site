@@ -15,7 +15,7 @@ use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
-#[Route('/project', name: 'project_')]
+#[Route('/projects', name: 'project_')]
 class ProjectController extends AbstractController
 {
     public function __construct(
