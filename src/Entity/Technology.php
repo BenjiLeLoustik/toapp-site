@@ -24,6 +24,8 @@ class Technology extends AbstractEntity
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->projects = new ArrayCollection();
     }
 

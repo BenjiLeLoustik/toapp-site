@@ -31,6 +31,8 @@ class Category extends AbstractEntity implements TranslatableInterface
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->translations = new ArrayCollection();
         $this->projects = new ArrayCollection();
     }

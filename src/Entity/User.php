@@ -27,7 +27,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\Column(type: 'string', length: 150, nullable: false, unique: true)]
     private string $slug;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true, unique: false)]
     private ?string $avatar = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
@@ -48,13 +48,19 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\OneToMany(target: Project::class, mappedBy: 'user')]
     private CollectionInterface $projects;
 
-    #[ORM\OneToMany(ProjectLike::class, mappedBy: 'user')]
+    #[ORM\OneToMany(target: ProjectLike::class, mappedBy: 'user')]
     private CollectionInterface $projectLikes;
+
+    #[ORM\OneToMany(target: ProjectFavorite::class, mappedBy: 'user')]
+    private CollectionInterface $projectFavorites;
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->projects = new ArrayCollection();
         $this->projectLikes = new ArrayCollection();
+        $this->projectFavorites = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -215,6 +221,28 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     public function removeProjectLike(ProjectLike $projectLike): self
     {
         $this->projectLikes->removeElement($projectLike);
+
+        return $this;
+    }
+
+    public function getProjectFavorites(): CollectionInterface
+    {
+        return $this->projectFavorites;
+    }
+
+    public function addProjectFavorite(ProjectFavorite $projectFavorite): self
+    {
+        if (!$this->projectFavorites->contains($projectFavorite)) {
+            $this->projectFavorites->add($projectFavorite);
+            $projectFavorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectFavorite(ProjectFavorite $projectFavorite): self
+    {
+        $this->projectFavorites->removeElement($projectFavorite);
 
         return $this;
     }

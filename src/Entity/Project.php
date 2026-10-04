@@ -59,6 +59,9 @@ class Project extends AbstractEntity
     #[ORM\OneToMany(target: ProjectLike::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private CollectionInterface $likes;
 
+    #[ORM\OneToMany(target: ProjectFavorite::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private CollectionInterface $favorites;
+
     #[ORM\OneToMany(target: ProjectView::class, mappedBy: 'project', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private CollectionInterface $views;
 
@@ -67,8 +70,11 @@ class Project extends AbstractEntity
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->technologies = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
         $this->screenshots = new ArrayCollection();
         $this->views = new ArrayCollection();
         $this->shares = new ArrayCollection();
@@ -244,6 +250,27 @@ class Project extends AbstractEntity
     public function removeLike(ProjectLike $like): self
     {
         $this->likes->removeElement($like);
+        return $this;
+    }
+
+    public function getFavorites(): CollectionInterface
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(ProjectFavorite $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+            $favorite->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(ProjectFavorite $favorite): self
+    {
+        $this->favorites->removeElement($favorite);
         return $this;
     }
 
