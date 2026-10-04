@@ -3,6 +3,7 @@
 namespace App\Project\Helper;
 
 use App\Entity\Project;
+use App\Entity\ProjectFavorite;
 use App\Entity\ProjectLike;
 use App\Entity\ProjectShare;
 use App\Entity\ProjectView;
@@ -97,6 +98,42 @@ class ProjectHelper
     public function countLikes(Project $project): int
     {
         return $this->entityManager->getRepository(ProjectLike::class)->count(['project' => $project]);
+    }
+
+    public function isFavorite(Project $project, ?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        return $this->entityManager->getRepository(ProjectFavorite::class)->findOneBy([
+            'project' => $project,
+            'user' => $user,
+        ]) !== null;
+    }
+
+    public function toggleFavorite(Project $project, User $user): bool
+    {
+        $favorite = $this->entityManager->getRepository(ProjectFavorite::class)->findOneBy([
+            'project' => $project,
+            'user' => $user,
+        ]);
+
+        if ($favorite !== null) {
+            $this->entityManager->remove($favorite);
+            $this->entityManager->flush();
+
+            return false;
+        }
+
+        $favorite = new ProjectFavorite();
+        $favorite->setProject($project);
+        $favorite->setUser($user);
+
+        $this->entityManager->persist($favorite);
+        $this->entityManager->flush();
+
+        return true;
     }
 
 }

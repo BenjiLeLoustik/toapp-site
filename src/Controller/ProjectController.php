@@ -33,6 +33,7 @@ class ProjectController extends AbstractController
         }
 
         $user = $this->getUser();
+        $user = $user instanceof User ? $user : null;
 
         $this->projectHelper->addView($project, $this->getUser(), $request->getClientIp());
 
@@ -40,7 +41,8 @@ class ProjectController extends AbstractController
             'project' => $project,
             'shareTypes' => ProjectShareEnum::cases(),
             'url' => $request->getUri(),
-            'isLiked' => $this->projectHelper->isLiked($project, $user instanceof User ? $user : null),
+            'isLiked' => $this->projectHelper->isLiked($project, $user),
+            'isFavorite' => $this->projectHelper->isFavorite($project, $user),
         ]);
     }
 
@@ -88,6 +90,27 @@ class ProjectController extends AbstractController
             'liked' => $liked,
             'totalLikes' => $formatNumber->__invoke($totalLikes),
             'likesLabel' => $this->translate('project.show.stats.likes', ['count' => $totalLikes]),
+        ]);
+    }
+
+    #[Route('/api/{id}/{slug}/favorite', name: 'api_favorite', methods: ['POST'])]
+    public function api_projectFavorite(int $id, string $slug, FormatNumberViewHelper $formatNumber): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->json(['success' => false], 401);
+        }
+
+        $project = $this->projectHelper->validateProject($id, $slug);
+        if (!$project) {
+            return $this->json(['success' => false], 404);
+        }
+
+        $favorite = $this->projectHelper->toggleFavorite($project, $user);
+
+        return $this->json([
+            'success' => true,
+            'favorite' => $favorite,
         ]);
     }
 }

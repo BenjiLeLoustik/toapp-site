@@ -32,7 +32,8 @@ project:
         actions:
             like: "Like"
             liked: "Liked"
-            save_favorite: "Favorite"
+            save_favorite: "Save"
+            saved_favorite: "Saved"
             share: "Share"
             visit_website: "Visit website"
         stats:

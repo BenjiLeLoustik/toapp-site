@@ -132,6 +132,47 @@ window.initProjectLike = function (url) {
     });
 };
 
+window.initProjectFavorite = function (url) {
+    document.querySelectorAll('[data-favorite-toggle]').forEach(button => {
+
+        if (button.dataset.favoriteReady) {
+            return;
+        }
+
+        button.dataset.favoriteReady = 'true';
+
+        button.addEventListener('click', async () => {
+            if (button.dataset.favoriteLoading) {
+                return;
+            }
+
+            button.dataset.favoriteLoading = 'true';
+
+            await window._Request.POST(url, {}).then(response => {
+                if (!response.success) {
+                    return;
+                }
+
+                document.querySelectorAll('[data-favorite-toggle]').forEach(favoriteButton => {
+                    const label = favoriteButton.querySelector('.button__label');
+
+                    window.changeButtonVariant(favoriteButton, response.favorite ? 'primary' : 'ghost-outline');
+                    favoriteButton.setAttribute('aria-pressed', String(response.favorite));
+
+                    if (label) {
+                        label.textContent = response.favorite
+                            ? favoriteButton.dataset.favoriteLabelSaved
+                            : favoriteButton.dataset.favoriteLabel;
+                    }
+                });
+
+            }).finally(() => {
+                delete button.dataset.favoriteLoading;
+            });
+        });
+    });
+};
+
 window.toggleInputPassword = function () {
     document.querySelectorAll('[data-password-toggle]').forEach(button => {
 

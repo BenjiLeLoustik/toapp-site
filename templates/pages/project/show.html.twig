@@ -67,14 +67,22 @@
                         }
                     }) }}
 
-                    {{ Button.render(translate('project.show.actions.save_favorite'), {
-                        variant: 'ghost-outline',
-                        size: 'sm',
-                        iconLeft: 'bookmark',
-                        iconOptions: {
-                            size: 'xs'
-                        }
-                    }) }}
+                    {% if app_user() %}
+                        {{ Button.render(isFavorite ? translate('project.show.actions.saved_favorite') : translate('project.show.actions.save_favorite'), {
+                            variant: isFavorite ? 'primary' : 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'bookmark',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: {
+                                'data-favorite-toggle': '',
+                                'data-favorite-label': translate('project.show.actions.save_favorite'),
+                                'data-favorite-label-saved': translate('project.show.actions.saved_favorite'),
+                                'aria-pressed': isFavorite ? 'true' : 'false'
+                            }
+                        }) }}
+                    {% endif %}
 
                     {{ Button.render(translate('project.show.actions.visit_website'), {
                         href: '#',
@@ -432,6 +440,7 @@
 
         {% if app_user() %}
             window.initProjectLike('{{ path('project_api_like', { id: project.id, slug: project.slug }) }}');
+            window.initProjectFavorite('{{ path('project_api_favorite', { id: project.id, slug: project.slug }) }}');
         {% endif %}
     </script>
 
