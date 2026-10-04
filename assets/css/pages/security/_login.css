@@ -28,8 +28,8 @@
 
     .login__error {
         @apply rounded-lg px-4 py-3 text-sm;
-        color: var(--theme-danger-foreground);
-        background-color: var(--theme-danger);
+        color: var(--theme-danger);
+        background-color: color-mix(in oklab, var(--theme-danger) 10%, var(--theme-surface));
         border: solid 1px color-mix(in oklab, var(--theme-danger) 35%, var(--theme-surface));
     }
 
