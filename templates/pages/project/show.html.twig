@@ -39,12 +39,18 @@
                 <div class="project-header__actions">
 
                     {% if app_user() %}
-                        {{ Button.render(translate('project.show.actions.like'), {
-                            variant: 'ghost-outline',
+                        {{ Button.render(isLiked ? translate('project.show.actions.liked') : translate('project.show.actions.like'), {
+                            variant: isLiked ? 'primary' : 'ghost-outline',
                             size: 'sm',
                             iconLeft: 'heart',
                             iconOptions: {
                                 size: 'xs'
+                            },
+                            attributes: {
+                                'data-like-toggle': '',
+                                'data-like-label': translate('project.show.actions.like'),
+                                'data-like-label-liked': translate('project.show.actions.liked'),
+                                'aria-pressed': isLiked ? 'true' : 'false'
                             }
                         }) }}
                     {% endif %}
@@ -91,11 +97,11 @@
                         }) }}
                     </span>
 
-                    <span class="project-stats__item-value">
+                    <span class="project-stats__item-value" data-total-likes>
                         {{ (project.likes|length)|format_number }}
                     </span>
 
-                    <span class="project-stats__item-name">
+                    <span class="project-stats__item-name" data-likes-label>
                         {{ translate('project.show.stats.likes', {count: project.likes|length}) }}
                     </span>
                 </div>
@@ -415,15 +421,18 @@
                 {% endfor %}
             </div>
 
-            <script type="text/javascript">
-                window.initProjectShare('{{ path('project_api_share', {
-                    id: project.id,
-                    slug: project.slug,
-                }) }}')
-            </script>
-
         {% endblock %}
     {% endembed %}
 
+    <script type="text/javascript">
+        window.initProjectShare('{{ path('project_api_share', {
+            id: project.id,
+            slug: project.slug,
+        }) }}');
+
+        {% if app_user() %}
+            window.initProjectLike('{{ path('project_api_like', { id: project.id, slug: project.slug }) }}');
+        {% endif %}
+    </script>
 
 {% endblock %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ProjectShare;
+use App\Entity\User;
 use App\Helper\View\FormatNumberViewHelper;
 use App\Project\Enum\ProjectShareEnum;
 use App\Project\Helper\ProjectHelper;
@@ -31,12 +32,15 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('home_index');
         }
 
+        $user = $this->getUser();
+
         $this->projectHelper->addView($project, $this->getUser(), $request->getClientIp());
 
         return $this->render('pages/project/show.html.twig', [
             'project' => $project,
             'shareTypes' => ProjectShareEnum::cases(),
             'url' => $request->getUri(),
+            'isLiked' => $this->projectHelper->isLiked($project, $user instanceof User ? $user : null),
         ]);
     }
 
@@ -60,6 +64,30 @@ class ProjectController extends AbstractController
         return $this->json([
             'success' => true,
             'totalShares' => $formatNumber->__invoke($totalShares),
+        ]);
+    }
+
+    #[Route('/api/{id}/{slug}/like', name: 'api_like', methods: ['POST'])]
+    public function api_projectLike(int $id, string $slug, FormatNumberViewHelper $formatNumber): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->json(['success' => false], 401);
+        }
+
+        $project = $this->projectHelper->validateProject($id, $slug);
+        if (!$project) {
+            return $this->json(['success' => false], 404);
+        }
+
+        $liked = $this->projectHelper->toggleLike($project, $user);
+        $totalLikes = $this->projectHelper->countLikes($project);
+
+        return $this->json([
+            'success' => true,
+            'liked' => $liked,
+            'totalLikes' => $formatNumber->__invoke($totalLikes),
+            'likesLabel' => $this->translate('project.show.stats.likes', ['count' => $totalLikes]),
         ]);
     }
 }

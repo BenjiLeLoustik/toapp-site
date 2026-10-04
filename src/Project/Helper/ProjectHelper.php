@@ -3,6 +3,7 @@
 namespace App\Project\Helper;
 
 use App\Entity\Project;
+use App\Entity\ProjectLike;
 use App\Entity\ProjectShare;
 use App\Entity\ProjectView;
 use App\Entity\User;
@@ -55,6 +56,47 @@ class ProjectHelper
 
         $this->entityManager->persist($share);
         $this->entityManager->flush();
+    }
+
+    public function isLiked(Project $project, ?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        return $this->entityManager->getRepository(ProjectLike::class)->findOneBy([
+            'project' => $project,
+            'user' => $user,
+        ]) !== null;
+    }
+
+    public function toggleLike(Project $project, User $user): bool
+    {
+        $like = $this->entityManager->getRepository(ProjectLike::class)->findOneBy([
+            'project' => $project,
+            'user' => $user,
+        ]);
+
+        if ($like !== null) {
+            $this->entityManager->remove($like);
+            $this->entityManager->flush();
+
+            return false;
+        }
+
+        $like = new ProjectLike();
+        $like->setProject($project);
+        $like->setUser($user);
+
+        $this->entityManager->persist($like);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    public function countLikes(Project $project): int
+    {
+        return $this->entityManager->getRepository(ProjectLike::class)->count(['project' => $project]);
     }
 
 }

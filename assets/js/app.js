@@ -82,7 +82,55 @@ window.initProjectShare = function (url) {
             window.open(shareLink, '_blank', 'noopener,noreferrer');
         });
     });
-}
+};
+
+window.initProjectLike = function (url) {
+    document.querySelectorAll('[data-like-toggle]').forEach(button => {
+
+        if (button.dataset.likeReady) {
+            return;
+        }
+
+        button.dataset.likeReady = 'true';
+
+        button.addEventListener('click', async () => {
+            if (button.dataset.likeLoading) {
+                return;
+            }
+
+            button.dataset.likeLoading = 'true';
+
+            await window._Request.POST(url, {}).then(response => {
+                if (!response.success) {
+                    return;
+                }
+
+                document.querySelectorAll('[data-like-toggle]').forEach(likeButton => {
+                    const label = likeButton.querySelector('.button__label');
+
+                    window.changeButtonVariant(likeButton, response.liked ? 'primary' : 'ghost-outline');
+                    likeButton.setAttribute('aria-pressed', String(response.liked));
+
+                    if (label) {
+                        label.textContent = response.liked
+                            ? likeButton.dataset.likeLabelLiked
+                            : likeButton.dataset.likeLabel;
+                    }
+                });
+
+                document.querySelectorAll('[data-total-likes]').forEach(element => {
+                    element.textContent = response.totalLikes;
+                });
+
+                document.querySelectorAll('[data-likes-label]').forEach(element => {
+                    element.textContent = response.likesLabel;
+                });
+            }).finally(() => {
+                delete button.dataset.likeLoading;
+            });
+        });
+    });
+};
 
 window.toggleInputPassword = function () {
     document.querySelectorAll('[data-password-toggle]').forEach(button => {
