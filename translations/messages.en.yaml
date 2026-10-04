@@ -58,7 +58,7 @@ project:
             title: "Informations"
             visibility:
                 title: "Visibility"
-        description: "project.show.description"
+        description: "Description"
         features:
             empty: "This project has no features."
             title: "Features"
