@@ -9,7 +9,7 @@
     }
 
     .header__inner {
-        @apply h-full w-full max-w-7xl mx-auto flex items-center justify-between;
+        @apply h-full w-full max-w-7xl mx-auto flex items-center justify-between gap-1;
     }
 
     .header__logo {
@@ -32,6 +32,10 @@
         @apply flex items-center gap-1;
     }
 
+    .header__user {
+        @apply flex items-center order-last;
+    }
+
     .header__menu-toggle {
         @apply !hidden;
     }
@@ -51,6 +55,14 @@
 
         .header__logo {
             @apply flex items-center justify-start gap-2;
+        }
+
+        .header__user {
+            @apply order-none ml-auto;
+        }
+
+        .header__user + .header__menu-toggle {
+            @apply ml-0;
         }
 
         .header__menu-toggle {

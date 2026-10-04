@@ -25,6 +25,34 @@
             </span>
         </div>
 
+        {% if app.user %}
+            <div class="header__user">
+                {% embed 'components/embeds/_Dropdown.embed.html.twig' with {
+                    dropdownName: 'user',
+                    dropdownAlign: 'end',
+                    dropdownTrigger: {
+                        avatar: app.user.avatar ?? null,
+                        avatarAlt: app.user.firstname ?? app.user.userIdentifier,
+                        label: app.user.firstname ?? app.user.userIdentifier
+                    },
+                    dropdownHeaderUser: {
+                        avatar: app.user.avatar ?? null,
+                        name: app.user.firstname ?? app.user.lastname,
+                        username: app.user.username ?? null,
+                        certified: app.user.certified
+                    },
+                    dropdownItems: [
+                        { label: 'Profile', href: '#', icon: 'user' },
+                        { label: 'Settings', href: '#', icon: 'settings' },
+                        { label: 'Projects', href: '#', icon: 'briefcase' },
+                        { label: 'Favorites', href: '#', icon: 'heart' },
+                        { divider: true },
+                        { label: 'Logout', action: logout_path(), csrf: 'logout', icon: 'log-out', variant: 'danger' }
+                    ]
+                } %}{% endembed %}
+            </div>
+        {% endif %}
+
         {{ Button.render(null, {
             iconLeft: 'menu',
             variant: 'ghost-outline',
@@ -58,17 +86,21 @@
 
             <div class="header__actions">
 
-                {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
-                    href: '#',
-                    variant: 'primary-outline',
-                    size: 'sm'
-                }) }}
+                {% if not app.user %}
 
-                {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
-                    href: '#',
-                    variant: 'primary',
-                    size: 'sm'
-                }) }}
+                    {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
+                        href: path('app_security_login'),
+                        variant: 'primary-outline',
+                        size: 'sm'
+                    }) }}
+
+                    {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
+                        href: '#',
+                        variant: 'primary',
+                        size: 'sm'
+                    }) }}
+
+                {% endif %}
 
                 {{ Button.render(null, {
                     iconLeft: 'cog',

@@ -1,0 +1,149 @@
+{# ./templates/components/embeds/_Dropdown.embed.html.twig #}
+
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_User.macro.html.twig' as User %}
+
+{% set dropdownName = dropdownName ?? 'dropdown' %}
+{% set dropdownAlign = dropdownAlign ?? 'start' %}
+{% set dropdownSize = dropdownSize ?? 'sm' %}
+{% set dropdownVariant = dropdownVariant ?? 'ghost-outline' %}
+{% set dropdownItemSize = dropdownItemSize ?? 'sm' %}
+{% set dropdownItemVariant = dropdownItemVariant ?? 'ghost' %}
+{% set dropdownIconSize = dropdownIconSize ?? 'xs' %}
+{% set dropdownClass = dropdownClass ?? '' %}
+{% set dropdownTrigger = dropdownTrigger ?? {} %}
+{% set dropdownHeaderUser = dropdownHeaderUser ?? null %}
+{% set dropdownItems = dropdownItems ?? [] %}
+
+{% set triggerAvatar = dropdownTrigger.avatar ?? null %}
+{% set triggerAvatarAlt = dropdownTrigger.avatarAlt ?? null %}
+{% set triggerIcon = dropdownTrigger.icon ?? null %}
+{% set triggerIconSize = dropdownTrigger.iconSize ?? 'xs' %}
+{% set triggerLabel = dropdownTrigger.label ?? null %}
+{% set triggerChevron = dropdownTrigger.chevron ?? true %}
+{% set triggerAriaLabel = dropdownTrigger.ariaLabel ?? null %}
+{% set triggerIconOnly = triggerIcon and not triggerLabel and not triggerAvatar and not triggerAvatarAlt and not triggerChevron %}
+
+<div class="dropdown dropdown--{{ dropdownAlign }} {{ dropdownClass }}" data-dropdown-name="{{ dropdownName }}">
+
+    <button
+            type="button"
+            class="button button--{{ dropdownVariant }} button--{{ dropdownSize }} button--align-center {{ triggerIconOnly ? 'button--icon-only' : '' }} dropdown__trigger"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="dropdown-{{ dropdownName }}"
+            {% if triggerAriaLabel %}aria-label="{{ triggerAriaLabel }}"{% endif %}
+            data-dropdown-trigger
+    >
+        {% block dropdownTriggerContent %}
+
+            {% if triggerAvatar or triggerAvatarAlt %}
+                <span class="dropdown__avatar">
+                    {% if triggerAvatar %}
+                        <img src="{{ triggerAvatar }}" alt="{{ triggerAvatarAlt ?? '' }}">
+                    {% else %}
+                        {{ triggerAvatarAlt|first|upper }}
+                    {% endif %}
+                </span>
+            {% endif %}
+
+            {% if triggerIcon %}
+                {{ Icon.lucide(triggerIcon, { size: triggerIconSize }) }}
+            {% endif %}
+
+            {% if triggerLabel %}
+                <span class="button__label">
+                    {{ triggerLabel }}
+                </span>
+            {% endif %}
+
+        {% endblock %}
+
+        {% if triggerChevron %}
+            <span class="dropdown__chevron">
+                {{ Icon.lucide('chevron-down', { size: 'xs' }) }}
+            </span>
+        {% endif %}
+    </button>
+
+    <div
+            class="dropdown__menu"
+            id="dropdown-{{ dropdownName }}"
+            role="menu"
+            data-dropdown-menu
+    >
+
+        {% block dropdownHeader %}
+            {% if dropdownHeaderUser %}
+                <div class="dropdown__header">
+                    {{ User.render(dropdownHeaderUser) }}
+                </div>
+                <div class="dropdown__divider" role="separator"></div>
+            {% endif %}
+        {% endblock %}
+
+        {% block dropdownContent %}
+            {% for item in dropdownItems %}
+
+                {% if item.divider ?? false %}
+
+                    <div class="dropdown__divider" role="separator"></div>
+
+                {% elseif item.header ?? null %}
+
+                    <div class="dropdown__section">
+                        {{ item.header }}
+                    </div>
+
+                {% else %}
+
+                    {% set itemVariant = item.variant ?? dropdownItemVariant %}
+                    {% set itemButtonVariant = itemVariant == 'danger' ? 'ghost' : itemVariant %}
+
+                    {% set itemClass = [
+                        'dropdown__item',
+                        'dropdown__item--' ~ itemVariant,
+                        (item.active ?? false) ? 'dropdown__item--active' : null,
+                        item.class ?? null
+                    ]|filter(v => v)|join(' ') %}
+
+                    {% set itemOptions = {
+                        variant: itemButtonVariant,
+                        size: item.size ?? dropdownItemSize,
+                        align: item.align ?? 'left',
+                        iconLeft: item.icon ?? item.iconLeft ?? null,
+                        iconRight: item.iconRight ?? null,
+                        iconSize: item.iconSize ?? dropdownIconSize,
+                        iconOptions: item.iconOptions ?? {},
+                        disabled: item.disabled ?? false,
+                        class: itemClass,
+                        attributes: { role: 'menuitem', 'data-dropdown-item': '' }|merge(item.attributes ?? {})
+                    } %}
+
+                    {% if item.action ?? null %}
+
+                        <form action="{{ item.action }}" method="{{ item.method ?? 'post' }}" class="dropdown__form">
+
+                            {% if item.csrf ?? null %}
+                                <input type="hidden" name="{{ item.csrfField ?? '_csrf_token' }}" value="{{ csrf_token(item.csrf) }}">
+                            {% endif %}
+
+                            {{ Button.render(item.label ?? null, itemOptions|merge({ type: 'submit' })) }}
+
+                        </form>
+
+                    {% else %}
+
+                        {{ Button.render(item.label ?? null, itemOptions|merge({ href: item.href ?? '#' })) }}
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+        {% endblock %}
+
+    </div>
+
+</div>
