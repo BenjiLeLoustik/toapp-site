@@ -16,6 +16,10 @@
     {% set iconSize = options.iconSize ?? 'sm' %}
     {% set iconOptions = options.iconOptions ?? {} %}
 
+    {% set passwordToggle = type == 'password' and (options.passwordToggle ?? true) %}
+    {% set showPasswordLabel = options.showPasswordLabel ?? 'Show password' %}
+    {% set hidePasswordLabel = options.hidePasswordLabel ?? 'Hide password' %}
+
     {% set class = options.class ?? '' %}
     {% set attributes = options.attributes ?? {} %}
     {% set columns = options.columns ?? 1 %}
@@ -51,7 +55,26 @@
                 </span>
             {% endif %}
 
-            {% if iconRight %}
+            {% if passwordToggle %}
+                <button
+                        type="button"
+                        class="form__icon form__icon--right form__password-toggle"
+                        aria-controls="{{ id }}"
+                        aria-pressed="false"
+                        aria-label="{{ showPasswordLabel }}"
+                        data-password-toggle
+                        data-show-label="{{ showPasswordLabel }}"
+                        data-hide-label="{{ hidePasswordLabel }}"
+                        {% if disabled %}disabled{% endif %}
+                >
+                    <span class="form__password-toggle-icon form__password-toggle-icon--show">
+                        {{ _self.render_icon('eye', iconSize) }}
+                    </span>
+                    <span class="form__password-toggle-icon form__password-toggle-icon--hide">
+                        {{ _self.render_icon('eye-off', iconSize) }}
+                    </span>
+                </button>
+            {% elseif iconRight %}
                 <span class="form__icon form__icon--right">
                     {{ _self.render_icon(iconRight, iconSize, iconOptions) }}
                 </span>
@@ -131,6 +154,52 @@
 
 {% endmacro %}
 
+{% macro checkbox(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? '1' %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+
+    <div class="form__field form__field--checkbox {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        <label for="{{ id }}" class="form__checkbox">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="checkbox"
+                    class="form__checkbox-input"
+                    value="{{ value }}"
+                    {% if checked %}checked{% endif %}
+                    {% if disabled %}disabled{% endif %}
+                    {% if required %}required{% endif %}
+                    {% for attribute, attributeValue in attributes %}
+                        {{ attribute }}="{{ attributeValue }}"
+                    {% endfor %}
+            >
+
+            <span class="form__checkbox-box" aria-hidden="true">
+                {{ _self.render_icon('check', 'xs') }}
+            </span>
+
+            {% if label %}
+                <span class="form__checkbox-label">
+                    {{ label }}
+                </span>
+            {% endif %}
+
+        </label>
+
+    </div>
+
+{% endmacro %}
 
 {% macro submit(label = 'Submit', options = {}) %}
 

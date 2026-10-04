@@ -136,6 +136,88 @@
         @apply pr-10;
     }
 
+    /* Password toggle */
+
+    .form__password-toggle {
+        @apply pointer-events-auto cursor-pointer rounded-sm transition-colors;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .form__password-toggle:hover {
+        color: var(--theme-foreground);
+    }
+
+    .form__password-toggle:focus-visible {
+        @apply outline-2 outline-offset-2;
+        outline-color: var(--theme-accent);
+    }
+
+    .form__password-toggle:disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    .form__password-toggle-icon {
+        @apply flex items-center justify-center;
+    }
+
+    .form__password-toggle-icon--hide,
+    .form__password-toggle[aria-pressed="true"] .form__password-toggle-icon--show {
+        @apply hidden;
+    }
+
+    .form__password-toggle[aria-pressed="true"] .form__password-toggle-icon--hide {
+        @apply flex;
+    }
+
+    /* Checkbox */
+
+    .form__checkbox {
+        @apply inline-flex items-center gap-2 cursor-pointer select-none text-sm;
+        color: var(--theme-foreground);
+    }
+
+    .form__checkbox-input {
+        @apply sr-only;
+    }
+
+    .form__checkbox-box {
+        @apply w-5 h-5 shrink-0 flex items-center justify-center rounded border transition-colors;
+        background-color: var(--theme-surface);
+        border-color: var(--theme-border);
+        color: var(--theme-accent-foreground);
+    }
+
+    .form__checkbox-box svg {
+        @apply w-3.5 h-3.5 opacity-0 transition-opacity;
+    }
+
+    .form__checkbox:hover .form__checkbox-box {
+        background-color: var(--theme-surface-hover);
+    }
+
+    .form__checkbox-input:checked + .form__checkbox-box {
+        background-color: var(--theme-accent);
+        border-color: var(--theme-accent);
+    }
+
+    .form__checkbox-input:checked + .form__checkbox-box svg {
+        @apply opacity-100;
+    }
+
+    .form__checkbox-input:focus-visible + .form__checkbox-box {
+        @apply outline-2 outline-offset-2;
+        outline-color: var(--theme-accent);
+    }
+
+    .form__checkbox:has(.form__checkbox-input:disabled) {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    .form__checkbox-label {
+        @apply leading-5;
+    }
 
     /* Mobile */
 

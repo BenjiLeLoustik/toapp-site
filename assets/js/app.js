@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
+    window.toggleInputPassword();
 });
 
 window.initPreferenceChange = function (name, route, attribute, reload = false, callback = null) {
@@ -82,3 +83,33 @@ window.initProjectShare = function (url) {
         });
     });
 }
+
+window.toggleInputPassword = function () {
+    document.querySelectorAll('[data-password-toggle]').forEach(button => {
+
+        if (button.dataset.passwordToggleReady) {
+            return;
+        }
+
+        button.dataset.passwordToggleReady = 'true';
+
+        button.addEventListener('click', () => {
+            const input = document.getElementById(button.getAttribute('aria-controls'));
+
+            if (!input) {
+                return;
+            }
+
+            const isHidden = input.type === 'password';
+
+            input.type = isHidden ? 'text' : 'password';
+
+            button.setAttribute('aria-pressed', String(isHidden));
+            button.setAttribute('aria-label', isHidden
+                ? button.dataset.hideLabel
+                : button.dataset.showLabel
+            );
+        });
+
+    });
+};
