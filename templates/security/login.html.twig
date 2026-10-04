@@ -1,0 +1,57 @@
+{# ./templates/pages/security/login.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+
+{% block content %}
+
+    <section class="login screen screen--margin">
+
+        <div class="login__container">
+
+            <header class="login__header">
+                <h1 class="login__title">
+                    Sign in
+                </h1>
+            </header>
+
+            {% if error %}
+                <p class="login__error">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </p>
+            {% endif %}
+
+            <form method="post" action="#" class="login__form">
+
+                {{ Form.input('_username', {
+                    id: 'username',
+                    label: 'Email',
+                    value: last_username,
+                    type: 'email',
+                    autocomplete: 'username',
+                    required: true,
+                    attributes: {
+                        autofocus: true
+                    }
+                }) }}
+
+                {{ Form.input('_password', {
+                    id: 'password',
+                    label: 'Password',
+                    type: 'password',
+                    autocomplete: 'current-password',
+                    required: true
+                }) }}
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                {{ Form.submit('Sign in') }}
+
+            </form>
+
+        </div>
+
+    </section>
+
+{% endblock %}

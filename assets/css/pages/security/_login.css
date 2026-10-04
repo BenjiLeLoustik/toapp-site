@@ -1,0 +1,56 @@
+/** ./assets/css/pages/security/_login.css */
+
+@layer base {
+
+    section.login {
+        @apply py-12 flex items-start justify-center;
+    }
+
+    .login__container {
+        @apply w-full max-w-md h-auto rounded-lg p-6 flex flex-col gap-6;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .login__header {
+        @apply w-full h-auto flex flex-col gap-2;
+    }
+
+    h1.login__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    .login__error {
+        @apply rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700;
+    }
+
+    .login__form {
+        @apply w-full flex flex-col gap-4;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.login {
+            @apply py-8;
+        }
+
+        h1.login__title {
+            @apply text-2xl;
+        }
+
+    }
+
+    /* Small mobile */
+
+    @media (max-width: 480px) {
+
+        .login__container {
+            @apply p-4;
+        }
+
+    }
+
+}
