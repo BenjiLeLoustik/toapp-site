@@ -37,14 +37,17 @@
                 </p>
 
                 <div class="project-header__actions">
-                    {{ Button.render(translate('project.show.actions.like'), {
-                        variant: 'ghost-outline',
-                        size: 'sm',
-                        iconLeft: 'heart',
-                        iconOptions: {
-                            size: 'xs'
-                        }
-                    }) }}
+
+                    {% if app_user() %}
+                        {{ Button.render(translate('project.show.actions.like'), {
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'heart',
+                            iconOptions: {
+                                size: 'xs'
+                            }
+                        }) }}
+                    {% endif %}
 
                     {{ Button.render(translate('project.show.actions.share'), {
                         variant: 'ghost-outline',
