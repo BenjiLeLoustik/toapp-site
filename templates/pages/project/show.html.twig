@@ -12,7 +12,7 @@
 
     <section class="project-banner screen screen--no-margin">
         {% if project.cover %}
-            <img src="{{ project.cover }}" alt="{{ project.name }}">
+            <img src="{{ upload(project.cover) }}" alt="{{ project.name }}">
         {% else %}
             <span>
                 {{ Icon.lucide('image', {
@@ -232,7 +232,7 @@
                     <div class="project-screenshots">
                         {% for screenshot in project.screenshots %}
                             <div class="project-screenshots__item">
-                                <img src="{{ screenshot.image }}" alt="{{ screenshot.title }}">
+                                <img src="{{ upload(screenshot.image) }}" alt="{{ screenshot.title }}">
                             </div>
                         {% endfor %}
                     </div>
