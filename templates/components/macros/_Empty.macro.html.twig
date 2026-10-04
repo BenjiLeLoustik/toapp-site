@@ -12,10 +12,15 @@ Usage :
 
 #}
 
-{% macro render(icon, title, descriptions = [], actions = {}) %}
+{% macro render(icon, title, descriptions = [], actions = {}, option = {}) %}
+
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set iconOptions = option.icon ?? {} %}
+
     <div class="empty">
         <div class="empty__icon">
-            <i data-lucide="{{ icon }}"></i>
+            {{ Icon.lucide(icon, iconOptions) }}
         </div>
         <h3 class="empty__title">{{ title }}</h3>
         {% if descriptions is not empty %}
