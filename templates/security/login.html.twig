@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <section class="login screen screen--margin">
+    <section class="login screen screen--margin screen--full">
 
         <div class="login__container">
 
@@ -14,15 +14,18 @@
                 <h1 class="login__title">
                     Sign in
                 </h1>
+                <p class="login__description">
+                    Enter your email and password to access your account.
+                </p>
             </header>
 
             {% if error %}
                 <p class="login__error">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                    {{ error }}
                 </p>
             {% endif %}
 
-            <form method="post" action="#" class="login__form">
+            {{ form_start(form, { attr: { class: 'login__form' } }) }}
 
                 {{ Form.input('_username', {
                     id: 'username',
@@ -44,11 +47,14 @@
                     required: true
                 }) }}
 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {{ Form.checkbox('_remember_me', {
+                    id: 'remember_me',
+                    label: 'Remember me'
+                }) }}
 
                 {{ Form.submit('Sign in') }}
 
-            </form>
+            {{ form_end(form) }}
 
         </div>
 

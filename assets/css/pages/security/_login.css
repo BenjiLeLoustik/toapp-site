@@ -3,7 +3,7 @@
 @layer base {
 
     section.login {
-        @apply py-12 flex items-start justify-center;
+        @apply py-12 flex items-center justify-center;
     }
 
     .login__container {
@@ -17,8 +17,13 @@
     }
 
     h1.login__title {
-        @apply text-3xl font-bold;
+        @apply text-3xl font-bold text-center;
         color: var(--theme-foreground);
+    }
+
+    p.login__description {
+        @apply w-full h-auto text-base text-center;
+        color: var(--theme-foreground-muted);
     }
 
     .login__error {
@@ -27,6 +32,10 @@
 
     .login__form {
         @apply w-full flex flex-col gap-4;
+    }
+
+    .login__form .form__group-item > * {
+        @apply w-full justify-center;
     }
 
     /* Mobile */
@@ -39,6 +48,10 @@
 
         h1.login__title {
             @apply text-2xl;
+        }
+
+        p.login__description {
+            @apply text-sm;
         }
 
     }
