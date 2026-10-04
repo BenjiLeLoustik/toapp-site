@@ -173,6 +173,12 @@
         color: var(--theme-foreground);
     }
 
+    /* Modal */
+
+    .modal__project-share {
+        @apply w-full h-auto flex flex-col gap-2;
+    }
+
     /* Tablet */
 
     @media (max-width: 1024px) {

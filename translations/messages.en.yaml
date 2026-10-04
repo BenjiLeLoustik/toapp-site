@@ -69,3 +69,6 @@ project:
         links:
             empty: "This project has no links."
             title: "Links"
+        modal:
+            share:
+                copied: "Copied!"

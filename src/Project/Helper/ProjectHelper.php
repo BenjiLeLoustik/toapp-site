@@ -3,8 +3,10 @@
 namespace App\Project\Helper;
 
 use App\Entity\Project;
+use App\Entity\ProjectShare;
 use App\Entity\ProjectView;
 use App\Entity\User;
+use App\Project\Enum\ProjectShareEnum;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class ProjectHelper
@@ -40,6 +42,18 @@ class ProjectHelper
         $view->setIp($ip);
 
         $this->entityManager->persist($view);
+        $this->entityManager->flush();
+    }
+
+    public function addShare(Project $project, ProjectShareEnum $type, ?User $user, ?string $ip): void
+    {
+        $share = new ProjectShare();
+        $share->setProject($project);
+        $share->setType($type);
+        $share->setUser($user);
+        $share->setIp($ip);
+
+        $this->entityManager->persist($share);
         $this->entityManager->flush();
     }
 

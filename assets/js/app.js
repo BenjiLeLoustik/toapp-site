@@ -44,3 +44,41 @@ window.changeButtonVariant = function (button, variant) {
     button.classList.add(`button--${variant}`);
     button.dataset.variant = variant;
 };
+
+window.initProjectShare = function (url) {
+    document.querySelectorAll('[data-share-link]').forEach(button => {
+        button.addEventListener('click', async () => {
+            const type = button.dataset.shareType;
+            const shareLink = button.dataset.shareLink;
+            const totalShares = document.querySelectorAll('[data-total-shares]');
+
+            await window._Request.POST(url, {
+                type: type,
+            }).then(response => {
+                totalShares.forEach(element => {
+                    element.textContent = response.totalShares;
+                });
+            });
+
+            if (type === 'link' || type === 'discord') {
+                await navigator.clipboard.writeText(shareLink);
+
+                const label = button.textContent;
+                button.textContent = button.dataset.copySuccess;
+
+                setTimeout(() => {
+                    button.textContent = label;
+                }, 2000);
+
+                return;
+            }
+
+            if (type === 'email') {
+                window.location.href = shareLink;
+                return;
+            }
+
+            window.open(shareLink, '_blank', 'noopener,noreferrer');
+        });
+    });
+}

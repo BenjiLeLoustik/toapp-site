@@ -22,4 +22,15 @@ enum ProjectShareEnum: string
             self::DISCORD => 'discord',
         };
     }
+
+    public function getShareLink(string $url): string
+    {
+        return match ($this) {
+            self::LINK, self::DISCORD => $url,
+            self::EMAIL => 'mailto:?body=' . urlencode($url),
+            self::FACEBOOK => 'https://www.facebook.com/sharer/sharer.php?u=' . urlencode($url),
+            self::X_TWITTER => 'https://x.com/intent/post?url=' . urlencode($url),
+            self::LINKEDIN => 'https://www.linkedin.com/sharing/share-offsite/?url=' . urlencode($url),
+        };
+    }
 }

@@ -52,6 +52,9 @@
                         iconLeft: 'share-2',
                         iconOptions: {
                             size: 'xs'
+                        },
+                        attributes: {
+                            'data-modal-open': 'project-share'
                         }
                     }) }}
 
@@ -125,8 +128,8 @@
                         }) }}
                     </span>
 
-                    <span class="project-stats__item-value">
-                        {{ 32|format_number }}
+                    <span class="project-stats__item-value" data-total-shares>
+                        {{ (project.shares|length)|format_number }}
                     </span>
 
                     <span class="project-stats__item-name">
@@ -387,5 +390,37 @@
         </div>
 
     </section>
+
+    {% embed 'components/embeds/_Modal.embed.html.twig' with {
+        modalName: 'project-share',
+        modalTitle: 'Partager'
+    } %}
+        {% block modalContent %}
+
+            {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+            <div class="modal__project-share">
+                {% for type in shareTypes %}
+                    {{ Button.render(type.label(), {
+                        variant: 'ghost-outline',
+                        attributes: {
+                            'data-share-type': type.value,
+                            'data-share-link': type.getShareLink(url),
+                            'data-copy-success': translate('project.show.modal.share.copied')
+                        }
+                    }) }}
+                {% endfor %}
+            </div>
+
+            <script type="text/javascript">
+                window.initProjectShare('{{ path('project_api_share', {
+                    id: project.id,
+                    slug: project.slug,
+                }) }}')
+            </script>
+
+        {% endblock %}
+    {% endembed %}
+
 
 {% endblock %}
