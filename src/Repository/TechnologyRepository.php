@@ -12,15 +12,20 @@ class TechnologyRepository extends AbstractRepository
 {
     protected string $entityClass = Technology::class;
 
-    public function findUsedInCategory(Category $category): array
+    public function findUsedInCategory(?Category $category = null): array
     {
-        return $this->createQueryBuilder('t')
+        $queryBuilder = $this->createQueryBuilder('t')
             ->innerJoin('t.projects', 'p')
-            ->where('p.category = :category')
-            ->andWhere('p.publishedAt IS NOT NULL')
+            ->where('p.publishedAt IS NOT NULL')
             ->groupBy('t.id')
-            ->orderBy('t.name', 'ASC')
-            ->setParameter('category', $category->getId())
-            ->getResult();
+            ->orderBy('t.name', 'ASC');
+
+        if ($category !== null) {
+            $queryBuilder
+                ->andWhere('p.category = :category')
+                ->setParameter('category', $category->getId());
+        }
+
+        return $queryBuilder->getResult();
     }
 }

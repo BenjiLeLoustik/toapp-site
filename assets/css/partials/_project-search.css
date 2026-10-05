@@ -1,123 +1,122 @@
-/** ./assets/css/pages/category/_show.css */
+/** ./assets/css/partials/_project-search.css */
 
 @layer base {
 
-    section.category {
+    section.search {
         @apply h-auto flex flex-col gap-6 py-8;
     }
 
-    .category__breadcrumb {
+    .search__breadcrumb {
         @apply flex flex-wrap items-center gap-2 text-sm;
         color: var(--theme-foreground-muted);
     }
 
-    .category__breadcrumb a {
+    .search__breadcrumb a {
         color: var(--theme-accent);
     }
 
-    .category__breadcrumb a:hover {
+    .search__breadcrumb a:hover {
         @apply underline;
     }
 
-    .category__breadcrumb [aria-current="page"] {
+    .search__breadcrumb [aria-current="page"] {
         @apply font-medium;
         color: var(--theme-foreground);
     }
 
-    .category__header {
+    .search__header {
         @apply flex flex-col gap-2;
     }
 
-    h1.category__title {
+    h1.search__title {
         @apply text-3xl font-bold;
         color: var(--theme-foreground);
     }
 
-    p.category__description {
+    p.search__description {
         @apply text-base;
         color: var(--theme-foreground-muted);
     }
 
-    .category__layout {
+    .search__layout {
         @apply w-full flex items-start gap-6;
     }
 
     /* Filters */
 
-    .category__filters {
+    .search__filters {
         @apply w-64 shrink-0 flex flex-col gap-5 rounded-lg p-4 sticky top-4;
         background-color: var(--theme-surface);
         border: solid 1px var(--theme-border);
     }
 
-    .category__filters-header {
+    .search__filters-header {
         @apply flex items-center justify-between;
     }
 
-    .category__filters-title {
+    .search__filters-title {
         @apply text-base font-semibold;
         color: var(--theme-foreground);
     }
 
-    .category__filters-reset {
+    .search__filters-reset {
         @apply text-sm font-medium;
         color: var(--theme-accent);
     }
 
-    .category__filters-reset:hover {
+    .search__filters-reset:hover {
         @apply underline;
     }
 
-    .category__filter {
+    .search__filter {
         @apply flex flex-col gap-2;
     }
 
-    .category__filter-title {
+    .search__filter-title {
         @apply text-xs font-semibold uppercase;
         color: var(--theme-foreground);
     }
 
-    .category__filter-list {
+    .search__filter-list {
         @apply flex flex-col gap-2;
     }
 
     /* Results */
 
-    .category__results {
+    .search__results {
         @apply flex-1 min-w-0 flex flex-col gap-4;
     }
 
-    .category__toolbar {
+    .search__toolbar {
         @apply w-full flex items-center gap-4;
     }
 
-    .category__search {
+    .search__input {
         @apply flex-1;
     }
 
-    .category__toolbar-sort {
+    .search__toolbar-sort {
         @apply flex items-center gap-2 shrink-0;
     }
 
-    .category__toolbar-label {
+    .search__toolbar-label {
         @apply text-sm whitespace-nowrap;
         color: var(--theme-foreground-muted);
     }
-
 
     /* Tablet */
 
     @media (max-width: 1024px) {
 
-        .category__layout {
+        .search__layout {
             @apply flex-col;
         }
 
-        .category__filters {
+        .search__filters {
             @apply w-full static grid grid-cols-2;
         }
 
-        .category__filters-header {
+        .search__filters-header {
             @apply col-span-2;
         }
 
@@ -127,31 +126,31 @@
 
     @media (max-width: 767px) {
 
-        section.category {
+        section.search {
             @apply py-6 gap-4;
         }
 
-        h1.category__title {
+        h1.search__title {
             @apply text-2xl;
         }
 
-        p.category__description {
+        p.search__description {
             @apply text-sm;
         }
 
-        .category__filters {
+        .search__filters {
             @apply grid-cols-1;
         }
 
-        .category__filters-header {
+        .search__filters-header {
             @apply col-span-1;
         }
 
-        .category__toolbar {
+        .search__toolbar {
             @apply flex-col items-stretch gap-2;
         }
 
-        .category__toolbar-sort {
+        .search__toolbar-sort {
             @apply justify-between;
         }
 

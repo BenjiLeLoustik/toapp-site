@@ -29,39 +29,43 @@ categories:
     all: "All categories"
     card:
         count_projects: "{counterFormatted} {count, plural, one {project} other {projects}}"
-category:
-    show:
-        breadcrumb:
-            home: "Home"
-            categories: "Categories"
-        title_search: "Search results"
-        results: "{counterFormatted} {count, plural, one {project} other {projects}} in {category}"
-        results_search: "{counterFormatted} {count, plural, one {project} other {projects}} found for \"{search}\" in {category}"
-        search_placeholder: "Search a project..."
-        filters:
-            title: "Filters"
-            reset: "Reset"
-            category: "Category"
-            technologies: "Technologies"
-            sort: "Sort by"
-            sort_by: "Sort by:"
-            date: "Date"
-        sorts:
-            relevance: "Relevance"
-            recent: "Most recent"
-            oldest: "Oldest"
-            popular: "Most popular"
-        dates:
-            all: "All dates"
-            week: "This week"
-            month: "This month"
-            year: "This year"
-        empty:
-            title: "No result found"
-            description_line_1: "We could not find any project matching your search."
-            description_line_2: "Try other keywords or explore the categories."
-            explore_categories: "Explore categories"
-            reset: "Reset the search"
+search:
+    breadcrumb:
+        home: "Home"
+        categories: "Categories"
+        projects: "Projects"
+    title: "Search results"
+    title_all: "All projects"
+    placeholder: "Search a project..."
+    results:
+        all: "{counterFormatted} {count, plural, one {project} other {projects}}"
+        category: "{counterFormatted} {count, plural, one {project} other {projects}} in {category}"
+        search: "{counterFormatted} {count, plural, one {project} other {projects}} found for \"{search}\""
+        search_category: "{counterFormatted} {count, plural, one {project} other {projects}} found for \"{search}\" in {category}"
+    filters:
+        title: "Filters"
+        reset: "Reset"
+        category: "Category"
+        technologies: "Technologies"
+        sort: "Sort by"
+        sort_by: "Sort by:"
+        date: "Date"
+    sorts:
+        relevance: "Relevance"
+        recent: "Most recent"
+        oldest: "Oldest"
+        popular: "Most popular"
+    dates:
+        all: "All dates"
+        week: "This week"
+        month: "This month"
+        year: "This year"
+    empty:
+        title: "No result found"
+        description_line_1: "We could not find any project matching your search."
+        description_line_2: "Try other keywords or explore the categories."
+        explore_categories: "Explore categories"
+        reset: "Reset the search"
 project:
     show:
         actions:

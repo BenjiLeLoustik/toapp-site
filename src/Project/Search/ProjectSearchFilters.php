@@ -7,6 +7,8 @@ use App\Project\Enum\ProjectSortEnum;
 
 class ProjectSearchFilters
 {
+    public const ALL_CATEGORIES = 'all';
+
     public function __construct(
         private string $search = '',
         private array $technologies = [],
@@ -23,6 +25,27 @@ class ProjectSearchFilters
             ProjectSortEnum::tryFrom((string) ($query['sort'] ?? '')) ?? ProjectSortEnum::RELEVANCE,
             ProjectDateEnum::tryFrom((string) ($query['date'] ?? '')) ?? ProjectDateEnum::ALL,
         );
+    }
+
+    public static function categoryRedirect(array $query, ?string $currentSlug): ?array
+    {
+        $selected = $query['category'] ?? ($currentSlug ?? self::ALL_CATEGORIES);
+
+        if (!is_string($selected) || $selected === '') {
+            $selected = self::ALL_CATEGORIES;
+        }
+
+        if ($selected === ($currentSlug ?? self::ALL_CATEGORIES)) {
+            return null;
+        }
+
+        unset($query['category'], $query['page']);
+
+        if ($selected === self::ALL_CATEGORIES) {
+            return ['project_index', $query];
+        }
+
+        return ['category_show', ['slug' => $selected] + $query];
     }
 
     public function getSearch(): string

@@ -9,11 +9,19 @@ use App\Entity\User;
 use App\Helper\View\FormatNumberViewHelper;
 use App\Project\Enum\ProjectShareEnum;
 use App\Project\Helper\ProjectHelper;
+use App\Entity\Category;
+use App\Entity\Project;
+use App\Entity\Technology;
+use App\Project\Enum\ProjectDateEnum;
+use App\Project\Enum\ProjectSortEnum;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
+use App\Project\Search\ProjectSearchFilters;
+use NeoPHP\Component\Api\Attribute\MapPagination;
+use NeoPHP\Component\Api\Pagination\PageRequest;
 
 #[Route('/projects', name: 'project_')]
 class ProjectController extends AbstractController
@@ -22,6 +30,34 @@ class ProjectController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ProjectHelper $projectHelper,
     ) {
+    }
+
+    #[Route('', name: 'index', methods: ['GET'])]
+    public function index(
+        Request $request,
+        #[MapPagination(defaultLimit: 6, maxLimit: 48)]
+        PageRequest $pageRequest,
+    ): Response {
+        $query = $request->query->all();
+        $redirect = ProjectSearchFilters::categoryRedirect($query, null);
+
+        if ($redirect !== null) {
+            return $this->redirectToRoute(...$redirect);
+        }
+
+        $filters = ProjectSearchFilters::fromQuery($query);
+
+        return $this->render('pages/project/index.html.twig', [
+            'categories' => $this->entityManager->getRepository(Category::class)->findBy([], ['slug' => 'ASC']),
+            'technologies' => $this->entityManager->getRepository(Technology::class)->findUsedInCategory(),
+            'filters' => $filters,
+            'sorts' => ProjectSortEnum::cases(),
+            'dates' => ProjectDateEnum::cases(),
+            'projects' => $this->paginate(
+                $this->entityManager->getRepository(Project::class)->createSearchQueryBuilder(null, $filters),
+                $pageRequest
+            ),
+        ]);
     }
 
     #[Route('/{id}/{slug}', name: 'show')]

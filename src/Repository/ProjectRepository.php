@@ -20,15 +20,19 @@ class ProjectRepository extends AbstractRepository
         return $this->findBy([], ['createdAt' => 'ASC'], $limit);
     }
 
-    public function createSearchQueryBuilder(Category $category, ProjectSearchFilters $filters): QueryBuilder
+    public function createSearchQueryBuilder(?Category $category, ProjectSearchFilters $filters): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.likes', 'l')
             ->leftJoin('p.views', 'v')
-            ->where('p.category = :category')
-            ->andWhere('p.publishedAt IS NOT NULL')
-            ->groupBy('p.id')
-            ->setParameter('category', $category->getId());
+            ->where('p.publishedAt IS NOT NULL')
+            ->groupBy('p.id');
+
+        if ($category !== null) {
+            $queryBuilder
+                ->andWhere('p.category = :category')
+                ->setParameter('category', $category->getId());
+        }
 
         if ($filters->hasSearch()) {
             $queryBuilder

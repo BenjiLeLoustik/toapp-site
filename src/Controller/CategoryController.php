@@ -46,15 +46,12 @@ class CategoryController extends AbstractController
         PageRequest $pageRequest,
     ): Response {
         $query = $request->query->all();
-        $selectedCategory = $query['category'] ?? $slug;
+        $redirect = ProjectSearchFilters::categoryRedirect($query, $slug);
 
-        if (is_string($selectedCategory) && $selectedCategory !== $slug) {
-            unset($query['category'], $query['page']);
-
-            return $this->redirectToRoute('category_show', ['slug' => $selectedCategory] + $query);
+        if ($redirect !== null) {
+            return $this->redirectToRoute(...$redirect);
         }
 
-        /** @var null|Category $category */
         $category = $this->entityManager->getRepository(Category::class)->findOneBy(['slug' => $slug]);
 
         if ($category === null) {

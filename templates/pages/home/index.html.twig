@@ -32,8 +32,7 @@
             }) %}
         {% endfor %}
 
-        <div class="hero__search-bar">
-
+        <form class="hero__search-bar" method="get" action="{{ path('project_index') }}">
             {{ Form.group([
                 Form.input('search', {
                     iconLeft: 'search',
@@ -50,7 +49,8 @@
                     columns: 2
                 })
             ], { columns: 12, gap: 'xs' }) }}
-        </div>
+
+        </form>
 
         <div class="hero__actions">
 
