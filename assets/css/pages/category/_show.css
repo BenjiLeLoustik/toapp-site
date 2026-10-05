@@ -108,10 +108,6 @@
         @apply grid-cols-2;
     }
 
-    .category__empty {
-        @apply w-full flex items-center justify-center rounded-lg py-16 px-6;
-        border: dashed 2px var(--theme-border);
-    }
 
     /* Tablet */
 
