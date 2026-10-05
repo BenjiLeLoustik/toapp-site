@@ -1,0 +1,57 @@
+{# ./templates/pages/trend/index.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{% block content %}
+
+    <section class="trends screen screen--margin">
+
+        <h1 class="trends__title">
+            {{ translate('trends.title') }}
+        </h1>
+
+        <p class="trends__description">
+            {{ translate('trends.description') }}
+        </p>
+
+        <nav class="trends__periods" aria-label="{{ translate('trends.periods.label') }}">
+            {% for item in periods %}
+                {{ Button.render(translate('trends.periods.' ~ item.value), {
+                    href: path('trend_index', { period: item.value }),
+                    variant: item == period ? 'primary' : 'ghost-outline',
+                    size: 'sm',
+                    attributes: item == period ? { 'aria-current': 'page' } : {}
+                }) }}
+            {% endfor %}
+        </nav>
+
+        {% if projects.total > 0 %}
+
+            {{ Card.projects(projects) }}
+
+            {{ Pagination.render(projects, {
+                previousLabel: translate('pagination.previous'),
+                nextLabel: translate('pagination.next')
+            }) }}
+
+        {% else %}
+
+            {{ Empty.render('trending-up', translate('trends.empty.title'), [
+                translate('trends.empty.description')
+            ], [
+                Button.render(translate('trends.empty.explore'), {
+                    href: path('project_index'),
+                    size: 'sm'
+                })
+            ]) }}
+
+        {% endif %}
+
+    </section>
+
+{% endblock %}

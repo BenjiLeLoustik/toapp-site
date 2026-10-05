@@ -64,4 +64,19 @@ class ProjectRepository extends AbstractRepository
 
         return $queryBuilder;
     }
+
+    public function createTrendingQueryBuilder(ProjectDateEnum $period): QueryBuilder
+    {
+        $since = ($period->getSince() ?? new \DateTime('-7 days'))->format('Y-m-d H:i:s');
+
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.likes', 'l', 'l.createdAt >= :since')
+            ->leftJoin('p.views', 'v', 'v.createdAt >= :since')
+            ->where('p.publishedAt IS NOT NULL')
+            ->groupBy('p.id')
+            ->having('COUNT(DISTINCT l.id) + COUNT(DISTINCT v.id) > 0')
+            ->orderBy('COUNT(DISTINCT l.id) * 3 + COUNT(DISTINCT v.id)', 'DESC')
+            ->addOrderBy('p.publishedAt', 'DESC')
+            ->setParameter('since', $since);
+    }
 }

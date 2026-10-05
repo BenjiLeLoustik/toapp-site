@@ -1,0 +1,41 @@
+/** ./assets/css/pages/trend/_index.css */
+
+@layer base {
+
+    section.trends {
+        @apply h-auto flex flex-col items-center justify-center gap-4 py-12;
+    }
+
+    h1.trends__title {
+        @apply w-full max-w-2xl text-center text-3xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.trends__description {
+        @apply w-full max-w-xl text-center text-lg;
+        color: var(--theme-foreground-muted);
+    }
+
+    .trends__periods {
+        @apply flex flex-wrap items-center justify-center gap-2 mb-4;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.trends {
+            @apply px-4 py-8;
+        }
+
+        h1.trends__title {
+            @apply text-2xl;
+        }
+
+        p.trends__description {
+            @apply text-base;
+        }
+
+    }
+
+}

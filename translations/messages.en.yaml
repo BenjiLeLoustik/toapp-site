@@ -116,3 +116,15 @@ project:
 pagination:
     previous: "Previous page"
     next: "Next page"
+trends:
+    title: "Trending projects"
+    description: "The projects that received the most likes and views recently"
+    periods:
+        label: "Period"
+        week: "This week"
+        month: "This month"
+        year: "This year"
+    empty:
+        title: "No trending project"
+        description: "No project received likes or views during this period."
+        explore: "Explore projects"
