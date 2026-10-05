@@ -165,3 +165,19 @@ about:
         description: "Publish your projects, get feedback and discover what other developers are building."
         explore: "Explore projects"
         publish: "Publish a project"
+register:
+    title: "Create an account"
+    description: "Join the community and start sharing your projects."
+    fields:
+        firstname: "First name"
+        lastname: "Last name"
+        username: "Username"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        terms: "I accept the terms of use and the privacy policy"
+    submit: "Create my account"
+    has_account: "Already have an account?"
+    login: "Sign in"
+    flash:
+        success: "Welcome {name}, your account has been created!"

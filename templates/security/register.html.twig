@@ -1,0 +1,111 @@
+{# ./templates/pages/security/register.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+
+{% block content %}
+
+    <section class="register screen screen--margin">
+
+        <div class="register__container">
+
+            <header class="register__header">
+                <h1 class="register__title">
+                    {{ translate('register.title') }}
+                </h1>
+                <p class="register__description">
+                    {{ translate('register.description') }}
+                </p>
+            </header>
+
+            {% if errors._form ?? null %}
+                <p class="register__error">
+                    {{ errors._form }}
+                </p>
+            {% endif %}
+
+            {{ form_start(form, { attr: { class: 'register__form', novalidate: 'novalidate' } }) }}
+
+                {{ Form.group([
+                    Form.input('firstname', {
+                        label: translate('register.fields.firstname'),
+                        value: form.get('firstname').viewData,
+                        autocomplete: 'given-name',
+                        required: true,
+                        error: errors.firstname ?? null,
+                        columns: 6
+                    }),
+                    Form.input('lastname', {
+                        label: translate('register.fields.lastname'),
+                        value: form.get('lastname').viewData,
+                        autocomplete: 'family-name',
+                        required: true,
+                        error: errors.lastname ?? null,
+                        columns: 6
+                    })
+                ], { columns: 12, gap: 'sm' }) }}
+
+                {{ Form.input('username', {
+                    label: translate('register.fields.username'),
+                    value: form.get('username').viewData,
+                    iconLeft: 'at-sign',
+                    autocomplete: 'username',
+                    required: true,
+                    error: errors.username ?? null
+                }) }}
+
+                {{ Form.input('email', {
+                    label: translate('register.fields.email'),
+                    value: form.get('email').viewData,
+                    type: 'email',
+                    iconLeft: 'mail',
+                    autocomplete: 'email',
+                    required: true,
+                    error: errors.email ?? null
+                }) }}
+
+                {{ Form.input('password', {
+                    label: translate('register.fields.password'),
+                    type: 'password',
+                    iconLeft: 'lock',
+                    autocomplete: 'new-password',
+                    required: true,
+                    error: errors.password ?? null
+                }) }}
+
+                {{ Form.input('password_confirmation', {
+                    label: translate('register.fields.password_confirmation'),
+                    type: 'password',
+                    iconLeft: 'lock',
+                    autocomplete: 'new-password',
+                    required: true,
+                    error: errors.password_confirmation ?? null
+                }) }}
+
+                {{ Form.checkbox('terms', {
+                    label: translate('register.fields.terms'),
+                    checked: form.get('terms').viewData ? true : false,
+                    error: errors.terms ?? null
+                }) }}
+
+                {{ Form.submit(translate('register.submit'), {
+                    class: 'register__submit'
+                }) }}
+
+                {{ form_widget(form['_token']) }}
+
+            {{ form_end(form, { render_rest: false }) }}
+
+            <p class="register__footer">
+                {{ translate('register.has_account') }}
+                <a href="{{ path('app_security_login') }}" class="register__link">
+                    {{ translate('register.login') }}
+                </a>
+            </p>
+
+        </div>
+
+    </section>
+
+{% endblock %}

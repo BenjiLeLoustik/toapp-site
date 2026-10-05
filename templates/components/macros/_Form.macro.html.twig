@@ -23,8 +23,9 @@
     {% set class = options.class ?? '' %}
     {% set attributes = options.attributes ?? {} %}
     {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
 
-    <div class="form__field {{ class }}" style="--form-group-item-columns: {{ columns }};">
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
 
         {% if label %}
             <label for="{{ id }}" class="form__label">
@@ -40,13 +41,14 @@
                     type="{{ type }}"
                     class="form__input"
                     {% if value is not null %}value="{{ value }}"{% endif %}
-                    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
-                    {% if disabled %}disabled{% endif %}
-                    {% if required %}required{% endif %}
-                    {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
-                    {% for attribute, attributeValue in attributes %}
-                        {{ attribute }}="{{ attributeValue }}"
-                    {% endfor %}
+                {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
             >
 
             {% if iconLeft %}
@@ -82,6 +84,8 @@
 
         </div>
 
+        {{ _self.render_error(id, error) }}
+
     </div>
 
 {% endmacro %}
@@ -104,8 +108,9 @@
     {% set attributes = options.attributes ?? {} %}
     {% set choices = options.options ?? {} %}
     {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
 
-    <div class="form__field {{ class }}" style="--form-group-item-columns: {{ columns }};">
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
 
         {% if label %}
             <label for="{{ id }}" class="form__label">
@@ -120,22 +125,23 @@
                     name="{{ name }}"
                     class="form__select"
                     {% if disabled %}disabled{% endif %}
-                    {% if required %}required{% endif %}
-                    {% for attribute, attributeValue in attributes %}
-                        {{ attribute }}="{{ attributeValue }}"
-                    {% endfor %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
             >
-                {% if placeholder %}
-                    <option value="" {% if value is null %}selected{% endif %}>
-                        {{ placeholder }}
-                    </option>
-                {% endif %}
+            {% if placeholder %}
+                <option value="" {% if value is null %}selected{% endif %}>
+                    {{ placeholder }}
+                </option>
+            {% endif %}
 
-                {% for optionValue, optionLabel in choices %}
-                    <option value="{{ optionValue }}" {% if optionValue == value %}selected{% endif %}>
-                        {{ optionLabel }}
-                    </option>
-                {% endfor %}
+            {% for optionValue, optionLabel in choices %}
+                <option value="{{ optionValue }}" {% if optionValue == value %}selected{% endif %}>
+                    {{ optionLabel }}
+                </option>
+            {% endfor %}
             </select>
 
             {% if iconLeft %}
@@ -150,9 +156,12 @@
 
         </div>
 
+        {{ _self.render_error(id, error) }}
+
     </div>
 
 {% endmacro %}
+
 
 {% macro checkbox(name, options = {}) %}
 
@@ -166,8 +175,9 @@
     {% set class = options.class ?? '' %}
     {% set attributes = options.attributes ?? {} %}
     {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
 
-    <div class="form__field form__field--checkbox {{ class }}" style="--form-group-item-columns: {{ columns }};">
+    <div class="form__field form__field--checkbox {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
 
         <label for="{{ id }}" class="form__checkbox">
 
@@ -178,11 +188,12 @@
                     class="form__checkbox-input"
                     value="{{ value }}"
                     {% if checked %}checked{% endif %}
-                    {% if disabled %}disabled{% endif %}
-                    {% if required %}required{% endif %}
-                    {% for attribute, attributeValue in attributes %}
-                        {{ attribute }}="{{ attributeValue }}"
-                    {% endfor %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
             >
 
             <span class="form__checkbox-box" aria-hidden="true">
@@ -197,9 +208,62 @@
 
         </label>
 
+        {{ _self.render_error(id, error) }}
+
     </div>
 
 {% endmacro %}
+
+
+{% macro radio(name, options = {}) %}
+
+    {% set value = options.value ?? '' %}
+    {% set id = options.id ?? (name ~ '-' ~ value) %}
+    {% set label = options.label ?? null %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field form__field--radio {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        <label for="{{ id }}" class="form__radio">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="radio"
+                    class="form__radio-input"
+                    value="{{ value }}"
+                    {% if checked %}checked{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >
+
+            <span class="form__radio-dot" aria-hidden="true"></span>
+
+            {% if label %}
+                <span class="form__radio-label">
+                    {{ label }}
+                </span>
+            {% endif %}
+
+        </label>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
 
 {% macro submit(label = 'Submit', options = {}) %}
 
@@ -248,6 +312,17 @@
 {% endmacro %}
 
 
+{% macro render_error(id, error) %}
+
+    {% if error %}
+        <p id="{{ id }}-error" class="form__error">
+            {{ error }}
+        </p>
+    {% endif %}
+
+{% endmacro %}
+
+
 {% macro render_icon(name, size, options = {}) %}
 
     {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
@@ -257,50 +332,5 @@
     }) %}
 
     {{ Icon.lucide(name, iconConfig) }}
-
-{% endmacro %}
-
-{% macro radio(name, options = {}) %}
-
-    {% set value = options.value ?? '' %}
-    {% set id = options.id ?? (name ~ '-' ~ value) %}
-    {% set label = options.label ?? null %}
-    {% set checked = options.checked ?? false %}
-    {% set disabled = options.disabled ?? false %}
-    {% set required = options.required ?? false %}
-
-    {% set class = options.class ?? '' %}
-    {% set attributes = options.attributes ?? {} %}
-    {% set columns = options.columns ?? 1 %}
-
-    <div class="form__field form__field--radio {{ class }}" style="--form-group-item-columns: {{ columns }};">
-
-        <label for="{{ id }}" class="form__radio">
-
-            <input
-                    id="{{ id }}"
-                    name="{{ name }}"
-                    type="radio"
-                    class="form__radio-input"
-                    value="{{ value }}"
-                    {% if checked %}checked{% endif %}
-                    {% if disabled %}disabled{% endif %}
-                    {% if required %}required{% endif %}
-                    {% for attribute, attributeValue in attributes %}
-                        {{ attribute }}="{{ attributeValue }}"
-                    {% endfor %}
-            >
-
-            <span class="form__radio-dot" aria-hidden="true"></span>
-
-            {% if label %}
-                <span class="form__radio-label">
-                    {{ label }}
-                </span>
-            {% endif %}
-
-        </label>
-
-    </div>
 
 {% endmacro %}

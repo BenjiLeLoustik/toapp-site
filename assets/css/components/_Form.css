@@ -259,6 +259,29 @@
         @apply opacity-50 cursor-not-allowed;
     }
 
+    /* Errors */
+
+    .form__error {
+        @apply text-xs;
+        color: var(--theme-danger);
+    }
+
+    .form__field--invalid .form__input,
+    .form__field--invalid .form__select,
+    .form__field--invalid .form__checkbox-box,
+    .form__field--invalid .form__radio-dot {
+        border-color: var(--theme-danger);
+    }
+
+    .form__field--invalid .form__input:focus,
+    .form__field--invalid .form__select:focus {
+        border-color: var(--theme-danger);
+    }
+
+    .form__field--invalid .form__label {
+        color: var(--theme-danger);
+    }
+
     /* Mobile */
 
     @media (max-width: 767px) {
