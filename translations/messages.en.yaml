@@ -25,15 +25,17 @@ main:
             actions:
                 create_project: "Create project"
         show_more: "Show all projects"
+breadcrumb:
+    home: "Home"
+    categories: "Categories"
+    projects: "Projects"
+    trends: "Trends"
+    about: "About"
 categories:
     all: "All categories"
     card:
         count_projects: "{counterFormatted} {count, plural, one {project} other {projects}}"
 search:
-    breadcrumb:
-        home: "Home"
-        categories: "Categories"
-        projects: "Projects"
     title: "Search results"
     title_all: "All projects"
     placeholder: "Search a project..."
@@ -129,9 +131,6 @@ trends:
         description: "No project received likes or views during this period."
         explore: "Explore projects"
 about:
-    breadcrumb:
-        home: "Home"
-        about: "About"
     hero:
         title: "About"
         description: "{name} is the platform where developers share, discover and celebrate web projects, mobile apps and APIs built by the community."
