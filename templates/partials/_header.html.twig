@@ -4,10 +4,10 @@
 {% import 'components/macros/_Button.macro.html.twig' as Button %}
 
 {% set headerNavItems = [
-    { label: 'home', routeName: 'home_index', activePrefix: 'home_' },
-    { label: 'categories', routeName: 'category_index', activePrefix: 'category_' },
-    { label: 'trends', routeName: '#', activePrefix: null },
-    { label: 'about', routeName: '#', activePrefix: null }
+    { label: 'home', routeName: 'home_index', activeRoutes: ['home_'] },
+    { label: 'categories', routeName: 'category_index', activeRoutes: ['category_', 'project_index'] },
+    { label: 'trends', routeName: '#', activeRoutes: [] },
+    { label: 'about', routeName: '#', activeRoutes: [] }
 ] %}
 
 <header class="header">
@@ -74,8 +74,13 @@
 
                 {% for item in headerNavItems %}
 
-                    {% set isActive = app.current_route == item.routeName
-                        or (item.activePrefix and app.current_route starts with item.activePrefix) %}
+                    {% set isActive = app.current_route == item.routeName %}
+
+                    {% for activeRoute in item.activeRoutes %}
+                        {% if app.current_route starts with activeRoute %}
+                            {% set isActive = true %}
+                        {% endif %}
+                    {% endfor %}
 
                     {{ Button.render(translate('header.nav.links.' ~ item.label, domain: 'header'), {
                         href: item.routeName != '#' ? path(item.routeName) : '#',
