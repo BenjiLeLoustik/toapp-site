@@ -104,10 +104,6 @@
         color: var(--theme-foreground-muted);
     }
 
-    .cards.cards--projects-2 {
-        @apply grid-cols-2;
-    }
-
 
     /* Tablet */
 
