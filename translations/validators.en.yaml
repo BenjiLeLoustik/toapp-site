@@ -1,0 +1,28 @@
+register:
+    firstname:
+        not_blank: "Please enter your first name."
+        max_length: "The first name cannot be longer than {{ limit }} characters."
+    lastname:
+        not_blank: "Please enter your last name."
+        max_length: "The last name cannot be longer than {{ limit }} characters."
+    username:
+        not_blank: "Please choose a username."
+        min_length: "The username must contain at least {{ limit }} characters."
+        max_length: "The username cannot be longer than {{ limit }} characters."
+        format: "The username can only contain letters, numbers and underscores."
+        taken: "This username is already taken."
+    email:
+        not_blank: "Please enter your email address."
+        invalid: "Please enter a valid email address."
+        max_length: "The email address cannot be longer than {{ limit }} characters."
+        taken: "An account already exists with this email address."
+    password:
+        not_blank: "Please choose a password."
+        min_length: "The password must contain at least {{ limit }} characters."
+        max_length: "The password cannot be longer than {{ limit }} characters."
+    password_confirmation:
+        not_blank: "Please confirm your password."
+        mismatch: "The passwords do not match."
+    terms:
+        required: "You must accept the terms of use."
+"The CSRF token is invalid. Please try to resubmit the form.": "Your session has expired, please submit the form again."

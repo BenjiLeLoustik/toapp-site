@@ -8,12 +8,16 @@ use App\Entity\User;
 use NeoPHP\Component\Form\Contract\FormInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
+use NeoPHP\Package\Translation\Contract\TranslatorInterface;
 
 class RegistrationHelper
 {
+    public const TRANSLATION_DOMAIN = 'validators';
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasher $passwordHasher,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -22,15 +26,15 @@ class RegistrationHelper
         $repository = $this->entityManager->getRepository(User::class);
 
         if ($form->get('password')->getData() !== $form->get('password_confirmation')->getData()) {
-            $form->get('password_confirmation')->addError('The passwords do not match.');
+            $form->get('password_confirmation')->addError($this->trans('register.password_confirmation.mismatch'));
         }
 
         if ($repository->findOneBy(['email' => $form->get('email')->getData()]) !== null) {
-            $form->get('email')->addError('An account already exists with this email address.');
+            $form->get('email')->addError($this->trans('register.email.taken'));
         }
 
         if ($repository->findOneBy(['username' => $form->get('username')->getData()]) !== null) {
-            $form->get('username')->addError('This username is already taken.');
+            $form->get('username')->addError($this->trans('register.username.taken'));
         }
 
         return $form->getErrors(true) === [];
@@ -75,5 +79,10 @@ class RegistrationHelper
         }
 
         return $errors;
+    }
+
+    private function trans(string $key, array $parameters = []): string
+    {
+        return $this->translator->translate($key, $parameters, self::TRANSLATION_DOMAIN);
     }
 }

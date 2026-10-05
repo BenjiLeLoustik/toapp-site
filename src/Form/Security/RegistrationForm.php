@@ -23,46 +23,46 @@ class RegistrationForm extends AbstractForm
         $builder
             ->add('firstname', TextType::class, [
                 'constraints' => [
-                    new NotBlank('Please enter your first name.'),
-                    new Length(max: 50),
+                    new NotBlank('register.firstname.not_blank'),
+                    new Length(max: 50, maxMessage: 'register.firstname.max_length'),
                 ],
             ])
             ->add('lastname', TextType::class, [
                 'constraints' => [
-                    new NotBlank('Please enter your last name.'),
-                    new Length(max: 50),
+                    new NotBlank('register.lastname.not_blank'),
+                    new Length(max: 50, maxMessage: 'register.lastname.max_length'),
                 ],
             ])
             ->add('username', TextType::class, [
                 'constraints' => [
-                    new NotBlank('Please choose a username.'),
-                    new Length(min: 3, max: 30),
-                    new Regex('/^[a-zA-Z0-9_]+$/', message: 'The username can only contain letters, numbers and underscores.'),
+                    new NotBlank('register.username.not_blank'),
+                    new Length(min: 3, max: 30, minMessage: 'register.username.min_length', maxMessage: 'register.username.max_length'),
+                    new Regex('/^[a-zA-Z0-9_]+$/', message: 'register.username.format'),
                 ],
             ])
             ->add('email', EmailType::class, [
                 'constraints' => [
-                    new NotBlank('Please enter your email address.'),
-                    new Email('Please enter a valid email address.'),
-                    new Length(max: 180),
+                    new NotBlank('register.email.not_blank'),
+                    new Email('register.email.invalid'),
+                    new Length(max: 180, maxMessage: 'register.email.max_length'),
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
-                    new NotBlank('Please choose a password.'),
-                    new Length(min: 8, max: 4096, minMessage: 'The password must contain at least {{ limit }} characters.'),
+                    new NotBlank('register.password.not_blank'),
+                    new Length(min: 8, max: 4096, minMessage: 'register.password.min_length', maxMessage: 'register.password.max_length'),
                 ],
             ])
             ->add('password_confirmation', PasswordType::class, [
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank('Please confirm your password.'),
+                    new NotBlank('register.password_confirmation.not_blank'),
                 ],
             ])
             ->add('terms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
-                    new IsTrue('You must accept the terms of use.'),
+                    new IsTrue('register.terms.required'),
                 ],
             ]);
     }
