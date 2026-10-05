@@ -6,34 +6,32 @@
 
 {% block content %}
 
+    {% set errorMessage = error ? error ~ '' : null %}
+
     <section class="login screen screen--margin screen--full">
 
         <div class="login__container">
 
             <header class="login__header">
                 <h1 class="login__title">
-                    Sign in
+                    {{ translate('login.title') }}
                 </h1>
                 <p class="login__description">
-                    Enter your email and password to access your account.
+                    {{ translate('login.description') }}
                 </p>
             </header>
 
-            {% if error %}
-                <p class="login__error">
-                    {{ error }}
-                </p>
-            {% endif %}
-
-            {{ form_start(form, { attr: { class: 'login__form' } }) }}
+            {{ form_start(form, { attr: { class: 'login__form', novalidate: 'novalidate' } }) }}
 
                 {{ Form.input('_username', {
                     id: 'username',
-                    label: 'Email',
+                    label: translate('login.fields.email'),
                     value: last_username,
                     type: 'email',
+                    iconLeft: 'mail',
                     autocomplete: 'username',
                     required: true,
+                    class: errorMessage ? 'form__field--invalid' : '',
                     attributes: {
                         autofocus: true
                     }
@@ -41,20 +39,33 @@
 
                 {{ Form.input('_password', {
                     id: 'password',
-                    label: 'Password',
+                    label: translate('login.fields.password'),
                     type: 'password',
+                    iconLeft: 'lock',
                     autocomplete: 'current-password',
-                    required: true
+                    required: true,
+                    error: errorMessage
                 }) }}
 
                 {{ Form.checkbox('_remember_me', {
                     id: 'remember_me',
-                    label: 'Remember me'
+                    label: translate('login.fields.remember_me')
                 }) }}
 
-                {{ Form.submit('Sign in') }}
+                {{ Form.submit(translate('login.submit'), {
+                    class: 'login__submit'
+                }) }}
 
-            {{ form_end(form) }}
+                {{ form_widget(form['_csrf_token']) }}
+
+            {{ form_end(form, { render_rest: false }) }}
+
+            <p class="login__footer">
+                {{ translate('login.no_account') }}
+                <a href="{{ path('app_security_register') }}" class="login__link">
+                    {{ translate('login.register') }}
+                </a>
+            </p>
 
         </div>
 

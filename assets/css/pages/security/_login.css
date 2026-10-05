@@ -26,19 +26,27 @@
         color: var(--theme-foreground-muted);
     }
 
-    .login__error {
-        @apply rounded-lg px-4 py-3 text-sm;
-        color: var(--theme-danger);
-        background-color: color-mix(in oklab, var(--theme-danger) 10%, var(--theme-surface));
-        border: solid 1px color-mix(in oklab, var(--theme-danger) 35%, var(--theme-surface));
-    }
-
     .login__form {
         @apply w-full flex flex-col gap-4;
     }
 
-    .login__form .form__group-item > * {
+    .login__form .login__submit,
+    .login__form .form__group-item:has(.login__submit) {
         @apply w-full justify-center;
+    }
+
+    p.login__footer {
+        @apply text-sm text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    .login__link {
+        @apply font-medium;
+        color: var(--theme-accent);
+    }
+
+    .login__link:hover {
+        @apply underline;
     }
 
     /* Mobile */

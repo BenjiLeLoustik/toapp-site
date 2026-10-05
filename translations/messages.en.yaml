@@ -165,6 +165,16 @@ about:
         description: "Publish your projects, get feedback and discover what other developers are building."
         explore: "Explore projects"
         publish: "Publish a project"
+login:
+    title: "Sign in"
+    description: "Enter your email and password to access your account."
+    fields:
+        email: "Email"
+        password: "Password"
+        remember_me: "Remember me"
+    submit: "Sign in"
+    no_account: "Don't have an account?"
+    register: "Create one"
 register:
     title: "Create an account"
     description: "Join the community and start sharing your projects."

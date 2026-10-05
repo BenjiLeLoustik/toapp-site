@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Security;
 
 use NeoPHP\Component\Form\Contract\AbstractForm;
@@ -16,7 +18,7 @@ class LoginForm extends AbstractForm
         return [
             'csrf_protection' => true,
             'csrf_field_name' => '_csrf_token',
-            'csrf_token_id'   => 'authenticate',
+            'csrf_token_id' => 'authenticate',
         ];
     }
 }
