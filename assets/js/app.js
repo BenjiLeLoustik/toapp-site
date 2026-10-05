@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     window.toggleInputPassword();
+    window.initAutoSubmit();
 });
 
 window.initPreferenceChange = function (name, route, attribute, reload = false, callback = null) {
@@ -200,5 +201,42 @@ window.toggleInputPassword = function () {
             );
         });
 
+    });
+};
+
+window.initAutoSubmit = function () {
+    document.querySelectorAll('form[data-auto-submit]').forEach(form => {
+
+        if (form.dataset.autoSubmitReady) {
+            return;
+        }
+
+        form.dataset.autoSubmitReady = 'true';
+
+        form.querySelectorAll('[data-sort-sync]').forEach(select => {
+            select.addEventListener('change', () => {
+                form.querySelectorAll('input[type="radio"][name="sort"]').forEach(radio => {
+                    radio.checked = radio.value === select.value;
+                });
+            });
+        });
+
+        form.querySelectorAll('input[type="radio"][name="sort"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                form.querySelectorAll('[data-sort-sync]').forEach(select => {
+                    select.value = radio.value;
+                });
+            });
+        });
+
+        form.querySelectorAll('select, input[type="checkbox"], input[type="radio"]').forEach(field => {
+            field.addEventListener('change', () => {
+                form.querySelectorAll('[data-sort-sync]').forEach(select => {
+                    select.disabled = true;
+                });
+
+                form.requestSubmit();
+            });
+        });
     });
 };

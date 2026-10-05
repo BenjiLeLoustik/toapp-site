@@ -1,0 +1,9 @@
+/** ./assets/css/pages/category/_index.css */
+
+@layer base {
+
+    section.categories {
+        @apply flex items-center justify-center flex flex-col gap-4 py-12;
+    }
+
+}

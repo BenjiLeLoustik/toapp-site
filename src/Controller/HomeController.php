@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\CategoryTranslated;
 use App\Entity\Project;
 use App\Entity\Technology;
 use App\Entity\User;
@@ -23,19 +22,6 @@ class HomeController extends AbstractController
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
-        $translations = $this->getOrm()
-            ->getRepository(CategoryTranslated::class)
-            ->findAllTranslated($this->translator->getLocale());
-
-        $categories = array_reduce($translations, static function (array $options, CategoryTranslated $translation): array {
-            $options[$translation->getCategory()->getSlug()] = $translation->getName();
-            return $options;
-        }, []);
-
-        $categories = [
-            'all' => $this->translator->translate('categories.all'),
-        ] + $categories;
-
         $projectRepository = $this->getOrm()->getRepository(Project::class);
         $userRepository = $this->getOrm()->getRepository(User::class);
         $technologyRepository = $this->getOrm()->getRepository(Technology::class);
@@ -44,7 +30,7 @@ class HomeController extends AbstractController
         $projects = $projectRepository->findPopular(6);
 
         return $this->render('pages/home/index.html.twig', [
-            'categories' => $categories,
+            'categories' => $categoryRepository->findBy([], ['slug' => 'ASC']),
             'stats' => [
                 'published_projects' => $projectRepository->count(),
                 'active_developers' => $userRepository->count(),

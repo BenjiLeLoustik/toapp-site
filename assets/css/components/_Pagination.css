@@ -1,0 +1,30 @@
+/** ./assets/css/components/_Pagination.css */
+
+@layer component {
+
+    .pagination {
+        @apply w-full flex items-center justify-center gap-2 py-6;
+    }
+
+    .pagination__pages {
+        @apply flex items-center gap-1;
+    }
+
+    .pagination__page {
+        @apply aspect-square justify-center px-0;
+    }
+
+    .pagination__ellipsis {
+        @apply inline-flex items-center justify-center px-1 select-none;
+        color: var(--theme-foreground-muted);
+    }
+
+    @media (max-width: 767px) {
+
+        .pagination {
+            @apply gap-1;
+        }
+
+    }
+
+}

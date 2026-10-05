@@ -259,3 +259,48 @@
     {{ Icon.lucide(name, iconConfig) }}
 
 {% endmacro %}
+
+{% macro radio(name, options = {}) %}
+
+    {% set value = options.value ?? '' %}
+    {% set id = options.id ?? (name ~ '-' ~ value) %}
+    {% set label = options.label ?? null %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+
+    <div class="form__field form__field--radio {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        <label for="{{ id }}" class="form__radio">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="radio"
+                    class="form__radio-input"
+                    value="{{ value }}"
+                    {% if checked %}checked{% endif %}
+                    {% if disabled %}disabled{% endif %}
+                    {% if required %}required{% endif %}
+                    {% for attribute, attributeValue in attributes %}
+                        {{ attribute }}="{{ attributeValue }}"
+                    {% endfor %}
+            >
+
+            <span class="form__radio-dot" aria-hidden="true"></span>
+
+            {% if label %}
+                <span class="form__radio-label">
+                    {{ label }}
+                </span>
+            {% endif %}
+
+        </label>
+
+    </div>
+
+{% endmacro %}

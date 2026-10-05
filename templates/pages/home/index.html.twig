@@ -22,6 +22,16 @@
             {{ translate('main.hero.sub_title') }}
         </p>
 
+        {% set categoryOptions = {
+            all: translate('categories.all')
+        } %}
+
+        {% for category in categories %}
+            {% set categoryOptions = categoryOptions|merge({
+                (category.slug): category.translation(locale()).name ?? category.slug
+            }) %}
+        {% endfor %}
+
         <div class="hero__search-bar">
 
             {{ Form.group([
@@ -33,7 +43,7 @@
                 }),
                 Form.select('category', {
                     value: 'all',
-                    options: categories,
+                    options: categoryOptions,
                     columns: 4
                 }),
                 Form.submit(translate('main.hero.search_bar.submit'), {
@@ -117,9 +127,10 @@
 
             {{ Card.projects(popular_projects) }}
 
-            {% if popular_projects|length > 6 %}
+            {% if stats.published_projects > popular_projects|length %}
                 <div class="popular-projects__show-more">
                     {{ Button.render(translate('main.popular_projects.show_more'), {
+                        href: '#',
                         iconRight: 'arrow-right',
                         iconOptions: {
                             size: 'xs'

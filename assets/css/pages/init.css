@@ -5,3 +5,6 @@
 @import "./project/_show.css";
 
 @import "./security/_login.css";
+
+@import "./category/_index.css";
+@import "./category/_show.css";

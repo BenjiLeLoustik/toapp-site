@@ -1,0 +1,83 @@
+{# ./templates/components/macros/_Pagination.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{{ Pagination.render(categories) }}
+
+{{ Pagination.render(projects, {
+    size: 'sm',
+    around: 2
+}) }}
+#}
+
+{% macro render(page, options = {}) %}
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    {% set size = options.size ?? 'sm' %}
+    {% set around = options.around ?? 1 %}
+    {% set current = page.page %}
+    {% set total = page.pages %}
+
+    {% if total > 1 %}
+
+        <nav class="pagination" aria-label="{{ options.label ?? 'Pagination' }}">
+
+            {{ Button.render(null, {
+                href: page.hasPrevious ? page.pageRequest.url(current - 1) : null,
+                iconLeft: 'chevron-left',
+                variant: 'ghost-outline',
+                size: size,
+                iconSize: 'xs',
+                disabled: not page.hasPrevious,
+                attributes: { 'aria-label': options.previousLabel ?? 'Previous page' },
+                class: 'pagination__previous'
+            }) }}
+
+            <div class="pagination__pages">
+
+                {% set last = 0 %}
+
+                {% for number in 1..total %}
+
+                    {% if number == 1 or number == total or (number >= current - around and number <= current + around) %}
+
+                        {% if last > 0 and number - last > 1 %}
+                            <span class="pagination__ellipsis" aria-hidden="true">&hellip;</span>
+                        {% endif %}
+
+                        {{ Button.render(number ~ '', {
+                            href: page.pageRequest.url(number),
+                            variant: number == current ? 'primary' : 'ghost',
+                            size: size,
+                            attributes: number == current ? { 'aria-current': 'page' } : {},
+                            class: 'pagination__page'
+                        }) }}
+
+                        {% set last = number %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            {{ Button.render(null, {
+                href: page.hasNext ? page.pageRequest.url(current + 1) : null,
+                iconLeft: 'chevron-right',
+                variant: 'ghost-outline',
+                size: size,
+                iconSize: 'xs',
+                disabled: not page.hasNext,
+                attributes: { 'aria-label': options.nextLabel ?? 'Next page' },
+                class: 'pagination__next'
+            }) }}
+
+        </nav>
+
+    {% endif %}
+
+{% endmacro %}

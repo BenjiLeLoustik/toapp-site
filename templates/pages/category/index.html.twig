@@ -1,0 +1,20 @@
+{# ./templates/pages/category/index.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{% block content %}
+
+    <section class="categories screen screen--margin">
+
+        {{ Card.categories(categories) }}
+
+        {{ Pagination.render(categories, {
+            previousLabel: translate('pagination.previous'),
+            nextLabel: translate('pagination.next')
+        }) }}
+    </section>
+
+{% endblock %}
