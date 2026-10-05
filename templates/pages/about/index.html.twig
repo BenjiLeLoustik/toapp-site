@@ -6,6 +6,7 @@
 {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
 {% import 'components/macros/_User.macro.html.twig' as User %}
 {% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
 
 {% block content %}
 
@@ -24,11 +25,10 @@
 
     <section class="about-hero screen screen--margin">
 
-        <nav class="about-hero__breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ path('home_index') }}">{{ translate('about.breadcrumb.home') }}</a>
-            {{ Icon.lucide('chevron-right', { size: 'xs', color: 'muted' }) }}
-            <span aria-current="page">{{ translate('about.breadcrumb.about') }}</span>
-        </nav>
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.about') }
+        ]) }}
 
         <h1 class="about-hero__title">
             {{ translate('about.hero.title') }}

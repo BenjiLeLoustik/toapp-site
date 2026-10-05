@@ -1,6 +1,7 @@
 /** ./assets/css/components/init.css */
 
 @import "./_Badge.css";
+@import "./_Breadcrumb.css";
 @import "./_Button.css";
 @import "./_Card.css";
 @import "./_Cards.css";

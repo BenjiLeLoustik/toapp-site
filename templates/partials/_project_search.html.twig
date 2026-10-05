@@ -6,6 +6,7 @@
 {% import 'components/macros/_Card.macro.html.twig' as Card %}
 {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
 {% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
 
 {% set category = category ?? null %}
 {% set categoryName = category ? (category.translation(locale()).name ?? category.slug) : null %}
@@ -41,17 +42,14 @@
 
 <section class="search screen screen--margin">
 
-    <nav class="search__breadcrumb" aria-label="Breadcrumb">
-        <a href="{{ path('home_index') }}">{{ translate('search.breadcrumb.home') }}</a>
-        {{ Icon.lucide('chevron-right', { size: 'xs', color: 'muted' }) }}
-        {% if category %}
-            <a href="{{ path('category_index') }}">{{ translate('search.breadcrumb.categories') }}</a>
-            {{ Icon.lucide('chevron-right', { size: 'xs', color: 'muted' }) }}
-            <span aria-current="page">{{ categoryName }}</span>
-        {% else %}
-            <span aria-current="page">{{ translate('search.breadcrumb.projects') }}</span>
-        {% endif %}
-    </nav>
+    {{ Breadcrumb.render(category ? [
+        { label: translate('breadcrumb.home'), href: path('home_index') },
+        { label: translate('breadcrumb.categories'), href: path('category_index') },
+        { label: categoryName }
+    ] : [
+        { label: translate('breadcrumb.home'), href: path('home_index') },
+        { label: translate('breadcrumb.projects') }
+    ]) }}
 
     <header class="search__header">
         <h1 class="search__title">

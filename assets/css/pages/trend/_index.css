@@ -6,6 +6,10 @@
         @apply h-auto flex flex-col items-center justify-center gap-4 py-12;
     }
 
+    section.trends > .breadcrumb {
+        @apply self-stretch mb-4;
+    }
+
     h1.trends__title {
         @apply w-full max-w-2xl text-center text-3xl font-semibold;
         color: var(--theme-foreground);

@@ -8,22 +8,8 @@
         @apply flex flex-col items-center gap-4 py-12;
     }
 
-    .about-hero__breadcrumb {
-        @apply w-full flex items-center gap-2 text-sm;
-        color: var(--theme-foreground-muted);
-    }
-
-    .about-hero__breadcrumb a {
-        color: var(--theme-accent);
-    }
-
-    .about-hero__breadcrumb a:hover {
-        @apply underline;
-    }
-
-    .about-hero__breadcrumb [aria-current="page"] {
-        @apply font-medium;
-        color: var(--theme-foreground);
+    section.about-hero > .breadcrumb {
+        @apply self-stretch;
     }
 
     h1.about-hero__title {

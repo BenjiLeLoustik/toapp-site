@@ -6,10 +6,16 @@
 {% import 'components/macros/_Empty.macro.html.twig' as Empty %}
 {% import 'components/macros/_Card.macro.html.twig' as Card %}
 {% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
 
 {% block content %}
 
     <section class="trends screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.trends') }
+        ]) }}
 
         <h1 class="trends__title">
             {{ translate('trends.title') }}

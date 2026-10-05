@@ -6,24 +6,6 @@
         @apply h-auto flex flex-col gap-6 py-8;
     }
 
-    .search__breadcrumb {
-        @apply flex flex-wrap items-center gap-2 text-sm;
-        color: var(--theme-foreground-muted);
-    }
-
-    .search__breadcrumb a {
-        color: var(--theme-accent);
-    }
-
-    .search__breadcrumb a:hover {
-        @apply underline;
-    }
-
-    .search__breadcrumb [aria-current="page"] {
-        @apply font-medium;
-        color: var(--theme-foreground);
-    }
-
     .search__header {
         @apply flex flex-col gap-2;
     }
