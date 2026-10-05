@@ -128,3 +128,41 @@ trends:
         title: "No trending project"
         description: "No project received likes or views during this period."
         explore: "Explore projects"
+about:
+    breadcrumb:
+        home: "Home"
+        about: "About"
+    hero:
+        title: "About"
+        description: "{name} is the platform where developers share, discover and celebrate web projects, mobile apps and APIs built by the community."
+    mission:
+        eyebrow: "Our mission"
+        title: "Give life to ideas"
+        description: "Every project deserves to be seen. We help creators showcase their work and help everyone find their next source of inspiration."
+        values:
+            discovery:
+                title: "Discovery"
+                description: "Browse thousands of projects by category, technology or popularity and find exactly what inspires you."
+            community:
+                title: "Community"
+                description: "Like, save and share the projects you love, and connect with developers who build like you."
+            innovation:
+                title: "Innovation"
+                description: "Follow the trends, explore new technologies and see what the community is building right now."
+    stats:
+        likes: "Likes given"
+        views: "Project views"
+        shares: "Projects shared"
+        favorites: "Projects saved"
+    contributors:
+        eyebrow: "Community"
+        title: "Behind the platform"
+        description: "Meet the developers who share the most projects and make the community grow every day."
+        empty_biography: "This developer has not written a biography yet."
+        projects: "{counterFormatted} {count, plural, one {project} other {projects}} published"
+        empty: "No contributor yet: be the first to publish a project!"
+    cta:
+        title: "Join the community"
+        description: "Publish your projects, get feedback and discover what other developers are building."
+        explore: "Explore projects"
+        publish: "Publish a project"

@@ -1,0 +1,217 @@
+/** ./assets/css/pages/about/_index.css */
+
+@layer base {
+
+    /* Hero */
+
+    section.about-hero {
+        @apply flex flex-col items-center gap-4 py-12;
+    }
+
+    .about-hero__breadcrumb {
+        @apply w-full flex items-center gap-2 text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .about-hero__breadcrumb a {
+        color: var(--theme-accent);
+    }
+
+    .about-hero__breadcrumb a:hover {
+        @apply underline;
+    }
+
+    .about-hero__breadcrumb [aria-current="page"] {
+        @apply font-medium;
+        color: var(--theme-foreground);
+    }
+
+    h1.about-hero__title {
+        @apply max-w-3xl text-center text-5xl font-bold mt-4;
+        color: var(--theme-foreground);
+    }
+
+    span.about-hero__title--colored {
+        color: var(--theme-accent);
+    }
+
+    p.about-hero__description {
+        @apply max-w-2xl text-center text-lg;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Mission */
+
+    section.about-mission,
+    section.about-contributors {
+        @apply flex flex-col items-center gap-3 py-12;
+    }
+
+    .about-mission__eyebrow,
+    .about-contributors__eyebrow {
+        @apply text-xs font-semibold uppercase tracking-wider;
+        color: var(--theme-accent);
+    }
+
+    h2.about-mission__title,
+    h2.about-contributors__title {
+        @apply max-w-2xl text-center text-3xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.about-mission__description,
+    p.about-contributors__description {
+        @apply max-w-xl text-center text-base mb-4;
+        color: var(--theme-foreground-muted);
+    }
+
+    .about-mission__values {
+        @apply w-full grid grid-cols-3 gap-4;
+    }
+
+    .about-mission__value {
+        @apply flex flex-col items-start gap-3 rounded-lg p-5;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .about-mission__value-title {
+        @apply text-lg font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.about-mission__value-description {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Stats */
+
+    section.about-stats {
+        @apply grid grid-cols-4 gap-4 py-12;
+        background-color: var(--theme-surface);
+    }
+
+    .about-stats__block {
+        @apply flex flex-col items-center justify-center gap-2;
+    }
+
+    .about-stats__icon {
+        @apply w-12 h-12 rounded-full flex items-center justify-center;
+        background-color: var(--theme-accent);
+        color: var(--theme-accent-foreground);
+    }
+
+    .about-stats__value {
+        @apply text-4xl font-bold;
+        color: var(--theme-accent);
+    }
+
+    .about-stats__title {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Contributors */
+
+    .about-contributors__list {
+        @apply w-full grid grid-cols-4 gap-4;
+    }
+
+    .about-contributors__item {
+        @apply flex flex-col items-start gap-3 rounded-lg p-4;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    p.about-contributors__biography {
+        @apply text-sm line-clamp-3;
+        min-height: calc(3 * var(--text-sm--line-height));
+        color: var(--theme-foreground-muted);
+    }
+
+    .about-contributors__count {
+        @apply text-xs font-medium;
+        color: var(--theme-accent);
+    }
+
+    /* CTA */
+
+    section.about-cta {
+        @apply flex flex-col items-center gap-4 py-16;
+        background-color: var(--theme-surface);
+        border-top: solid 1px var(--theme-border);
+    }
+
+    h2.about-cta__title {
+        @apply text-center text-3xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.about-cta__description {
+        @apply max-w-xl text-center text-base;
+        color: var(--theme-foreground-muted);
+    }
+
+    .about-cta__actions {
+        @apply flex items-center justify-center gap-2;
+    }
+
+    /* Tablet */
+
+    @media (max-width: 1024px) {
+
+        .about-contributors__list {
+            @apply grid-cols-2;
+        }
+
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.about-hero,
+        section.about-mission,
+        section.about-contributors {
+            @apply px-4 py-8;
+        }
+
+        h1.about-hero__title {
+            @apply text-3xl;
+        }
+
+        p.about-hero__description {
+            @apply text-base;
+        }
+
+        h2.about-mission__title,
+        h2.about-contributors__title,
+        h2.about-cta__title {
+            @apply text-2xl;
+        }
+
+        .about-mission__values,
+        .about-contributors__list {
+            @apply grid-cols-1;
+        }
+
+        section.about-stats {
+            @apply grid-cols-2 gap-y-8 py-8;
+        }
+
+        .about-stats__value {
+            @apply text-3xl;
+        }
+
+        .about-cta__actions {
+            @apply w-full flex-col;
+        }
+
+        .about-cta__actions > * {
+            @apply w-full;
+        }
+
+    }
+
+}
