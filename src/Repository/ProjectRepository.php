@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Project;
+use App\Project\Enum\ProjectDateEnum;
 use App\Project\Enum\ProjectSortEnum;
 use App\Project\Search\ProjectSearchFilters;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
