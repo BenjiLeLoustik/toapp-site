@@ -70,7 +70,7 @@
             }),
             Form.input('username', {
                 label: translate('settings.profile.fields.username'),
-                value: values.username ?? user.username,
+                value: (values.username ?? user.username)|replace({'@': ''}),
                 iconLeft: 'at-sign',
                 autocomplete: 'username',
                 error: errors.username ?? null,
