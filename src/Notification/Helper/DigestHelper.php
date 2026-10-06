@@ -6,6 +6,7 @@ namespace App\Notification\Helper;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Entity\UserFollow;
 use App\Entity\UserNotificationSetting;
 use App\Notification\Enum\NotificationTypeEnum;
 use App\Project\Helper\ProjectStatsHelper;
@@ -14,6 +15,8 @@ use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class DigestHelper
 {
+    public const FOLLOWERS_LIMIT = 10;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private NotificationMailerHelper $mailer,
@@ -103,11 +106,43 @@ class DigestHelper
 
         usort($projects, static fn (array $a, array $b): int => $b['views'] <=> $a['views']);
 
+        $followers = $this->followers($user, $since, $until);
+
         return [
             'totals' => $totals,
-            'total' => array_sum($totals),
+            'total' => array_sum($totals) + $followers['count'],
             'projects' => $projects,
             'top' => $projects[0] ?? null,
+            'followers' => $followers,
+        ];
+    }
+
+    private function followers(User $user, \DateTimeImmutable $since, \DateTimeImmutable $until): array
+    {
+        $follows = $this->entityManager->getRepository(UserFollow::class)->createQueryBuilder('x')
+            ->where('x.followed = :user')
+            ->andWhere('x.createdAt >= :from')
+            ->andWhere('x.createdAt < :to')
+            ->setParameter('user', $user->getId())
+            ->setParameter('from', $since->format('Y-m-d H:i:s'))
+            ->setParameter('to', $until->format('Y-m-d H:i:s'))
+            ->orderBy('x.createdAt', 'DESC')
+            ->getResult();
+
+        $names = [];
+
+        foreach ($follows as $follow) {
+            $follower = $follow->getFollower();
+
+            if ($follower instanceof User && !$follower->isDeleted() && !$follower->isDeactivated()) {
+                $names[] = $follower->getUsername();
+            }
+        }
+
+        return [
+            'count' => count($names),
+            'names' => array_slice($names, 0, self::FOLLOWERS_LIMIT),
+            'others' => max(0, count($names) - self::FOLLOWERS_LIMIT),
         ];
     }
 

@@ -525,11 +525,11 @@ settings:
         digest: "Summary"
         fields:
             project_likes:
-                label: "Likes on my projects"
-                description: "Receive an email when someone likes one of your projects."
+                label: "Likes and shares on my projects"
+                description: "Receive an hourly email listing who liked or shared your projects."
             project_favorites:
                 label: "Projects saved"
-                description: "Receive an email when someone saves one of your projects."
+                description: "Receive an hourly email listing who saved your projects."
             newsletter:
                 label: "Newsletter"
                 description: "Receive news and updates about ToApp."
@@ -606,6 +606,9 @@ profile:
             title: "No published project"
             description: "This user has not published any project yet."
 emails:
+    layout:
+        reason: "You receive this email because of your notification settings on {app}."
+        unsubscribe: "Unsubscribe from these emails"
     verify:
         subject: "Confirm your email address on {app}"
         title: "Confirm your email address"
@@ -615,22 +618,6 @@ emails:
         fallback: "If the button does not work, copy this link into your browser:"
         expires: "This link is valid for {hours} hours."
         ignore: "If you did not create an account, you can ignore this email."
-verify_email:
-    banner:
-        text: "Please confirm your email address ({email}) using the link we sent you."
-        resend: "Resend the email"
-    flash:
-        verified: "Your email address has been confirmed. Thank you!"
-        already_verified: "Your email address is already confirmed."
-        expired: "This confirmation link has expired. Sign in and request a new one."
-        invalid: "This confirmation link is not valid."
-        sent: "A confirmation email has been sent to {email}."
-        send_failed: "The email could not be sent. Please try again later."
-        wait: "Please wait {minutes} minute(s) before requesting a new email."
-emails:
-    layout:
-        reason: "You receive this email because of your notification settings on {app}."
-        unsubscribe: "Unsubscribe from these emails"
     activity:
         subject: "New activity on your projects - {app}"
         title: "New activity on your projects"
@@ -658,12 +645,27 @@ emails:
             likes: "Likes"
             shares: "Shares"
             favorites: "Favorites"
+            followers: "Followers"
+        followers:
+            title: "New followers:"
+            others: "and {count} other(s)"
         top: "Your top project: {project} with {views} view(s)."
         project: "Project"
     newsletter:
         subject: "{subject}"
         greeting: "Hi {name},"
-
+verify_email:
+    banner:
+        text: "Please confirm your email address ({email}) using the link we sent you."
+        resend: "Resend the email"
+    flash:
+        verified: "Your email address has been confirmed. Thank you!"
+        already_verified: "Your email address is already confirmed."
+        expired: "This confirmation link has expired. Sign in and request a new one."
+        invalid: "This confirmation link is not valid."
+        sent: "A confirmation email has been sent to {email}."
+        send_failed: "The email could not be sent. Please try again later."
+        wait: "Please wait {minutes} minute(s) before requesting a new email."
 notification:
     unsubscribe:
         types:
