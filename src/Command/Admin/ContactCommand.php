@@ -14,7 +14,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:contact', description: 'Manages the contact page: details, subjects and messages', aliases: ['contact'])]
+#[AsCommand(name: 'admin:contact', description: 'Manages the contact page: details, subjects and messages', aliases: ['contact'])]
 class ContactCommand extends AbstractConsole
 {
     public const ACTIONS = [

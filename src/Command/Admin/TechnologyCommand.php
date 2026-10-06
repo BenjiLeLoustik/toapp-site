@@ -14,7 +14,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:technology', description: 'Manages the technologies catalog', aliases: ['technology'])]
+#[AsCommand(name: 'admin:technology', description: 'Manages the technologies catalog', aliases: ['technology'])]
 class TechnologyCommand extends AbstractConsole
 {
     public const ACTIONS = ['list', 'add', 'rename', 'delete', 'merge'];

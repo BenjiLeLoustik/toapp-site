@@ -14,7 +14,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:category', description: 'Manages the categories', aliases: ['category'])]
+#[AsCommand(name: 'admin:category', description: 'Manages the categories', aliases: ['category'])]
 class CategoryCommand extends AbstractConsole
 {
     public const ACTIONS = ['list', 'add', 'edit', 'translate', 'delete'];

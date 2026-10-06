@@ -16,7 +16,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:project', description: 'Moderates the projects', aliases: ['project'])]
+#[AsCommand(name: 'admin:project', description: 'Moderates the projects', aliases: ['project'])]
 class ProjectCommand extends AbstractConsole
 {
     public const ACTIONS = ['list', 'show', 'archive', 'unpublish', 'delete'];

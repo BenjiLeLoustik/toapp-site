@@ -14,7 +14,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:user', description: 'Manages the user accounts', aliases: ['user'])]
+#[AsCommand(name: 'admin:user', description: 'Manages the user accounts', aliases: ['user'])]
 class UserCommand extends AbstractConsole
 {
     public const ACTIONS = ['search', 'show', 'role-add', 'role-remove', 'certify', 'uncertify', 'deactivate', 'reactivate', 'anonymize'];

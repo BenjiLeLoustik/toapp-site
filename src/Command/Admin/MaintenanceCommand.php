@@ -13,7 +13,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:maintenance', description: 'Cleans the uploads and the old statistics', aliases: ['maintenance'])]
+#[AsCommand(name: 'admin:maintenance', description: 'Cleans the uploads and the old statistics', aliases: ['maintenance'])]
 class MaintenanceCommand extends AbstractConsole
 {
     public const ACTIONS = ['uploads', 'views', 'logins'];

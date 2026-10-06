@@ -14,7 +14,7 @@ use NeoPHP\Process\Console\Exception\InvalidInputException;
 use NeoPHP\Process\Console\IO\InputArgument;
 use NeoPHP\Process\Console\IO\InputOption;
 
-#[AsCommand(name: 'app:page', description: 'Manages the legal pages', aliases: ['page'])]
+#[AsCommand(name: 'admin:page', description: 'Manages the legal pages', aliases: ['page'])]
 class PageCommand extends AbstractConsole
 {
     public const ACTIONS = ['list', 'add', 'translate', 'publish', 'unpublish', 'delete'];
