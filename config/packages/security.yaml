@@ -52,4 +52,5 @@ role_hierarchy:
 # access_control:
 #     - { path: ^/admin, roles: ROLE_ADMIN }
 #     - { path: ^/account, roles: ROLE_USER }
-access_control: []
+access_control:
+    - { path: ^/settings, roles: ROLE_USER }

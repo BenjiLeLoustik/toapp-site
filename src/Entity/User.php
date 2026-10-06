@@ -45,6 +45,21 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\Column(type: 'string', length: 512, nullable: true)]
     private ?string $biography = null;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $location = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $website = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $lastLoginAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $deactivatedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $deletedAt = null;
+
     #[ORM\OneToMany(target: Project::class, mappedBy: 'user')]
     private CollectionInterface $projects;
 
@@ -179,6 +194,71 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     {
         $this->biography = $biography;
         return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
+        return $this;
+    }
+
+    public function getLastLoginAt(): ?\DateTime
+    {
+        return $this->lastLoginAt;
+    }
+
+    public function setLastLoginAt(?\DateTime $lastLoginAt): self
+    {
+        $this->lastLoginAt = $lastLoginAt;
+        return $this;
+    }
+
+    public function getDeactivatedAt(): ?\DateTime
+    {
+        return $this->deactivatedAt;
+    }
+
+    public function setDeactivatedAt(?\DateTime $deactivatedAt): self
+    {
+        $this->deactivatedAt = $deactivatedAt;
+        return $this;
+    }
+
+    public function isDeactivated(): bool
+    {
+        return $this->deactivatedAt !== null;
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTime $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
     }
 
     public function getProjects(): CollectionInterface

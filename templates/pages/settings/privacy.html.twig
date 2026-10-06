@@ -1,0 +1,54 @@
+{# ./templates/pages/settings/privacy.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block settings_title %}{{ translate('settings.privacy.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.privacy.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    <form method="post" action="{{ path('settings_privacy') }}" class="settings__form">
+
+        <input type="hidden" name="_token" value="{{ csrf_token('settings_privacy') }}">
+
+        <div class="settings__section">
+            <h2 class="settings__section-title">{{ translate('settings.privacy.visibility') }}</h2>
+
+            {{ Form.switch('profile_public', {
+                label: translate('settings.privacy.fields.profile_public.label'),
+                description: translate('settings.privacy.fields.profile_public.description'),
+                checked: privacy.profilePublic
+            }) }}
+
+            {{ Form.switch('show_email', {
+                label: translate('settings.privacy.fields.show_email.label'),
+                description: translate('settings.privacy.fields.show_email.description'),
+                checked: privacy.showEmail
+            }) }}
+
+            {{ Form.switch('show_location', {
+                label: translate('settings.privacy.fields.show_location.label'),
+                description: translate('settings.privacy.fields.show_location.description'),
+                checked: privacy.showLocation
+            }) }}
+
+            {{ Form.switch('show_stats', {
+                label: translate('settings.privacy.fields.show_stats.label'),
+                description: translate('settings.privacy.fields.show_stats.description'),
+                checked: privacy.showStats
+            }) }}
+        </div>
+
+        <div class="settings__actions">
+            {{ Button.render(translate('settings.actions.save'), {
+                type: 'submit',
+                size: 'sm'
+            }) }}
+        </div>
+
+    </form>
+
+{% endblock %}

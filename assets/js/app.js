@@ -4,6 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     window.toggleInputPassword();
     window.initAutoSubmit();
+
+    document.addEventListener('click', event => {
+        const track = event.target.closest('.form__switch-track');
+
+        if (track) {
+            const input = track.previousElementSibling;
+
+            if (input && !input.disabled) {
+                input.checked = !input.checked;
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    });
 });
 
 window.initPreferenceChange = function (name, route, attribute, reload = false, callback = null) {

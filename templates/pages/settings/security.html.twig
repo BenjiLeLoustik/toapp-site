@@ -1,0 +1,84 @@
+{# ./templates/pages/settings/security.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Table.macro.html.twig' as Table %}
+
+{% block settings_title %}{{ translate('settings.security.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.security.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    <div class="settings__section">
+
+        <h2 class="settings__section-title">{{ translate('settings.security.password') }}</h2>
+
+        <form method="post" action="{{ path('settings_security') }}" class="settings__form" novalidate>
+
+            <input type="hidden" name="_token" value="{{ csrf_token('settings_security') }}">
+
+            {{ Form.input('current_password', {
+                label: translate('settings.security.fields.current_password'),
+                type: 'password',
+                iconLeft: 'lock',
+                autocomplete: 'current-password',
+                error: errors.current_password ?? null
+            }) }}
+
+            {{ Form.input('new_password', {
+                label: translate('settings.security.fields.new_password'),
+                type: 'password',
+                iconLeft: 'lock',
+                autocomplete: 'new-password',
+                placeholder: translate('settings.security.placeholders.new_password'),
+                error: errors.new_password ?? null
+            }) }}
+
+            {{ Form.input('new_password_confirmation', {
+                label: translate('settings.security.fields.new_password_confirmation'),
+                type: 'password',
+                iconLeft: 'lock',
+                autocomplete: 'new-password',
+                placeholder: translate('settings.security.placeholders.new_password_confirmation'),
+                error: errors.new_password_confirmation ?? null
+            }) }}
+
+            <div class="settings__actions settings__actions--start">
+                {{ Button.render(translate('settings.security.update_password'), {
+                    type: 'submit',
+                    size: 'sm'
+                }) }}
+            </div>
+
+            <span class="settings__hint">{{ translate('settings.security.password_hint') }}</span>
+
+        </form>
+
+    </div>
+
+    <div class="settings__section">
+
+        <h2 class="settings__section-title">{{ translate('settings.security.history') }}</h2>
+
+        {% set rows = [] %}
+        {% for login in history %}
+            {% set rows = rows|merge([{
+                date: login.createdAt|date('d M. Y, H:i'),
+                device: login.browser ~ ' · ' ~ login.platform,
+                ip: login.ip ?? '-'
+            }]) %}
+        {% endfor %}
+
+        {{ Table.render([
+            { key: 'date', label: translate('settings.security.columns.date') },
+            { key: 'device', label: translate('settings.security.columns.device') },
+            { key: 'ip', label: translate('settings.security.columns.ip'), align: 'right' }
+        ], rows, {
+            empty: translate('settings.security.history_empty')
+        }) }}
+
+    </div>
+
+{% endblock %}

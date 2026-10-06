@@ -379,3 +379,42 @@
     </div>
 
 {% endmacro %}
+
+{% macro switch(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set description = options.description ?? null %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set class = options.class ?? '' %}
+
+    <div class="form__switch-row {{ class }}">
+
+        <label for="{{ id }}" class="form__switch-text">
+            {% if label %}
+                <span class="form__switch-label">{{ label }}</span>
+            {% endif %}
+            {% if description %}
+                <span class="form__switch-description">{{ description }}</span>
+            {% endif %}
+        </label>
+
+        <span class="form__switch">
+            <input type="hidden" name="{{ name }}" value="0">
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="checkbox"
+                    role="switch"
+                    value="1"
+                    class="form__switch-input"
+                    {% if checked %}checked{% endif %}
+                    {% if disabled %}disabled{% endif %}
+            >
+            <span class="form__switch-track" aria-hidden="true"></span>
+        </span>
+
+    </div>
+
+{% endmacro %}

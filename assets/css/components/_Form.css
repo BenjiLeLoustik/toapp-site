@@ -307,6 +307,62 @@
         @apply opacity-50 cursor-not-allowed;
     }
 
+    /* Switch */
+
+    .form__switch-row {
+        @apply w-full flex items-center justify-between gap-4;
+    }
+
+    .form__switch-text {
+        @apply flex flex-col gap-0.5 cursor-pointer;
+    }
+
+    .form__switch-label {
+        @apply text-sm font-medium;
+        color: var(--theme-foreground);
+    }
+
+    .form__switch-description {
+        @apply text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .form__switch {
+        @apply relative inline-flex shrink-0;
+    }
+
+    .form__switch-input {
+        @apply sr-only;
+    }
+
+    .form__switch-track {
+        @apply relative w-10 h-6 rounded-full cursor-pointer transition-colors;
+        background-color: var(--theme-border-secondary);
+    }
+
+    .form__switch-track::after {
+        @apply absolute top-1 left-1 w-4 h-4 rounded-full transition-transform;
+        content: '';
+        background-color: var(--color-white);
+    }
+
+    .form__switch-input:checked + .form__switch-track {
+        background-color: var(--theme-accent);
+    }
+
+    .form__switch-input:checked + .form__switch-track::after {
+        transform: translateX(1rem);
+    }
+
+    .form__switch-input:focus-visible + .form__switch-track {
+        outline: solid 2px var(--theme-accent);
+        outline-offset: 2px;
+    }
+
+    .form__switch-input:disabled + .form__switch-track {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
     /* Mobile */
 
     @media (max-width: 767px) {

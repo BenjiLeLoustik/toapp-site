@@ -252,3 +252,145 @@ flash:
     close: "Close"
 legal:
     updated_at: "Last updated: {date}"
+settings:
+    title: "Settings"
+    nav:
+        profile: "Profile"
+        account: "Account"
+        appearance: "Appearance"
+        notifications: "Notifications"
+        privacy: "Privacy"
+        security: "Security"
+        delete_account: "Delete account"
+    actions:
+        save: "Save changes"
+        cancel: "Cancel"
+    flash:
+        saved: "Your changes have been saved."
+        delete_failed: "The password is incorrect: your account has not been deleted."
+    errors:
+        csrf: "Your session has expired, please try again."
+        firstname: "Please enter a first name (50 characters maximum)."
+        lastname: "Please enter a last name (50 characters maximum)."
+        username_format: "The username must contain 3 to 30 letters, numbers or underscores."
+        username_taken: "This username is already taken."
+        location: "The location cannot be longer than 100 characters."
+        website: "Please enter a valid URL starting with http:// or https://."
+        biography: "The biography cannot be longer than 512 characters."
+        avatar: "The photo must be a JPG, PNG, GIF or WebP image of 2 MB maximum."
+        email_invalid: "Please enter a valid email address."
+        email_taken: "An account already exists with this email address."
+        password_invalid: "The current password is incorrect."
+        password_weak: "The password must contain at least 8 characters, one uppercase letter and one number."
+        password_mismatch: "The passwords do not match."
+    profile:
+        title: "Edit profile"
+        description: "Update your personal information and your public presence."
+        change_photo: "Change photo"
+        remove_photo: "Remove"
+        photo_hint: "JPG, PNG, GIF or WebP. 2 MB max."
+        fields:
+            firstname: "First name"
+            lastname: "Last name"
+            username: "Username"
+            location: "Location"
+            website: "Website"
+            biography: "Biography"
+        placeholders:
+            location: "Paris, France"
+            biography: "Tell the community about yourself..."
+    account:
+        title: "Account"
+        description: "Manage your account settings."
+        informations: "Account information"
+        fields:
+            email: "Email address"
+            current_password: "Current password"
+        placeholders:
+            current_password: "Required to change your email"
+        update_email: "Update email"
+        member_since: "Member since"
+        last_login: "Last login"
+        first_login: "This is your first login"
+        management: "Account management"
+        deactivate:
+            title: "Deactivate account"
+            description: "Your profile will be hidden until you sign in again."
+            button: "Deactivate"
+        delete:
+            title: "Delete account"
+            description: "This action is irreversible. Your personal data will be deleted and your projects will be anonymized."
+            password: "Enter your password to confirm"
+            button: "Delete my account"
+    appearance:
+        title: "Appearance"
+        description: "Customize how the application looks."
+        theme: "Theme"
+        themes:
+            light: "Light"
+            dark: "Dark"
+        accent: "Accent color"
+        scale: "Text size"
+        locale: "Language"
+        date_format: "Date format"
+        timezone: "Time zone"
+        number_format: "Number format"
+    notifications:
+        title: "Notifications"
+        description: "Choose how you want to be notified."
+        email: "Email notifications"
+        digest: "Summary"
+        fields:
+            project_likes:
+                label: "Likes on my projects"
+                description: "Receive an email when someone likes one of your projects."
+            project_favorites:
+                label: "Projects saved"
+                description: "Receive an email when someone saves one of your projects."
+            newsletter:
+                label: "Newsletter"
+                description: "Receive news and updates about ToApp."
+            digest:
+                label: "Summary frequency"
+                description: "Receive a summary of your activity by email."
+        frequencies:
+            never: "Never"
+            daily: "Daily"
+            weekly: "Weekly"
+            monthly: "Monthly"
+    privacy:
+        title: "Privacy"
+        description: "Control who can see your information."
+        visibility: "Profile visibility"
+        fields:
+            profile_public:
+                label: "Public profile"
+                description: "Everyone can see your profile and your projects."
+            show_email:
+                label: "Show email address"
+                description: "Your email address will be visible on your profile."
+            show_location:
+                label: "Show location"
+                description: "Your location will be visible on your profile."
+            show_stats:
+                label: "Show statistics"
+                description: "Your statistics (projects, likes, views) will be public."
+    security:
+        title: "Security"
+        description: "Protect your account."
+        password: "Password"
+        fields:
+            current_password: "Current password"
+            new_password: "New password"
+            new_password_confirmation: "Confirm password"
+        placeholders:
+            new_password: "Enter a password"
+            new_password_confirmation: "Enter it again"
+        update_password: "Update password"
+        password_hint: "The password must contain at least 8 characters, one uppercase letter and one number."
+        history: "Login history"
+        history_empty: "No login recorded yet."
+        columns:
+            date: "Date"
+            device: "Device"
+            ip: "IP address"

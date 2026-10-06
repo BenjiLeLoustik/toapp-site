@@ -1,0 +1,115 @@
+{# ./templates/pages/settings/profile.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block settings_title %}{{ translate('settings.profile.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.profile.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    <form method="post" action="{{ path('settings_profile') }}" enctype="multipart/form-data" class="settings__form" novalidate>
+
+        <input type="hidden" name="_token" value="{{ csrf_token('settings_profile') }}">
+
+        <div class="settings__avatar">
+            <span class="settings__avatar-image">
+                {% if user.avatar %}
+                    <img src="{{ upload(user.avatar) }}" alt="{{ user.firstname }}">
+                {% else %}
+                    {{ (user.firstname|first ~ user.lastname|first)|upper }}
+                {% endif %}
+            </span>
+
+            <div class="settings__avatar-actions">
+                <div class="settings__avatar-buttons">
+                    <label class="button button--ghost-outline button--sm button--align-center" for="avatar">
+                        {{ translate('settings.profile.change_photo') }}
+                    </label>
+                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+
+                    {% if user.avatar %}
+                        <label class="settings__avatar-remove">
+                            <input type="checkbox" name="remove_avatar" value="1" class="sr-only">
+                            <span>{{ translate('settings.profile.remove_photo') }}</span>
+                        </label>
+                    {% endif %}
+                </div>
+
+                <span class="settings__hint">{{ translate('settings.profile.photo_hint') }}</span>
+
+                {% if errors.avatar ?? null %}
+                    <p class="form__error">{{ errors.avatar }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {{ Form.group([
+            Form.input('firstname', {
+                label: translate('settings.profile.fields.firstname'),
+                value: values.firstname ?? user.firstname,
+                iconLeft: 'user',
+                autocomplete: 'given-name',
+                error: errors.firstname ?? null,
+                columns: 6
+            }),
+            Form.input('lastname', {
+                label: translate('settings.profile.fields.lastname'),
+                value: values.lastname ?? user.lastname,
+                iconLeft: 'user',
+                autocomplete: 'family-name',
+                error: errors.lastname ?? null,
+                columns: 6
+            }),
+            Form.input('username', {
+                label: translate('settings.profile.fields.username'),
+                value: values.username ?? user.username,
+                iconLeft: 'at-sign',
+                autocomplete: 'username',
+                error: errors.username ?? null,
+                columns: 6
+            }),
+            Form.input('location', {
+                label: translate('settings.profile.fields.location'),
+                value: values.location ?? user.location,
+                iconLeft: 'map-pin',
+                placeholder: translate('settings.profile.placeholders.location'),
+                error: errors.location ?? null,
+                columns: 6
+            })
+        ], { columns: 12, gap: 'base' }) }}
+
+        {{ Form.input('website', {
+            label: translate('settings.profile.fields.website'),
+            value: values.website ?? user.website,
+            type: 'url',
+            iconLeft: 'globe',
+            placeholder: 'https://',
+            error: errors.website ?? null
+        }) }}
+
+        {{ Form.textarea('biography', {
+            label: translate('settings.profile.fields.biography'),
+            value: values.biography ?? user.biography,
+            rows: 4,
+            placeholder: translate('settings.profile.placeholders.biography'),
+            error: errors.biography ?? null
+        }) }}
+
+        <div class="settings__actions">
+            {{ Button.render(translate('settings.actions.cancel'), {
+                href: path('settings_profile'),
+                variant: 'ghost-outline',
+                size: 'sm'
+            }) }}
+            {{ Button.render(translate('settings.actions.save'), {
+                type: 'submit',
+                size: 'sm'
+            }) }}
+        </div>
+
+    </form>
+
+{% endblock %}
