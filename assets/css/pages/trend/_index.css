@@ -3,25 +3,110 @@
 @layer base {
 
     section.trends {
-        @apply h-auto flex flex-col items-center justify-center gap-4 py-12;
+        @apply h-auto flex flex-col gap-6 py-8;
     }
 
-    section.trends > .breadcrumb {
-        @apply self-stretch mb-4;
+    .trends__header {
+        @apply flex flex-col gap-2;
     }
 
     h1.trends__title {
-        @apply w-full max-w-2xl text-center text-3xl font-semibold;
+        @apply text-3xl font-bold;
         color: var(--theme-foreground);
     }
 
     p.trends__description {
-        @apply w-full max-w-xl text-center text-lg;
+        @apply text-base;
         color: var(--theme-foreground-muted);
     }
 
-    .trends__periods {
-        @apply flex flex-wrap items-center justify-center gap-2 mb-4;
+    /* Tabs */
+
+    .trends__tabs {
+        @apply flex items-center gap-1;
+        border-bottom: solid 1px var(--theme-border);
+    }
+
+    .trends__tab {
+        @apply px-3 py-2 text-sm font-medium transition-colors;
+        color: var(--theme-foreground-muted);
+        border-bottom: solid 2px transparent;
+        margin-bottom: -1px;
+    }
+
+    .trends__tab:hover {
+        color: var(--theme-foreground);
+    }
+
+    .trends__tab--active {
+        color: var(--theme-accent);
+        border-bottom-color: var(--theme-accent);
+    }
+
+    /* Toolbar */
+
+    .trends__toolbar {
+        @apply w-full flex items-center justify-between gap-4;
+    }
+
+    .trends__search {
+        @apply max-w-xs;
+    }
+
+    .trends__sort {
+        @apply flex items-center gap-2 shrink-0;
+    }
+
+    .trends__sort-label {
+        @apply text-sm whitespace-nowrap;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Cells */
+
+    .trends__preview {
+        @apply flex items-center justify-center w-16 h-10 rounded-md overflow-hidden;
+        background-color: var(--theme-surface-active);
+        border: solid 1px var(--theme-border);
+    }
+
+    .trends__preview img {
+        @apply w-full h-full object-cover;
+    }
+
+    .trends__project {
+        @apply flex flex-col gap-0.5 min-w-0;
+        width: 16rem;
+    }
+
+    .trends__project-name {
+        @apply font-semibold truncate;
+        color: var(--theme-foreground);
+    }
+
+    .trends__project-name:hover {
+        color: var(--theme-accent);
+    }
+
+    .trends__project-description {
+        @apply text-xs truncate;
+        color: var(--theme-foreground-muted);
+    }
+
+    .trends__stat {
+        @apply inline-flex items-center justify-end gap-1.5 whitespace-nowrap;
+        color: var(--theme-foreground-secondary);
+    }
+
+    .trends__stat--likes svg {
+        color: var(--theme-danger);
+    }
+
+    /* Footer */
+
+    .trends__summary {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
     }
 
     /* Mobile */
@@ -29,15 +114,27 @@
     @media (max-width: 767px) {
 
         section.trends {
-            @apply px-4 py-8;
+            @apply py-6 gap-4;
         }
 
         h1.trends__title {
             @apply text-2xl;
         }
 
-        p.trends__description {
-            @apply text-base;
+        .trends__toolbar {
+            @apply flex-col items-stretch gap-2;
+        }
+
+        .trends__search {
+            @apply max-w-none;
+        }
+
+        .trends__sort {
+            @apply justify-between;
+        }
+
+        .table__footer {
+            @apply justify-center;
         }
 
     }

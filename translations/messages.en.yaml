@@ -119,18 +119,48 @@ project:
 pagination:
     previous: "Previous page"
     next: "Next page"
+    previous_short: "Previous"
+    next_short: "Next"
 trends:
-    title: "Trending projects"
-    description: "The projects that received the most likes and views recently"
-    periods:
-        label: "Period"
-        week: "This week"
-        month: "This month"
-        year: "This year"
+    title: "Trends"
+    description: "Discover the most popular projects and creators of the community"
+    tabs:
+        label: "Trends"
+        projects: "Projects"
+        creators: "Creators"
+    search:
+        projects: "Search a project..."
+        creators: "Search a creator..."
+    sort_by: "Sort by:"
+    sorts:
+        projects:
+            views: "Views"
+            likes: "Likes"
+            shares: "Shares"
+            recent: "Most recent"
+        creators:
+            projects: "Projects"
+            likes: "Likes received"
+            views: "Views received"
+    columns:
+        rank: "Rank"
+        preview: "Preview"
+        project: "Project"
+        category: "Category"
+        creator: "Creator"
+        views: "Views"
+        likes: "Likes"
+        shares: "Shares"
+        projects: "Projects"
+        likes_received: "Likes received"
+        views_received: "Views received"
+    projects_count: "{counterFormatted} {count, plural, one {project} other {projects}}"
+    summary:
+        projects: "Showing {from}-{to} of {total} {count, plural, one {project} other {projects}}"
+        creators: "Showing {from}-{to} of {total} {count, plural, one {creator} other {creators}}"
     empty:
-        title: "No trending project"
-        description: "No project received likes or views during this period."
-        explore: "Explore projects"
+        projects: "No project matches your search."
+        creators: "No creator matches your search."
 about:
     hero:
         title: "About"

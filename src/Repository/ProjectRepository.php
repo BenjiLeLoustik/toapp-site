@@ -6,9 +6,9 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Project;
-use App\Project\Enum\ProjectDateEnum;
 use App\Project\Enum\ProjectSortEnum;
 use App\Project\Search\ProjectSearchFilters;
+use App\Trend\Enum\TrendProjectSortEnum;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 use NeoPHP\Package\Orm\Query\QueryBuilder;
 
@@ -66,18 +66,28 @@ class ProjectRepository extends AbstractRepository
         return $queryBuilder;
     }
 
-    public function createTrendingQueryBuilder(ProjectDateEnum $period): QueryBuilder
+    public function createTrendingProjectsQueryBuilder(string $search, TrendProjectSortEnum $sort): QueryBuilder
     {
-        $since = ($period->getSince() ?? new \DateTime('-7 days'))->format('Y-m-d H:i:s');
-
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.likes', 'l', 'l.createdAt >= :since')
-            ->leftJoin('p.views', 'v', 'v.createdAt >= :since')
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.likes', 'l')
+            ->leftJoin('p.views', 'v')
+            ->leftJoin('p.shares', 's')
             ->where('p.publishedAt IS NOT NULL')
-            ->groupBy('p.id')
-            ->having('COUNT(DISTINCT l.id) + COUNT(DISTINCT v.id) > 0')
-            ->orderBy('COUNT(DISTINCT l.id) * 3 + COUNT(DISTINCT v.id)', 'DESC')
-            ->addOrderBy('p.publishedAt', 'DESC')
-            ->setParameter('since', $since);
+            ->groupBy('p.id');
+
+        if ($search !== '') {
+            $queryBuilder
+                ->andWhere('(p.name LIKE :search OR p.shortDescription LIKE :search)')
+                ->setParameter('search', '%' . addcslashes($search, '%_') . '%');
+        }
+
+        match ($sort) {
+            TrendProjectSortEnum::VIEWS => $queryBuilder->orderBy('COUNT(DISTINCT v.id)', 'DESC'),
+            TrendProjectSortEnum::LIKES => $queryBuilder->orderBy('COUNT(DISTINCT l.id)', 'DESC'),
+            TrendProjectSortEnum::SHARES => $queryBuilder->orderBy('COUNT(DISTINCT s.id)', 'DESC'),
+            TrendProjectSortEnum::RECENT => $queryBuilder->orderBy('p.publishedAt', 'DESC'),
+        };
+
+        return $queryBuilder->addOrderBy('p.id', 'DESC');
     }
 }

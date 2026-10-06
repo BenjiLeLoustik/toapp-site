@@ -2,13 +2,181 @@
 
 {% extends 'layouts/base_layout.html.twig' %}
 
-{% import 'components/macros/_Button.macro.html.twig' as Button %}
-{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
-{% import 'components/macros/_Card.macro.html.twig' as Card %}
-{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
 {% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Table.macro.html.twig' as Table %}
+{% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_User.macro.html.twig' as User %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
 
 {% block content %}
+
+    {% set sortOptions = {} %}
+    {% for item in sorts %}
+        {% set sortOptions = sortOptions|merge({
+            (item.value): translate('trends.sorts.' ~ tab.value ~ '.' ~ item.value)
+        }) %}
+    {% endfor %}
+
+    {% set offset = (items.page - 1) * items.limit %}
+    {% set rows = [] %}
+
+    {% if tab.value == 'projects' %}
+
+        {% set columns = [
+            { key: 'rank', label: translate('trends.columns.rank'), align: 'center', width: '4rem' },
+            { key: 'preview', label: translate('trends.columns.preview'), width: '6rem' },
+            { key: 'project', label: translate('trends.columns.project') },
+            { key: 'category', label: translate('trends.columns.category') },
+            { key: 'creator', label: translate('trends.columns.creator') },
+            { key: 'views', label: translate('trends.columns.views'), align: 'right' },
+            { key: 'likes', label: translate('trends.columns.likes'), align: 'right' },
+            { key: 'shares', label: translate('trends.columns.shares'), align: 'right' }
+        ] %}
+
+        {% for project in items %}
+
+            {% set previewCell %}
+                <a href="{{ path('project_show', { id: project.id, slug: project.slug }) }}" class="trends__preview">
+                    {% if project.cover %}
+                        <img src="{{ upload(project.cover) }}" alt="{{ project.name }}">
+                    {% else %}
+                        {{ Icon.lucide('image', { size: 'sm', color: 'muted' }) }}
+                    {% endif %}
+                </a>
+            {% endset %}
+
+            {% set projectCell %}
+                <div class="trends__project">
+                    <a href="{{ path('project_show', { id: project.id, slug: project.slug }) }}" class="trends__project-name">
+                        {{ project.name }}
+                    </a>
+                    <span class="trends__project-description">
+                        {{ project.shortDescription }}
+                    </span>
+                </div>
+            {% endset %}
+
+            {% set categoryCell %}
+                {% if project.category %}
+                    {{ Badge.render(project.category.translation(locale()).name ?? project.category.slug, {
+                        variant: 'secondary',
+                        size: 'sm'
+                    }) }}
+                {% else %}
+                    -
+                {% endif %}
+            {% endset %}
+
+            {% set creatorCell %}
+                {{ User.render({
+                    avatar: upload(project.user.avatar),
+                    name: project.user.firstname ~ ' ' ~ project.user.lastname,
+                    certified: project.user.certified,
+                    showUsername: false
+                }) }}
+            {% endset %}
+
+            {% set viewsCell %}
+                <span class="trends__stat">{{ Icon.lucide('eye', { size: 'xs' }) }} {{ project.views|length|format_number }}</span>
+            {% endset %}
+
+            {% set likesCell %}
+                <span class="trends__stat trends__stat--likes">{{ Icon.lucide('heart', { size: 'xs' }) }} {{ project.likes|length|format_number }}</span>
+            {% endset %}
+
+            {% set sharesCell %}
+                <span class="trends__stat">{{ Icon.lucide('share-2', { size: 'xs' }) }} {{ project.shares|length|format_number }}</span>
+            {% endset %}
+
+            {% set rows = rows|merge([{
+                rank: Table.rank(offset + loop.index),
+                preview: previewCell,
+                project: projectCell,
+                category: categoryCell,
+                creator: creatorCell,
+                views: viewsCell,
+                likes: likesCell,
+                shares: sharesCell
+            }]) %}
+
+        {% endfor %}
+
+    {% else %}
+
+        {% set columns = [
+            { key: 'rank', label: translate('trends.columns.rank'), align: 'center', width: '4rem' },
+            { key: 'creator', label: translate('trends.columns.creator') },
+            { key: 'projects', label: translate('trends.columns.projects'), align: 'right' },
+            { key: 'likes', label: translate('trends.columns.likes_received'), align: 'right' },
+            { key: 'views', label: translate('trends.columns.views_received'), align: 'right' }
+        ] %}
+
+        {% for creator in items %}
+
+            {% set publishedProjects = creator.projects|filter(p => p.publishedAt is not null) %}
+            {% set likesCount = publishedProjects|reduce((total, p) => total + p.likes|length, 0) %}
+            {% set viewsCount = publishedProjects|reduce((total, p) => total + p.views|length, 0) %}
+
+            {% set creatorCell %}
+                {{ User.render({
+                    avatar: upload(creator.avatar),
+                    name: creator.firstname ~ ' ' ~ creator.lastname,
+                    username: creator.username,
+                    certified: creator.certified
+                }) }}
+            {% endset %}
+
+            {% set projectsCell %}
+                {{ translate('trends.projects_count', {
+                    count: publishedProjects|length,
+                    counterFormatted: publishedProjects|length|format_number
+                }) }}
+            {% endset %}
+
+            {% set likesCell %}
+                <span class="trends__stat trends__stat--likes">
+                    {{ Icon.lucide('heart', { size: 'xs' }) }} {{ likesCount|format_number }}
+                </span>
+            {% endset %}
+
+            {% set viewsCell %}
+                <span class="trends__stat">
+                    {{ Icon.lucide('eye', { size: 'xs' }) }} {{ viewsCount|format_number }}
+                </span>
+            {% endset %}
+
+            {% set rows = rows|merge([{
+                rank: Table.rank(offset + loop.index),
+                creator: creatorCell,
+                projects: projectsCell,
+                likes: likesCell,
+                views: viewsCell
+            }]) %}
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% set footer %}
+        <span class="trends__summary">
+            {{ translate('trends.summary.' ~ tab.value, {
+                from: items.total > 0 ? offset + 1 : 0,
+                to: offset + items.items|length,
+                total: items.total|format_number,
+                count: items.total
+            }) }}
+        </span>
+
+        {{ Pagination.render(items, {
+            size: 'xs',
+            compact: true,
+            showLabels: true,
+            previousLabel: translate('pagination.previous_short'),
+            nextLabel: translate('pagination.next_short')
+        }) }}
+    {% endset %}
 
     <section class="trends screen screen--margin">
 
@@ -17,46 +185,59 @@
             { label: translate('breadcrumb.trends') }
         ]) }}
 
-        <h1 class="trends__title">
-            {{ translate('trends.title') }}
-        </h1>
+        <header class="trends__header">
+            <h1 class="trends__title">
+                {{ translate('trends.title') }}
+            </h1>
+            <p class="trends__description">
+                {{ translate('trends.description') }}
+            </p>
+        </header>
 
-        <p class="trends__description">
-            {{ translate('trends.description') }}
-        </p>
-
-        <nav class="trends__periods" aria-label="{{ translate('trends.periods.label') }}">
-            {% for item in periods %}
-                {{ Button.render(translate('trends.periods.' ~ item.value), {
-                    href: path('trend_index', { period: item.value }),
-                    variant: item == period ? 'primary' : 'ghost-outline',
-                    size: 'sm',
-                    attributes: item == period ? { 'aria-current': 'page' } : {}
-                }) }}
+        <nav class="trends__tabs" aria-label="{{ translate('trends.tabs.label') }}">
+            {% for item in tabs %}
+                <a
+                        href="{{ path('trend_index', { tab: item.value }) }}"
+                        class="trends__tab {{ item == tab ? 'trends__tab--active' : '' }}"
+                        {% if item == tab %}aria-current="page"{% endif %}
+                >
+                    {{ translate('trends.tabs.' ~ item.value) }}
+                </a>
             {% endfor %}
         </nav>
 
-        {% if projects.total > 0 %}
+        <form class="trends__toolbar" method="get" action="{{ path('trend_index') }}" data-auto-submit>
 
-            {{ Card.projects(projects) }}
+            <input type="hidden" name="tab" value="{{ tab.value }}">
 
-            {{ Pagination.render(projects, {
-                previousLabel: translate('pagination.previous'),
-                nextLabel: translate('pagination.next')
+            {{ Form.input('search', {
+                id: 'trends-search',
+                value: search,
+                iconLeft: 'search',
+                iconSize: 'sm',
+                placeholder: translate('trends.search.' ~ tab.value),
+                class: 'trends__search'
             }) }}
 
-        {% else %}
+            <div class="trends__sort">
+                <label for="trends-sort" class="trends__sort-label">
+                    {{ translate('trends.sort_by') }}
+                </label>
 
-            {{ Empty.render('trending-up', translate('trends.empty.title'), [
-                translate('trends.empty.description')
-            ], [
-                Button.render(translate('trends.empty.explore'), {
-                    href: path('project_index'),
-                    size: 'sm'
-                })
-            ]) }}
+                {{ Form.select('sort', {
+                    id: 'trends-sort',
+                    value: sort.value,
+                    options: sortOptions
+                }) }}
+            </div>
 
-        {% endif %}
+        </form>
+
+        {{ Table.render(columns, rows, {
+            empty: translate('trends.empty.' ~ tab.value),
+            footer: items.total > 0 ? footer : null,
+            class: 'trends__table'
+        }) }}
 
     </section>
 

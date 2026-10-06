@@ -5,11 +5,15 @@ Usage :
 
 {% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
 
-{{ Pagination.render(categories) }}
+{{ Pagination.render(projects) }}
 
 {{ Pagination.render(projects, {
-    size: 'sm',
-    around: 2
+    size: 'xs',
+    around: 1,
+    compact: true,
+    showLabels: true,
+    previousLabel: 'Previous',
+    nextLabel: 'Next'
 }) }}
 #}
 
@@ -19,21 +23,28 @@ Usage :
 
     {% set size = options.size ?? 'sm' %}
     {% set around = options.around ?? 1 %}
+    {% set compact = options.compact ?? false %}
+    {% set showLabels = options.showLabels ?? false %}
+    {% set previousLabel = options.previousLabel ?? 'Previous page' %}
+    {% set nextLabel = options.nextLabel ?? 'Next page' %}
     {% set current = page.page %}
     {% set total = page.pages %}
 
     {% if total > 1 %}
 
-        <nav class="pagination" aria-label="{{ options.label ?? 'Pagination' }}">
+        <nav
+                class="pagination {{ compact ? 'pagination--compact' : '' }} {{ options.class ?? '' }}"
+                aria-label="{{ options.label ?? 'Pagination' }}"
+        >
 
-            {{ Button.render(null, {
+            {{ Button.render(showLabels ? previousLabel : null, {
                 href: page.hasPrevious ? page.pageRequest.url(current - 1) : null,
                 iconLeft: 'chevron-left',
                 variant: 'ghost-outline',
                 size: size,
                 iconSize: 'xs',
                 disabled: not page.hasPrevious,
-                attributes: { 'aria-label': options.previousLabel ?? 'Previous page' },
+                attributes: showLabels ? {} : { 'aria-label': previousLabel },
                 class: 'pagination__previous'
             }) }}
 
@@ -65,14 +76,14 @@ Usage :
 
             </div>
 
-            {{ Button.render(null, {
+            {{ Button.render(showLabels ? nextLabel : null, {
                 href: page.hasNext ? page.pageRequest.url(current + 1) : null,
-                iconLeft: 'chevron-right',
+                iconRight: 'chevron-right',
                 variant: 'ghost-outline',
                 size: size,
                 iconSize: 'xs',
                 disabled: not page.hasNext,
-                attributes: { 'aria-label': options.nextLabel ?? 'Next page' },
+                attributes: showLabels ? {} : { 'aria-label': nextLabel },
                 class: 'pagination__next'
             }) }}
 

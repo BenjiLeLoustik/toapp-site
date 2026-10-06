@@ -1,0 +1,81 @@
+{# ./templates/components/macros/_Table.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_Table.macro.html.twig' as Table %}
+
+{{ Table.render([
+    { key: 'rank', label: 'Rank', align: 'center', width: '4rem' },
+    { key: 'name', label: 'Name' },
+    { key: 'views', label: 'Views', align: 'right' }
+], rows, {
+    empty: 'No result',
+    footer: footerHtml
+}) }}
+
+rows = list of { key: html } (cells are rendered raw: escape the values when building them)
+
+Table.rank(1)   ->  rank badge (gold / silver / bronze for 1 to 3)
+#}
+
+{% macro render(columns = [], rows = [], options = {}) %}
+
+    <div class="table {{ options.class ?? '' }}">
+
+        <div class="table__wrapper">
+            <table class="table__table">
+
+                <thead class="table__head">
+                <tr>
+                    {% for column in columns %}
+                        <th
+                                scope="col"
+                                class="table__heading table__cell--{{ column.align ?? 'left' }} {{ column.class ?? '' }}"
+                                {% if column.width ?? null %}style="width: {{ column.width }};"{% endif %}
+                        >
+                            {{ column.label ?? '' }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody class="table__body">
+                {% for row in rows %}
+                    <tr class="table__row">
+                        {% for column in columns %}
+                            <td class="table__cell table__cell--{{ column.align ?? 'left' }} {{ column.class ?? '' }}">
+                                {{ (row[column.key] ?? '')|raw }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td class="table__empty" colspan="{{ columns|length }}">
+                            {{ options.empty ?? '' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        {% if options.footer ?? null %}
+            <div class="table__footer">
+                {{ options.footer|raw }}
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro rank(position) %}
+
+    <span class="table__rank {{ position <= 3 ? 'table__rank--' ~ position : '' }}">
+        {{ position }}
+    </span>
+
+{% endmacro %}

@@ -1,0 +1,95 @@
+/** ./assets/css/components/_Table.css */
+
+@layer component {
+
+    .table {
+        @apply w-full flex flex-col rounded-lg overflow-hidden;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .table__wrapper {
+        @apply w-full overflow-x-auto;
+    }
+
+    .table__table {
+        @apply text-sm;
+        width: 100%;
+        min-width: max-content;
+        border-collapse: collapse;
+    }
+
+    .table__heading {
+        @apply px-4 py-3 text-xs font-semibold uppercase whitespace-nowrap;
+        color: var(--theme-foreground-muted);
+        background-color: var(--theme-surface-hover);
+        border-bottom: solid 1px var(--theme-border);
+    }
+
+    .table__row {
+        @apply transition-colors;
+    }
+
+    .table__row + .table__row {
+        border-top: solid 1px var(--theme-border);
+    }
+
+    .table__row:hover {
+        background-color: var(--theme-surface-hover);
+    }
+
+    .table__cell {
+        @apply px-4 py-3 align-middle whitespace-nowrap;
+        color: var(--theme-foreground);
+    }
+
+    .table__cell--wrap {
+        @apply whitespace-normal;
+    }
+
+    .table__cell--left {
+        @apply text-left;
+    }
+
+    .table__cell--center {
+        @apply text-center;
+    }
+
+    .table__cell--right {
+        @apply text-right;
+    }
+
+    .table__empty {
+        @apply px-4 py-12 text-center text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .table__footer {
+        @apply w-full flex flex-wrap items-center justify-between gap-4 px-4 py-3;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    /* Rank */
+
+    .table__rank {
+        @apply inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-semibold;
+        color: var(--theme-foreground-secondary);
+        background-color: var(--theme-surface-active);
+    }
+
+    .table__rank--1 {
+        color: var(--color-amber-700);
+        background-color: var(--color-amber-100);
+    }
+
+    .table__rank--2 {
+        color: var(--color-slate-700);
+        background-color: var(--color-slate-200);
+    }
+
+    .table__rank--3 {
+        color: var(--color-orange-700);
+        background-color: var(--color-orange-100);
+    }
+
+}
