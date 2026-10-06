@@ -12,6 +12,7 @@ use App\User\Enum\UserDateFormatEnum;
 use App\User\Enum\UserDigestFrequencyEnum;
 use App\User\Enum\UserNumberFormatEnum;
 use NeoPHP\Component\Http\Request\UploadedFile;
+use NeoPHP\Component\Logger\Contract\LoggerInterface;
 use NeoPHP\Component\Upload\Contract\UploaderInterface;
 use NeoPHP\Component\Upload\Exception\UploadException;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
@@ -28,6 +29,8 @@ class UserSettingsHelper
         private UploaderInterface $uploader,
         private TranslatorInterface $translator,
         private UserPathHelper $paths,
+        private EmailVerificationHelper $verification,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -67,7 +70,7 @@ class UserSettingsHelper
         if (preg_match('/^[a-zA-Z0-9_]{3,30}$/', $username) !== 1) {
             $errors['username'] = $this->trans('settings.errors.username_format');
         } else {
-            $existing = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+            $existing = $this->entityManager->getRepository(User::class)->findOneBy(['username' => '@' . $username]);
 
             if ($existing !== null && $existing->getId() !== $user->getId()) {
                 $errors['username'] = $this->trans('settings.errors.username_taken');
@@ -149,8 +152,22 @@ class UserSettingsHelper
             return ['current_password' => $this->trans('settings.errors.password_invalid')];
         }
 
+        if ($email === $user->getEmail()) {
+            return [];
+        }
+
         $user->setEmail($email);
+        $this->verification->reset($user);
         $this->entityManager->flush();
+
+        try {
+            $this->verification->send($user);
+        } catch (\Throwable $exception) {
+            $this->logger->error('The verification email of the user #{id} could not be sent: {message}', [
+                'id' => $user->getId(),
+                'message' => $exception->getMessage(),
+            ]);
+        }
 
         return [];
     }

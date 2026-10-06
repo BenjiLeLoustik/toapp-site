@@ -1,0 +1,24 @@
+{# ./templates/partials/_verify_email.html.twig #}
+
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% if app.user and not app.user.emailVerified %}
+    <div class="verify-banner" role="status">
+        <div class="verify-banner__inner">
+            <span class="verify-banner__text">
+                {{ Icon.lucide('mail-warning', { size: 'xs' }) }}
+                {{ translate('verify_email.banner.text', { email: app.user.email }) }}
+            </span>
+
+            <form method="post" action="{{ path('app_security_verify_email_resend') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('verify_email_resend') }}">
+                {{ Button.render(translate('verify_email.banner.resend'), {
+                    type: 'submit',
+                    variant: 'ghost-outline',
+                    size: 'xs'
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endif %}

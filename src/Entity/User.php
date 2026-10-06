@@ -18,6 +18,12 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $emailVerifiedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $verificationSentAt = null;
+
     #[ORM\Column(type: 'string', length: 50, nullable: false, unique: false)]
     private string $firstname;
 
@@ -86,6 +92,35 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getEmailVerifiedAt(): ?\DateTime
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    public function setEmailVerifiedAt(?\DateTime $emailVerifiedAt): self
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
+
+        return $this;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->emailVerifiedAt !== null;
+    }
+
+    public function getVerificationSentAt(): ?\DateTime
+    {
+        return $this->verificationSentAt;
+    }
+
+    public function setVerificationSentAt(?\DateTime $verificationSentAt): self
+    {
+        $this->verificationSentAt = $verificationSentAt;
 
         return $this;
     }

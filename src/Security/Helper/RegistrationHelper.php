@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Security\Helper;
 
 use App\Entity\User;
+use App\User\Event\UserRegisteredEvent;
+use NeoPHP\Component\Event\Contract\EventDispatcherInterface;
 use NeoPHP\Component\Form\Contract\FormInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
@@ -18,6 +20,7 @@ class RegistrationHelper
         private EntityManagerInterface $entityManager,
         private UserPasswordHasher $passwordHasher,
         private TranslatorInterface $translator,
+        private EventDispatcherInterface $events,
     ) {
     }
 
@@ -56,6 +59,8 @@ class RegistrationHelper
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->events->dispatch(new UserRegisteredEvent($user));
 
         return $user;
     }

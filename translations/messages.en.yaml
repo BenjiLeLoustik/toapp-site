@@ -605,3 +605,25 @@ profile:
         other:
             title: "No published project"
             description: "This user has not published any project yet."
+emails:
+    verify:
+        subject: "Confirm your email address on {app}"
+        title: "Confirm your email address"
+        greeting: "Hello {name},"
+        body: "Thank you for joining {app}! Please confirm your email address by clicking the button below."
+        button: "Confirm my email"
+        fallback: "If the button does not work, copy this link into your browser:"
+        expires: "This link is valid for {hours} hours."
+        ignore: "If you did not create an account, you can ignore this email."
+verify_email:
+    banner:
+        text: "Please confirm your email address ({email}) using the link we sent you."
+        resend: "Resend the email"
+    flash:
+        verified: "Your email address has been confirmed. Thank you!"
+        already_verified: "Your email address is already confirmed."
+        expired: "This confirmation link has expired. Sign in and request a new one."
+        invalid: "This confirmation link is not valid."
+        sent: "A confirmation email has been sent to {email}."
+        send_failed: "The email could not be sent. Please try again later."
+        wait: "Please wait {minutes} minute(s) before requesting a new email."
