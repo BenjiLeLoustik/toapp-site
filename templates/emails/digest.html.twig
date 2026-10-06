@@ -1,0 +1,48 @@
+{# ./templates/emails/digest.html.twig #}
+
+{% extends 'emails/_layout.html.twig' %}
+
+{% block title %}{{ translate('emails.digest.subject', { app: app }) }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin:0 0 16px;font-size:22px;color:#111827;">{{ translate('emails.digest.title.' ~ frequency) }}</h1>
+
+    <p style="margin:0 0 12px;font-size:15px;line-height:1.6;">{{ translate('emails.digest.greeting', { name: name }) }}</p>
+    <p style="margin:0 0 24px;font-size:15px;line-height:1.6;">{{ translate('emails.digest.intro.' ~ frequency) }}</p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+        <tr>
+            {% for key, value in totals %}
+                <td align="center" style="padding:12px 4px;border:1px solid #e5e7eb;border-radius:8px;">
+                    <p style="margin:0;font-size:20px;font-weight:bold;color:#111827;">{{ value }}</p>
+                    <p style="margin:4px 0 0;font-size:12px;color:#6b7280;">{{ translate('emails.digest.cards.' ~ key) }}</p>
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+
+    {% if top %}
+        <p style="margin:0 0 24px;font-size:15px;line-height:1.6;">
+            {{ translate('emails.digest.top', { project: top.name, views: top.views }) }}
+        </p>
+    {% endif %}
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 8px;font-size:14px;">
+        <tr>
+            <th align="left" style="padding:8px 0;border-bottom:1px solid #e5e7eb;color:#6b7280;">{{ translate('emails.digest.project') }}</th>
+            {% for key in totals|keys %}
+                <th align="right" style="padding:8px 0;border-bottom:1px solid #e5e7eb;color:#6b7280;">{{ translate('emails.digest.cards.' ~ key) }}</th>
+            {% endfor %}
+        </tr>
+        {% for project in projects %}
+            <tr>
+                <td style="padding:8px 0;border-bottom:1px solid #f3f4f6;">
+                    <a href="{{ project.url }}" style="color:#2563eb;text-decoration:none;">{{ project.name }}</a>
+                </td>
+                {% for key in totals|keys %}
+                    <td align="right" style="padding:8px 0;border-bottom:1px solid #f3f4f6;">{{ attribute(project, key) }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

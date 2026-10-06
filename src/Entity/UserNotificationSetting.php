@@ -27,6 +27,12 @@ class UserNotificationSetting extends AbstractEntity
     #[ORM\Column(enumType: UserDigestFrequencyEnum::class)]
     private UserDigestFrequencyEnum $digestFrequency = UserDigestFrequencyEnum::WEEKLY;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $activityNotifiedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $digestSentAt = null;
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -79,6 +85,28 @@ class UserNotificationSetting extends AbstractEntity
     public function setDigestFrequency(UserDigestFrequencyEnum $digestFrequency): self
     {
         $this->digestFrequency = $digestFrequency;
+        return $this;
+    }
+
+    public function getActivityNotifiedAt(): ?\DateTime
+    {
+        return $this->activityNotifiedAt;
+    }
+
+    public function setActivityNotifiedAt(?\DateTime $activityNotifiedAt): self
+    {
+        $this->activityNotifiedAt = $activityNotifiedAt;
+        return $this;
+    }
+
+    public function getDigestSentAt(): ?\DateTime
+    {
+        return $this->digestSentAt;
+    }
+
+    public function setDigestSentAt(?\DateTime $digestSentAt): self
+    {
+        $this->digestSentAt = $digestSentAt;
         return $this;
     }
 }

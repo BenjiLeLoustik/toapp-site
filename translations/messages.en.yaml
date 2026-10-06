@@ -627,3 +627,49 @@ verify_email:
         sent: "A confirmation email has been sent to {email}."
         send_failed: "The email could not be sent. Please try again later."
         wait: "Please wait {minutes} minute(s) before requesting a new email."
+emails:
+    layout:
+        reason: "You receive this email because of your notification settings on {app}."
+        unsubscribe: "Unsubscribe from these emails"
+    activity:
+        subject: "New activity on your projects - {app}"
+        title: "New activity on your projects"
+        greeting: "Hi {name},"
+        intro: "Your projects received {count} new interaction(s) during the last hour."
+        likes: "Liked by"
+        favorites: "Added to favorites by"
+        shares: "Shared by"
+        shared_on: "{user} on {network}"
+        anonymous: "{count} anonymous share(s)"
+        button: "View the project"
+    digest:
+        subject: "Your activity summary - {app}"
+        title:
+            daily: "Your daily summary"
+            weekly: "Your weekly summary"
+            monthly: "Your monthly summary"
+        greeting: "Hi {name},"
+        intro:
+            daily: "Here is what happened on your projects yesterday."
+            weekly: "Here is what happened on your projects this week."
+            monthly: "Here is what happened on your projects this month."
+        cards:
+            views: "Views"
+            likes: "Likes"
+            shares: "Shares"
+            favorites: "Favorites"
+        top: "Your top project: {project} with {views} view(s)."
+        project: "Project"
+    newsletter:
+        subject: "{subject}"
+        greeting: "Hi {name},"
+
+notification:
+    unsubscribe:
+        types:
+            activity: "activity notifications"
+            digest: "activity summary"
+            newsletter: "newsletter"
+        flash:
+            done: "You will no longer receive the {type}."
+            invalid: "This unsubscribe link is invalid."
