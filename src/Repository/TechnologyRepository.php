@@ -28,4 +28,17 @@ class TechnologyRepository extends AbstractRepository
 
         return $queryBuilder->getResult();
     }
+
+    public function findBySlugs(array $slugs): array
+    {
+        if ($slugs === []) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('t')
+            ->where('t.slug IN (:slugs)')
+            ->setParameter('slugs', array_values($slugs))
+            ->orderBy('t.name', 'ASC')
+            ->getResult();
+    }
 }

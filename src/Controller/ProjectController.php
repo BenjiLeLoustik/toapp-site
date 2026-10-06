@@ -63,18 +63,19 @@ class ProjectController extends AbstractController
     #[Route('/{id}/{slug}', name: 'show')]
     public function showProject(int $id, string $slug, Request $request): Response
     {
-        $project = $this->projectHelper->validateProject($id, $slug);
+        $user = $this->currentUser();
+        $project = $this->projectHelper->validateProject($id, $slug, $user);
+
         if (!$project) {
             return $this->redirectToRoute('home_index');
         }
-
-        $user = $this->getUser();
-        $user = $user instanceof User ? $user : null;
 
         $this->projectHelper->addView($project, $user, $request);
 
         return $this->render('pages/project/show.html.twig', [
             'project' => $project,
+            'links' => $this->projectHelper->links($project),
+            'isOwner' => $this->projectHelper->isOwner($project, $user),
             'shareTypes' => ProjectShareEnum::cases(),
             'url' => $request->getUri(),
             'isLiked' => $this->projectHelper->isLiked($project, $user),
@@ -85,17 +86,20 @@ class ProjectController extends AbstractController
     #[Route('/api/{id}/{slug}/share', name: 'api_share', methods: ['POST'])]
     public function api_projectShare(int $id, string $slug, Request $request, FormatNumberViewHelper $formatNumber): Response
     {
-        $project = $this->projectHelper->validateProject($id, $slug);
+        $user = $this->currentUser();
+        $project = $this->projectHelper->validateProject($id, $slug, $user);
+
         if (!$project) {
-            return $this->json(['success' => false]);
+            return $this->json(['success' => false], 404);
         }
 
-        $this->projectHelper->addShare(
-            $project,
-            ProjectShareEnum::from($request->get('type')),
-            $this->getUser(),
-            $request->getClientIp(),
-        );
+        $type = ProjectShareEnum::tryFrom((string) $request->get('type'));
+
+        if ($type === null) {
+            return $this->json(['success' => false], 400);
+        }
+
+        $this->projectHelper->addShare($project, $type, $user, $request->getClientIp());
 
         $totalShares = $this->entityManager->getRepository(ProjectShare::class)->count(['project' => $project]);
 
@@ -108,12 +112,14 @@ class ProjectController extends AbstractController
     #[Route('/api/{id}/{slug}/like', name: 'api_like', methods: ['POST'])]
     public function api_projectLike(int $id, string $slug, FormatNumberViewHelper $formatNumber): Response
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
+        $user = $this->currentUser();
+
+        if ($user === null) {
             return $this->json(['success' => false], 401);
         }
 
-        $project = $this->projectHelper->validateProject($id, $slug);
+        $project = $this->projectHelper->validateProject($id, $slug, $user);
+
         if (!$project) {
             return $this->json(['success' => false], 404);
         }
@@ -130,23 +136,30 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/api/{id}/{slug}/favorite', name: 'api_favorite', methods: ['POST'])]
-    public function api_projectFavorite(int $id, string $slug, FormatNumberViewHelper $formatNumber): Response
+    public function api_projectFavorite(int $id, string $slug): Response
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
+        $user = $this->currentUser();
+
+        if ($user === null) {
             return $this->json(['success' => false], 401);
         }
 
-        $project = $this->projectHelper->validateProject($id, $slug);
+        $project = $this->projectHelper->validateProject($id, $slug, $user);
+
         if (!$project) {
             return $this->json(['success' => false], 404);
         }
 
-        $favorite = $this->projectHelper->toggleFavorite($project, $user);
-
         return $this->json([
             'success' => true,
-            'favorite' => $favorite,
+            'favorite' => $this->projectHelper->toggleFavorite($project, $user),
         ]);
+    }
+
+    private function currentUser(): ?User
+    {
+        $user = $this->getUser();
+
+        return $user instanceof User ? $user : null;
     }
 }

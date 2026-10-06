@@ -8,12 +8,14 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Project\Enum\ProjectStatsPeriodEnum;
 use App\Project\Enum\ProjectStatusEnum;
+use App\Project\Helper\ProjectFormHelper;
 use App\Project\Helper\ProjectOwnerHelper;
 use App\Project\Helper\ProjectStatsHelper;
 use NeoPHP\Component\Api\Attribute\MapPagination;
 use NeoPHP\Component\Api\Pagination\PageRequest;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Request\Request;
+use NeoPHP\Component\Http\Request\UploadedFile;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
@@ -25,6 +27,7 @@ class ProjectOwnerController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ProjectOwnerHelper $ownerHelper,
         private ProjectStatsHelper $statsHelper,
+        private ProjectFormHelper $formHelper,
     ) {
     }
 
@@ -48,6 +51,24 @@ class ProjectOwnerController extends AbstractController
                 $pageRequest
             ),
         ]);
+    }
+
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(Request $request): Response
+    {
+        return $this->handleForm($request, null);
+    }
+
+    #[Route('/{id}/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(int $id, string $slug, Request $request): Response
+    {
+        $project = $this->ownerHelper->findOwned($this->currentUser(), $id, $slug);
+
+        if ($project === null) {
+            return $this->redirectToRoute('project_mine');
+        }
+
+        return $this->handleForm($request, $project);
     }
 
     #[Route('/{id}/{slug}/stats', name: 'stats', methods: ['GET'])]
@@ -83,11 +104,7 @@ class ProjectOwnerController extends AbstractController
         $errors = [];
 
         if ($request->isMethod('POST')) {
-            $token = $request->request->get('_token');
-
-            $errors = $this->isCsrfTokenValid($csrf, is_string($token) ? $token : null)
-                ? $this->ownerHelper->validateDeletion($project, $request->request->all())
-                : ['_form' => $this->translate('settings.errors.csrf')];
+            $errors = $this->validCsrf($request, $csrf) ?? $this->ownerHelper->validateDeletion($project, $request->request->all());
 
             if ($errors === []) {
                 $name = (string) $project->getName();
@@ -110,6 +127,61 @@ class ProjectOwnerController extends AbstractController
                 'submit' => $this->translate('project.delete.submit'),
             ],
         ]);
+    }
+
+    private function handleForm(Request $request, ?Project $project): Response
+    {
+        $user = $this->currentUser();
+        $values = $this->formHelper->values($project);
+        $errors = [];
+
+        if ($request->isMethod('POST')) {
+            $data = $request->request->all();
+            $values = $this->formHelper->valuesFromRequest($data);
+            $cover = $request->files->get('cover');
+
+            $errors = $this->validCsrf($request, 'project_form') ?? [];
+
+            if ($errors === []) {
+                $result = $this->formHelper->save(
+                    $project,
+                    $user,
+                    $values,
+                    $cover instanceof UploadedFile ? $cover : null,
+                    ($data['remove_cover'] ?? '0') === '1',
+                    (array) ($request->files->get('screenshots') ?? []),
+                    (array) ($data['remove_screenshots'] ?? [])
+                );
+
+                $errors = $result['errors'];
+
+                if ($errors === []) {
+                    $this->addFlash('success', $this->translate($project === null ? 'project_form.flash.created' : 'project_form.flash.updated', [
+                        'name' => $result['project']->getName(),
+                    ]));
+
+                    return $this->redirectToRoute('project_mine');
+                }
+            }
+        }
+
+        return $this->render('pages/project/form.html.twig', [
+            'project' => $project,
+            'values' => $values,
+            'errors' => $errors,
+            ...$this->formHelper->options(),
+        ]);
+    }
+
+    private function validCsrf(Request $request, string $id): ?array
+    {
+        $token = $request->request->get('_token');
+
+        if ($this->isCsrfTokenValid($id, is_string($token) ? $token : null)) {
+            return null;
+        }
+
+        return ['_form' => $this->translate('settings.errors.csrf')];
     }
 
     private function currentUser(): User

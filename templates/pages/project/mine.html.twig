@@ -53,7 +53,8 @@
 
         {% set visibilityCell %}
             <span class="my-projects__visibility">
-                {{ Icon.lucide('eye', { size: 'xs', color: 'muted' }) }} {{ project.visibility }}
+                {{ Icon.lucide(project.visibilityEnum.value == 'private' ? 'lock' : 'globe', { size: 'xs', color: 'muted' }) }}
+                {{ translate('project_form.visibilities.' ~ project.visibilityEnum.value) }}
             </span>
         {% endset %}
 
@@ -80,7 +81,7 @@
                     attributes: { 'aria-label': translate('projects_mine.actions.show'), title: translate('projects_mine.actions.show') }
                 }) }}
                 {{ Button.render(null, {
-                    href: '#',
+                    href: path('project_edit', routeParams),
                     iconLeft: 'pencil',
                     variant: 'ghost',
                     size: 'sm',
@@ -141,7 +142,7 @@
             <h1 class="my-projects__title">{{ translate('projects_mine.title') }}</h1>
 
             {{ Button.render(translate('projects_mine.new'), {
-                href: '#',
+                href: path('project_new'),
                 size: 'sm',
                 iconLeft: 'plus',
                 iconSize: 'xs'
@@ -209,7 +210,7 @@
                     translate('projects_mine.empty.description_line_2')
                 ], [
                     Button.render(translate('projects_mine.empty.create'), {
-                        href: '#',
+                        href: path('project_new'),
                         size: 'sm',
                         iconLeft: 'plus',
                         iconSize: 'xs'

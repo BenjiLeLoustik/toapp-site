@@ -10,6 +10,9 @@
 
 {% block content %}
 
+    {% set routeParams = { id: project.id, slug: project.slug } %}
+    {% set externalAttributes = { target: '_blank', rel: 'noopener noreferrer' } %}
+
     <section class="project-banner screen screen--no-margin">
         {% if project.cover %}
             <img src="{{ upload(project.cover) }}" alt="{{ project.name }}">
@@ -84,15 +87,43 @@
                         }) }}
                     {% endif %}
 
-                    {{ Button.render(translate('project.show.actions.visit_website'), {
-                        href: '#',
-                        variant: 'ghost-outline',
-                        size: 'sm',
-                        iconLeft: 'external-link',
-                        iconOptions: {
-                            size: 'xs'
-                        }
-                    }) }}
+                    {% if project.websiteUrl %}
+                        {{ Button.render(translate('project.show.actions.visit_website'), {
+                            href: project.websiteUrl,
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'external-link',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: externalAttributes
+                        }) }}
+                    {% endif %}
+
+                    {% if project.repositoryUrl %}
+                        {{ Button.render(translate('project_form.fields.repository_url'), {
+                            href: project.repositoryUrl,
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'git-branch',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: externalAttributes
+                        }) }}
+                    {% endif %}
+
+                    {% if isOwner %}
+                        {{ Button.render(translate('projects_mine.actions.edit'), {
+                            href: path('project_edit', routeParams),
+                            variant: 'primary',
+                            size: 'sm',
+                            iconLeft: 'pencil',
+                            iconOptions: {
+                                size: 'xs'
+                            }
+                        }) }}
+                    {% endif %}
                 </div>
             </header>
 
@@ -176,7 +207,7 @@
                 </h2>
 
                 <div class="project-section__content">
-                    {{ project.description }}
+                    {{ project.description|nl2br }}
                 </div>
             </section>
 
@@ -246,20 +277,18 @@
                     {{ translate('project.show.links.title') }}
                 </h2>
 
-                {% if project.externalLinks is not empty %}
+                {% if links is not empty %}
                     <div class="project-links">
 
-                        {% for externalLink in project.externalLinks %}
-                            {{ Button.render(externalLink, {
-                                href: externalLink,
+                        {% for link in links %}
+                            {{ Button.render(link, {
+                                href: link,
                                 variant: 'ghost',
-                                iconLeft: 'external-link',
+                                iconLeft: link == project.repositoryUrl ? 'git-branch' : 'external-link',
                                 iconOptions: {
                                     size: 'xs'
                                 },
-                                attributes: {
-                                    'target': '_blank'
-                                }
+                                attributes: externalAttributes
                             }) }}
                         {% endfor %}
 
@@ -320,13 +349,13 @@
                         </span>
 
                         <span class="project-information-card__list-item-value">
-                            {{ project.category.translation(locale()).name ?? '-' }}
+                            {{ project.category ? (project.category.translation(locale()).name ?? project.category.slug) : '-' }}
                         </span>
                     </li>
 
                     <li class="project-information-card__list-item">
                         <span class="project-information-card__list-item-icon">
-                            {{ Icon.lucide('globe', {
+                            {{ Icon.lucide(project.visibilityEnum.value == 'private' ? 'lock' : 'globe', {
                                 size: 'xs',
                                 color: 'muted'
                             }) }}
@@ -337,7 +366,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-value">
-                            {{ project.visibility }}
+                            {{ translate('project_form.visibilities.' ~ project.visibilityEnum.value) }}
                         </span>
                     </li>
 
@@ -354,11 +383,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-value">
-                            {% if project.publishedAt is not null %}
-                                {{ translate('project.show.informations.status.published') }}
-                            {% else %}
-                                {{ translate('project.show.informations.status.not_published') }}
-                            {% endif %}
+                            {{ translate('projects_mine.statuses.' ~ project.status.value) }}
                         </span>
                     </li>
 
@@ -428,14 +453,11 @@
     {% endembed %}
 
     <script type="text/javascript">
-        window.initProjectShare('{{ path('project_api_share', {
-            id: project.id,
-            slug: project.slug,
-        }) }}');
+        window.initProjectShare('{{ path('project_api_share', routeParams) }}');
 
         {% if app_user() %}
-        window.initProjectLike('{{ path('project_api_like', { id: project.id, slug: project.slug }) }}');
-        window.initProjectFavorite('{{ path('project_api_favorite', { id: project.id, slug: project.slug }) }}');
+        window.initProjectLike('{{ path('project_api_like', routeParams) }}');
+        window.initProjectFavorite('{{ path('project_api_favorite', routeParams) }}');
         {% endif %}
     </script>
 

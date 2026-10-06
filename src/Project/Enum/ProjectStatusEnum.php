@@ -13,6 +13,11 @@ enum ProjectStatusEnum: string
     case DRAFT = 'draft';
     case ARCHIVED = 'archived';
 
+    public static function editable(): array
+    {
+        return [self::DRAFT, self::PUBLISHED, self::ARCHIVED];
+    }
+
     public function apply(QueryBuilder $queryBuilder, string $alias = 'p'): QueryBuilder
     {
         return match ($this) {

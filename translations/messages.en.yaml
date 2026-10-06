@@ -34,6 +34,8 @@ breadcrumb:
     contact: "Contact"
     my_projects: "My projects"
     stats: "Statistics"
+    new_project: "New project"
+    edit: "Edit"
 categories:
     all: "All categories"
     card:
@@ -129,6 +131,64 @@ project:
             stats: "Its {views} views, {likes} likes and {shares} shares"
             screenshots: "Its cover and screenshots"
             favorites: "Its place in the favorites of other users"
+project_form:
+    new:
+        title: "Create a project"
+        description: "Fill in the information to publish your project"
+        submit: "Create the project"
+    edit:
+        title: "Edit the project"
+        description: "Update the information of your project to present it to the community"
+        submit: "Update"
+    fields:
+        cover: "Cover image"
+        name: "Project title"
+        description: "Description"
+        short_description: "Short description"
+        website_url: "Project URL"
+        repository_url: "GitHub repository"
+        category: "Category"
+        visibility: "Visibility"
+        status: "Status"
+        technologies: "Technologies"
+        features: "Features"
+        screenshots: "Screenshots"
+    placeholders:
+        name: "E.g. My awesome project"
+        description: "Describe your project in a few lines..."
+        short_description: "E.g. Cloud solution for DevOps teams"
+        category: "Select a category"
+        technologies: "Add a technology..."
+        features: "Add a feature..."
+    visibilities:
+        public: "Public"
+        private: "Private"
+    cover:
+        drop: "Drop an image or click to browse"
+        hint: "JPG, PNG, GIF or WebP. 5 MB max."
+        change: "Change image"
+        remove: "Remove the cover"
+    technologies:
+        empty: "No technology found."
+    actions:
+        add: "Add"
+        remove: "Remove"
+        cancel: "Cancel"
+    flash:
+        created: "The project \"{name}\" has been created."
+        updated: "The project \"{name}\" has been updated."
+    errors:
+        name: "Please enter a title (150 characters maximum)."
+        description: "Please enter a description."
+        short_description: "Please enter a short description (512 characters maximum)."
+        url: "Please enter a valid URL starting with http:// or https://."
+        category: "Please select a category."
+        visibility: "Please select a visibility."
+        status: "Please select a status."
+        technologies: "Please select at least one technology from the list."
+        features_count: "You can add 20 features maximum."
+        feature_length: "Each feature cannot be longer than 150 characters."
+        image: "The image must be a JPG, PNG, GIF or WebP file of 5 MB maximum."
 projects_mine:
     title: "My projects"
     new: "New project"

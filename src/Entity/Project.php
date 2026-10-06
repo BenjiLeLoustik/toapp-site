@@ -30,6 +30,12 @@ class Project extends AbstractEntity
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $websiteUrl = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $repositoryUrl = null;
+
     #[ORM\ManyToOne(target: Category::class, inversedBy: 'projects', nullable: true)]
     private ?Category $category = null;
 
@@ -76,6 +82,7 @@ class Project extends AbstractEntity
     {
         parent::__construct();
 
+        $this->visibility = ProjectVisibilityEnum::PUBLIC;
         $this->technologies = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->favorites = new ArrayCollection();
@@ -136,6 +143,28 @@ class Project extends AbstractEntity
     public function setDescription(string $description): self
     {
         $this->description = $description;
+        return $this;
+    }
+
+    public function getWebsiteUrl(): ?string
+    {
+        return $this->websiteUrl;
+    }
+
+    public function setWebsiteUrl(?string $websiteUrl): self
+    {
+        $this->websiteUrl = $websiteUrl;
+        return $this;
+    }
+
+    public function getRepositoryUrl(): ?string
+    {
+        return $this->repositoryUrl;
+    }
+
+    public function setRepositoryUrl(?string $repositoryUrl): self
+    {
+        $this->repositoryUrl = $repositoryUrl;
         return $this;
     }
 
@@ -200,6 +229,11 @@ class Project extends AbstractEntity
     public function getVisibility(): string
     {
         return $this->visibility->label();
+    }
+
+    public function getVisibilityEnum(): ProjectVisibilityEnum
+    {
+        return $this->visibility ?? ProjectVisibilityEnum::PUBLIC;
     }
 
     public function setVisibility(ProjectVisibilityEnum $visibility): self

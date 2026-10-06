@@ -13,6 +13,8 @@ class UserPathHelper
 
     public const AVATAR = 'avatar';
 
+    public const PROJECTS = 'projects';
+
     public function __construct(
         #[Autowire(env: 'APP_SECRET')]
         private string $secret,
@@ -34,5 +36,10 @@ class UserPathHelper
     public function avatarDirectory(User $user): string
     {
         return $this->directory($user, self::AVATAR);
+    }
+
+    public function projectDirectory(User $user, string $projectSlug): string
+    {
+        return $this->directory($user, self::PROJECTS . '/' . $projectSlug);
     }
 }

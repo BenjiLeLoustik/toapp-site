@@ -11,7 +11,9 @@ use App\Entity\ProjectShare;
 use App\Entity\ProjectView;
 use App\Entity\User;
 use App\Project\Enum\ProjectShareEnum;
+use App\Project\Enum\ProjectStatusEnum;
 use App\Project\Enum\ProjectViewSourceEnum;
+use App\Project\Enum\ProjectVisibilityEnum;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
@@ -23,20 +25,50 @@ class ProjectHelper
     ) {
     }
 
-    public function validateProject(int $projectId, string $projectSlug): ?Project
+    public function validateProject(int $projectId, string $projectSlug, ?User $user = null): ?Project
     {
         /** @var null|Project $project */
         $project = $this->entityManager->getRepository(Project::class)->find($projectId);
 
-        if ($project === null || $project->getSlug() !== $projectSlug) {
+        if ($project === null || $project->getSlug() !== $projectSlug || !$this->canView($project, $user)) {
             return null;
         }
 
         return $project;
     }
 
+    public function isOwner(Project $project, ?User $user): bool
+    {
+        return $user !== null && $project->getUser()?->getId() === $user->getId();
+    }
+
+    public function canView(Project $project, ?User $user): bool
+    {
+        if ($this->isOwner($project, $user)) {
+            return true;
+        }
+
+        return $project->getStatus() === ProjectStatusEnum::PUBLISHED
+            && $project->getVisibilityEnum() === ProjectVisibilityEnum::PUBLIC;
+    }
+
+    public function links(Project $project): array
+    {
+        $links = array_filter([
+            $project->getWebsiteUrl(),
+            $project->getRepositoryUrl(),
+            ...($project->getExternalLinks() ?? []),
+        ], static fn (mixed $link): bool => is_string($link) && $link !== '');
+
+        return array_values(array_unique($links));
+    }
+
     public function addView(Project $project, ?User $user, Request $request): void
     {
+        if ($this->isOwner($project, $user)) {
+            return;
+        }
+
         $projectViewRepository = $this->entityManager->getRepository(ProjectView::class);
 
         if ($user !== null && $projectViewRepository->existsForUser($project, $user)) {

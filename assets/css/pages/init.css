@@ -6,6 +6,7 @@
 @import "./project/_show.css";
 @import "./project/_mine.css";
 @import "./project/_stats.css";
+@import "./project/_form.css";
 
 @import "./security/_login.css";
 @import "./security/_register.css";
