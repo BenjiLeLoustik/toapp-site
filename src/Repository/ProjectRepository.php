@@ -9,6 +9,7 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Project\Enum\ProjectSortEnum;
 use App\Project\Enum\ProjectStatusEnum;
+use App\Project\Enum\ProjectVisibilityEnum;
 use App\Project\Search\ProjectSearchFilters;
 use App\Trend\Enum\TrendProjectSortEnum;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
@@ -20,7 +21,37 @@ class ProjectRepository extends AbstractRepository
 
     public function findPopular(int $limit): array
     {
-        return $this->findBy([], ['createdAt' => 'ASC'], $limit);
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.likes', 'l')
+            ->groupBy('p.id');
+
+        return $this->applyPublicFilter($queryBuilder)
+            ->orderBy('COUNT(DISTINCT l.id)', 'DESC')
+            ->addOrderBy('p.publishedAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
+    public function countPublic(): int
+    {
+        return (int) $this->applyPublicFilter($this->createQueryBuilder('p')->select('COUNT(p.id) AS total'))
+            ->getSingleScalarResult();
+    }
+
+    public function countPublicByCategory(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->select('p.category AS category', 'COUNT(p.id) AS total')
+            ->where('p.category IS NOT NULL')
+            ->groupBy('p.category');
+
+        $counts = [];
+
+        foreach ($this->applyPublicFilter($queryBuilder)->getScalarResult() as $row) {
+            $counts[(int) $row['category']] = (int) $row['total'];
+        }
+
+        return $counts;
     }
 
     public function createSearchQueryBuilder(?Category $category, ProjectSearchFilters $filters): QueryBuilder
@@ -28,9 +59,9 @@ class ProjectRepository extends AbstractRepository
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.likes', 'l')
             ->leftJoin('p.views', 'v')
-            ->where('p.publishedAt IS NOT NULL')
-            ->andWhere('p.archivedAt IS NULL')
             ->groupBy('p.id');
+
+        $this->applyPublicFilter($queryBuilder);
 
         if ($category !== null) {
             $queryBuilder
@@ -75,9 +106,9 @@ class ProjectRepository extends AbstractRepository
             ->leftJoin('p.likes', 'l')
             ->leftJoin('p.views', 'v')
             ->leftJoin('p.shares', 's')
-            ->where('p.publishedAt IS NOT NULL')
-            ->andWhere('p.archivedAt IS NULL')
             ->groupBy('p.id');
+
+        $this->applyPublicFilter($queryBuilder);
 
         if ($search !== '') {
             $queryBuilder
@@ -112,5 +143,13 @@ class ProjectRepository extends AbstractRepository
         return $queryBuilder
             ->orderBy('p.createdAt', 'DESC')
             ->addOrderBy('p.id', 'DESC');
+    }
+
+    public function applyPublicFilter(QueryBuilder $queryBuilder, string $alias = 'p'): QueryBuilder
+    {
+        return ProjectStatusEnum::PUBLISHED
+            ->apply($queryBuilder, $alias)
+            ->andWhere($alias . '.visibility = :publicVisibility')
+            ->setParameter('publicVisibility', ProjectVisibilityEnum::PUBLIC->value);
     }
 }

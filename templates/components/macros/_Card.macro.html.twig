@@ -1,11 +1,13 @@
 {# ./templates/components/macros/_Card.macro.html.twig #}
 
 {#
-    Usage :
+Usage :
 
-    {% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
 
-    Card.projects(projects)
+Card.projects(projects)
+
+Card.categories(categories, projectCounts)
 #}
 
 {% macro projects(projects = [], options = {}) %}
@@ -106,7 +108,7 @@
 
 {% endmacro %}
 
-{% macro categories(categories = [], limit = 6) %}
+{% macro categories(categories = [], projectCounts = {}) %}
 
     {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
     {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
@@ -116,6 +118,8 @@
 
         {% for category in categories %}
             {% set translation = category.translation(locale()) %}
+            {% set countProjects = projectCounts[category.id] ?? 0 %}
+
             <div class="card card--category">
 
                 <div class="category__icon">
@@ -127,7 +131,6 @@
                         size: 'lg'
                     }) }}
 
-                    {% set countProjects = category.projects|length %}
                     {{ Badge.render(translate('categories.card.count_projects', {
                         count: countProjects,
                         counterFormatted: countProjects|format_number

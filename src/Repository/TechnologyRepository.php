@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Technology;
+use App\Project\Enum\ProjectStatusEnum;
+use App\Project\Enum\ProjectVisibilityEnum;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 
 class TechnologyRepository extends AbstractRepository
@@ -16,9 +18,13 @@ class TechnologyRepository extends AbstractRepository
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->innerJoin('t.projects', 'p')
-            ->where('p.publishedAt IS NOT NULL')
             ->groupBy('t.id')
             ->orderBy('t.name', 'ASC');
+
+        ProjectStatusEnum::PUBLISHED
+            ->apply($queryBuilder, 'p')
+            ->andWhere('p.visibility = :publicVisibility')
+            ->setParameter('publicVisibility', ProjectVisibilityEnum::PUBLIC->value);
 
         if ($category !== null) {
             $queryBuilder

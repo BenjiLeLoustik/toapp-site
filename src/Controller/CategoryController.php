@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Category;
@@ -35,6 +37,7 @@ class CategoryController extends AbstractController
 
         return $this->render('pages/category/index.html.twig', [
             'categories' => $this->paginate($queryBuilder, $pageRequest),
+            'projectCounts' => $this->entityManager->getRepository(Project::class)->countPublicByCategory(),
         ]);
     }
 
@@ -52,6 +55,7 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute(...$redirect);
         }
 
+        /** @var null|Category $category */
         $category = $this->entityManager->getRepository(Category::class)->findOneBy(['slug' => $slug]);
 
         if ($category === null) {

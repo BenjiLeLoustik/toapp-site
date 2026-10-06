@@ -9,7 +9,7 @@
 
     <section class="categories screen screen--margin">
 
-        {{ Card.categories(categories) }}
+        {{ Card.categories(categories, projectCounts) }}
 
         {{ Pagination.render(categories, {
             previousLabel: translate('pagination.previous'),

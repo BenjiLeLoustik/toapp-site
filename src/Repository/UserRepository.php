@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Project\Enum\ProjectStatusEnum;
+use App\Project\Enum\ProjectVisibilityEnum;
 use App\Trend\Enum\TrendCreatorSortEnum;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 use NeoPHP\Package\Orm\Query\QueryBuilder;
@@ -15,10 +17,11 @@ class UserRepository extends AbstractRepository
 
     public function findTopContributors(int $limit = 8): array
     {
-        return $this->createQueryBuilder('u')
+        $queryBuilder = $this->createQueryBuilder('u')
             ->innerJoin('u.projects', 'p')
-            ->where('p.publishedAt IS NOT NULL')
-            ->groupBy('u.id')
+            ->groupBy('u.id');
+
+        return $this->applyPublicProjects($queryBuilder)
             ->orderBy('COUNT(p.id)', 'DESC')
             ->addOrderBy('u.firstname', 'ASC')
             ->setMaxResults($limit)
@@ -31,8 +34,9 @@ class UserRepository extends AbstractRepository
             ->innerJoin('u.projects', 'p')
             ->leftJoin('p.likes', 'l')
             ->leftJoin('p.views', 'v')
-            ->where('p.publishedAt IS NOT NULL')
             ->groupBy('u.id');
+
+        $this->applyPublicProjects($queryBuilder);
 
         if ($search !== '') {
             $queryBuilder
@@ -47,5 +51,13 @@ class UserRepository extends AbstractRepository
         };
 
         return $queryBuilder->addOrderBy('u.id', 'ASC');
+    }
+
+    private function applyPublicProjects(QueryBuilder $queryBuilder, string $alias = 'p'): QueryBuilder
+    {
+        return ProjectStatusEnum::PUBLISHED
+            ->apply($queryBuilder, $alias)
+            ->andWhere($alias . '.visibility = :publicVisibility')
+            ->setParameter('publicVisibility', ProjectVisibilityEnum::PUBLIC->value);
     }
 }
