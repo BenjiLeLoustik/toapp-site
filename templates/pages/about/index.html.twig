@@ -1,0 +1,173 @@
+{# ./templates/pages/about/index.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_User.macro.html.twig' as User %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+
+{% block content %}
+
+    {% set values = [
+        { key: 'discovery', icon: 'compass' },
+        { key: 'community', icon: 'users-round' },
+        { key: 'innovation', icon: 'sparkles' }
+    ] %}
+
+    {% set statItems = [
+        { key: 'likes', icon: 'heart' },
+        { key: 'views', icon: 'eye' },
+        { key: 'shares', icon: 'share-2' },
+        { key: 'favorites', icon: 'bookmark' }
+    ] %}
+
+    <section class="about-hero screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.about') }
+        ]) }}
+
+        <h1 class="about-hero__title">
+            {{ translate('about.hero.title') }}
+            <span class="about-hero__title--colored">
+                {{ config('framework.app.name') }}
+            </span>
+        </h1>
+
+        <p class="about-hero__description">
+            {{ translate('about.hero.description', { name: config('framework.app.name') }) }}
+        </p>
+
+    </section>
+
+    <section class="about-mission screen screen--margin">
+
+        <span class="about-mission__eyebrow">
+            {{ translate('about.mission.eyebrow') }}
+        </span>
+
+        <h2 class="about-mission__title">
+            {{ translate('about.mission.title') }}
+        </h2>
+
+        <p class="about-mission__description">
+            {{ translate('about.mission.description') }}
+        </p>
+
+        <div class="about-mission__values">
+            {% for value in values %}
+                <div class="about-mission__value">
+                    {{ Icon.lucide(value.icon, {
+                        color: 'accent',
+                        background: true,
+                        spacing: true,
+                        size: 'sm'
+                    }) }}
+
+                    <span class="about-mission__value-title">
+                        {{ translate('about.mission.values.' ~ value.key ~ '.title') }}
+                    </span>
+
+                    <p class="about-mission__value-description">
+                        {{ translate('about.mission.values.' ~ value.key ~ '.description') }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+    <section class="about-stats screen screen--no-margin">
+        {% for item in statItems %}
+            <div class="about-stats__block">
+                <span class="about-stats__icon">
+                    {{ Icon.lucide(item.icon, { size: 'sm' }) }}
+                </span>
+
+                <span class="about-stats__value">
+                    {{ stats[item.key]|format_number }}
+                </span>
+
+                <span class="about-stats__title">
+                    {{ translate('about.stats.' ~ item.key) }}
+                </span>
+            </div>
+        {% endfor %}
+    </section>
+
+    <section class="about-contributors screen screen--margin">
+
+        <span class="about-contributors__eyebrow">
+            {{ translate('about.contributors.eyebrow') }}
+        </span>
+
+        <h2 class="about-contributors__title">
+            {{ translate('about.contributors.title') }}
+        </h2>
+
+        <p class="about-contributors__description">
+            {{ translate('about.contributors.description') }}
+        </p>
+
+        {% if contributors is not empty %}
+
+            <div class="about-contributors__list">
+                {% for contributor in contributors %}
+                    <div class="about-contributors__item">
+                        {{ User.render({
+                            avatar: upload(contributor.avatar),
+                            name: contributor.firstname,
+                            username: contributor.username,
+                            certified: contributor.certified
+                        }) }}
+
+                        <p class="about-contributors__biography">
+                            {{ contributor.biography ?? translate('about.contributors.empty_biography') }}
+                        </p>
+
+                        <span class="about-contributors__count">
+                            {{ translate('about.contributors.projects', {
+                                count: contributor.projects|length,
+                                counterFormatted: contributor.projects|length|format_number
+                            }) }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+
+            {{ Empty.render('users-round', translate('about.contributors.empty')) }}
+
+        {% endif %}
+
+    </section>
+
+    <section class="about-cta screen screen--no-margin">
+
+        <h2 class="about-cta__title">
+            {{ translate('about.cta.title') }}
+        </h2>
+
+        <p class="about-cta__description">
+            {{ translate('about.cta.description') }}
+        </p>
+
+        <div class="about-cta__actions">
+            {{ Button.render(translate('about.cta.explore'), {
+                href: path('project_index'),
+                variant: 'primary'
+            }) }}
+
+            {{ Button.render(translate('about.cta.publish'), {
+                href: '#',
+                variant: 'ghost-outline'
+            }) }}
+        </div>
+
+    </section>
+
+{% endblock %}

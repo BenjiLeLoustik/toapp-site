@@ -1,0 +1,4 @@
+"Invalid credentials.": "Invalid email or password."
+"Invalid CSRF token.": "Your session has expired, please sign in again."
+"Too many failed login attempts, please try again in {minutes} minute(s).": "Too many failed attempts. Please try again in {minutes} {minutes, plural, one {minute} other {minutes}}."
+"An authentication exception occurred.": "An error occurred during sign in, please try again."

@@ -1,0 +1,167 @@
+{# ./templates/components/macros/_Card.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+
+Card.projects(projects)
+
+Card.categories(categories, projectCounts)
+#}
+
+{% macro projects(projects = [], options = {}) %}
+    {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+    {% import 'components/macros/_User.macro.html.twig' as User %}
+
+    <div class="cards cards--projects {{ options.class ?? '' }}">
+
+        {% for project in projects %}
+            <div class="card card--project">
+
+                <div class="project__image">
+                    {% if project.cover %}
+                        <img src="{{ upload(project.cover) }}" alt="{{ project.name }}">
+                    {% else %}
+                        {{ Icon.lucide('image', {
+                            size: 'lg',
+                            color: 'muted'
+                        }) }}
+                    {% endif %}
+                </div>
+
+                <div class="project__inner">
+
+                    <header class="project__header">
+
+                        <div class="project__title">
+                            {{ project.name }}
+                        </div>
+
+                        <div class="project__stats">
+                            {{ Icon.lucide('heart', {
+                                size: 'xs',
+                                color: 'danger'
+                            }) }}
+                            {{ project.likes|length|format_number(1) }}
+                        </div>
+
+                    </header>
+
+                    <p class="project__description">
+                        {{ project.shortDescription }}
+                    </p>
+
+                    {% set technologies = project.technologies|slice(0, 3) %}
+                    {% set remainingTechnologies = project.technologies|length - technologies|length %}
+
+                    <div class="project__technologies">
+
+                        {% for technology in technologies %}
+                            {{ Badge.render(technology.name, {
+                                variant: 'secondary',
+                                size: 'sm'
+                            }) }}
+                        {% endfor %}
+
+                        {% if remainingTechnologies > 0 %}
+                            {{ Badge.render('+' ~ remainingTechnologies, {
+                                variant: 'secondary',
+                                size: 'sm'
+                            }) }}
+                        {% endif %}
+
+                    </div>
+
+                    <footer class="project__footer">
+
+                        {{ User.render({
+                            avatar: project.user.avatar ?? null,
+                            name: project.user.firstname,
+                            username: project.user.username,
+                            certified: project.user.isCertified ? true : false
+                        }) }}
+
+                        <div class="project__actions">
+
+                            {{ Button.render('Show', {
+                                href: path('project_show', {
+                                    id: project.id,
+                                    slug: project.slug
+                                }),
+                                size: 'sm',
+                                variant: 'primary'
+                            }) }}
+
+                        </div>
+
+                    </footer>
+
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endmacro %}
+
+{% macro categories(categories = [], projectCounts = {}) %}
+
+    {% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    <div class="cards cards--categories">
+
+        {% for category in categories %}
+            {% set translation = category.translation(locale()) %}
+            {% set countProjects = projectCounts[category.id] ?? 0 %}
+
+            <div class="card card--category">
+
+                <div class="category__icon">
+
+                    {{ Icon.lucide(category.icon, {
+                        color: 'accent',
+                        background: true,
+                        spacing: true,
+                        size: 'lg'
+                    }) }}
+
+                    {{ Badge.render(translate('categories.card.count_projects', {
+                        count: countProjects,
+                        counterFormatted: countProjects|format_number
+                    })) }}
+
+                </div>
+
+                <div class="category__title">
+                    {{ translation.name }}
+                </div>
+
+                <div class="category__description">
+                    {{ translation.description }}
+                </div>
+
+                <div class="category__actions">
+
+                    {{ Button.render('Show', {
+                        href: path('category_show', { slug: category.slug }),
+                        iconRight: 'arrow-right',
+                        size: 'sm',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endmacro %}

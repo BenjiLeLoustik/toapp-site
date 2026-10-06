@@ -1,0 +1,464 @@
+{# ./templates/pages/project/show.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_User.macro.html.twig' as User %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+
+{% block content %}
+
+    {% set routeParams = { id: project.id, slug: project.slug } %}
+    {% set externalAttributes = { target: '_blank', rel: 'noopener noreferrer' } %}
+
+    <section class="project-banner screen screen--no-margin">
+        {% if project.cover %}
+            <img src="{{ upload(project.cover) }}" alt="{{ project.name }}">
+        {% else %}
+            <span>
+                {{ Icon.lucide('image', {
+                    size: 'lg',
+                    color: 'muted'
+                }) }}
+            </span>
+        {% endif %}
+    </section>
+
+    <section class="project-content screen screen--margin">
+
+        <div class="project-content__general">
+
+            <header class="project-header">
+                <h1 class="project-header__title">
+                    {{ project.name }}
+                </h1>
+
+                <p class="project-header__description">
+                    {{ project.shortDescription }}
+                </p>
+
+                <div class="project-header__actions">
+
+                    {% if app_user() %}
+                        {{ Button.render(isLiked ? translate('project.show.actions.liked') : translate('project.show.actions.like'), {
+                            variant: isLiked ? 'primary' : 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'heart',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: {
+                                'data-like-toggle': '',
+                                'data-like-label': translate('project.show.actions.like'),
+                                'data-like-label-liked': translate('project.show.actions.liked'),
+                                'aria-pressed': isLiked ? 'true' : 'false'
+                            }
+                        }) }}
+                    {% endif %}
+
+                    {{ Button.render(translate('project.show.actions.share'), {
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconLeft: 'share-2',
+                        iconOptions: {
+                            size: 'xs'
+                        },
+                        attributes: {
+                            'data-modal-open': 'project-share'
+                        }
+                    }) }}
+
+                    {% if app_user() %}
+                        {{ Button.render(isFavorite ? translate('project.show.actions.saved_favorite') : translate('project.show.actions.save_favorite'), {
+                            variant: isFavorite ? 'primary' : 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'bookmark',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: {
+                                'data-favorite-toggle': '',
+                                'data-favorite-label': translate('project.show.actions.save_favorite'),
+                                'data-favorite-label-saved': translate('project.show.actions.saved_favorite'),
+                                'aria-pressed': isFavorite ? 'true' : 'false'
+                            }
+                        }) }}
+                    {% endif %}
+
+                    {% if project.websiteUrl %}
+                        {{ Button.render(translate('project.show.actions.visit_website'), {
+                            href: project.websiteUrl,
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'external-link',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: externalAttributes
+                        }) }}
+                    {% endif %}
+
+                    {% if project.repositoryUrl %}
+                        {{ Button.render(translate('project_form.fields.repository_url'), {
+                            href: project.repositoryUrl,
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'git-branch',
+                            iconOptions: {
+                                size: 'xs'
+                            },
+                            attributes: externalAttributes
+                        }) }}
+                    {% endif %}
+
+                    {% if isOwner %}
+                        {{ Button.render(translate('projects_mine.actions.edit'), {
+                            href: path('project_edit', routeParams),
+                            variant: 'primary',
+                            size: 'sm',
+                            iconLeft: 'pencil',
+                            iconOptions: {
+                                size: 'xs'
+                            }
+                        }) }}
+                    {% endif %}
+                </div>
+            </header>
+
+            <div class="project-stats">
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('heart', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value" data-total-likes>
+                        {{ (project.likes|length)|format_number }}
+                    </span>
+
+                    <span class="project-stats__item-name" data-likes-label>
+                        {{ translate('project.show.stats.likes', {count: project.likes|length}) }}
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('eye', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        {{ (project.views|length)|format_number }}
+                    </span>
+
+                    <span class="project-stats__item-name">
+                         {{ translate('project.show.stats.views', {count: project.views|length}) }}
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-icon">
+                        {{ Icon.lucide('share-2', {
+                            size: 'xs'
+                        }) }}
+                    </span>
+
+                    <span class="project-stats__item-value" data-total-shares>
+                        {{ (project.shares|length)|format_number }}
+                    </span>
+
+                    <span class="project-stats__item-name">
+                         {{ translate('project.show.stats.shares', {count: project.shares|length}) }}
+                    </span>
+                </div>
+
+                <span class="project-stats__separator">
+                    &bull;
+                </span>
+
+                <div class="project-stats__item">
+                    <span class="project-stats__item-name">
+                         {{ translate('project.show.stats.published_at') }}
+                    </span>
+
+                    <span class="project-stats__item-value">
+                        {{ project.publishedAt ? project.publishedAt|user_date : '-' }}
+                    </span>
+                </div>
+
+            </div>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    {{ translate('project.show.description') }}
+                </h2>
+
+                <div class="project-section__content">
+                    {{ project.description|nl2br }}
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    {{ translate('project.show.features.title') }}
+                </h2>
+
+                {% if project.features|length > 0 %}
+                    <ul class="project-features">
+
+                        {% for feature in project.features %}
+                            <li class="project-features__item">
+                                {{ Icon.lucide('check', {
+                                    size: 'xs',
+                                    color: 'accent'
+                                }) }}
+                                {{ feature }}
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                {% else %}
+                    {{ Empty.render('list', translate('project.show.features.empty')) }}
+                {% endif %}
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    {{ translate('project.show.technologies.title') }}
+                </h2>
+
+                {% if project.technologies|length > 0 %}
+                    <div class="project-technologies">
+
+                        {% for technology in project.technologies %}
+                            {{ Badge.render(technology.name) }}
+                        {% endfor %}
+
+                    </div>
+                {% else %}
+                    {{ Empty.render('cpu', translate('project.show.technologies.empty')) }}
+                {% endif %}
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    {{ translate('project.show.screenshots.title') }}
+                </h2>
+
+                {% if project.screenshots|length > 0 %}
+                    <div class="project-screenshots">
+                        {% for screenshot in project.screenshots %}
+                            <div class="project-screenshots__item">
+                                <img src="{{ upload(screenshot.image) }}" alt="{{ screenshot.title }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ Empty.render('image', translate('project.show.screenshots.empty')) }}
+                {% endif %}
+
+            </section>
+
+            <section class="project-section">
+                <h2 class="project-section__title">
+                    {{ translate('project.show.links.title') }}
+                </h2>
+
+                {% if links is not empty %}
+                    <div class="project-links">
+
+                        {% for link in links %}
+                            {{ Button.render(link, {
+                                href: link,
+                                variant: 'ghost',
+                                iconLeft: link == project.repositoryUrl ? 'git-branch' : 'external-link',
+                                iconOptions: {
+                                    size: 'xs'
+                                },
+                                attributes: externalAttributes
+                            }) }}
+                        {% endfor %}
+
+                    </div>
+                {% else %}
+                    {{ Empty.render('link', translate('project.show.links.empty')) }}
+                {% endif %}
+            </section>
+
+        </div>
+
+        <div class="project-content__informations">
+
+            <div class="project-information-card">
+                {{ User.render({
+                    avatar: project.user.avatar,
+                    name: project.user.firstname,
+                    username: project.user.username,
+                    certified: project.user.certified
+                }) }}
+
+                <p class="project-information-card__biography">
+                    {% if project.user.biography is not null %}
+                        {{ project.user.biography }}
+                    {% else %}
+                        {{ translate('project.show.author.empty_biography') }}
+                    {% endif %}
+                </p>
+
+                <div class="project-information-card__actions">
+                    {{ Button.render(translate('project.show.author.button_show_profile'), {
+                        href: path('user_show', { slug: project.user.slug }),
+                        size: 'sm',
+                        variant: 'ghost-outline'
+                    }) }}
+                </div>
+            </div>
+
+            <div class="project-information-card">
+                <header class="project-information-card__header">
+                    <span class="project-information-card__title">
+                        {{ translate('project.show.informations.title') }}
+                    </span>
+                </header>
+
+                <ul class="project-information-card__list">
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('tag', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            {{ translate('project.show.informations.category.title') }}
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.category ? (project.category.translation(locale()).name ?? project.category.slug) : '-' }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide(project.visibilityEnum.value == 'private' ? 'lock' : 'globe', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            {{ translate('project.show.informations.visibility.title') }}
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ translate('project_form.visibilities.' ~ project.visibilityEnum.value) }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('info', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            {{ translate('project.show.informations.status.title') }}
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ translate('projects_mine.statuses.' ~ project.status.value) }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('calendar', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            {{ translate('project.show.informations.published_at.title') }}
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.publishedAt ? project.publishedAt|user_date : '-' }}
+                        </span>
+                    </li>
+
+                    <li class="project-information-card__list-item">
+                        <span class="project-information-card__list-item-icon">
+                            {{ Icon.lucide('refresh-cw', {
+                                size: 'xs',
+                                color: 'muted'
+                            }) }}
+                        </span>
+
+                        <span class="project-information-card__list-item-title">
+                            {{ translate('project.show.informations.updated_at.title') }}
+                        </span>
+
+                        <span class="project-information-card__list-item-value">
+                            {{ project.updatedAt ? project.updatedAt|user_date : '-' }}
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
+    </section>
+
+    {% embed 'components/embeds/_Modal.embed.html.twig' with {
+        modalName: 'project-share',
+        modalTitle: 'Partager'
+    } %}
+        {% block modalContent %}
+
+            {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+            <div class="modal__project-share">
+                {% for type in shareTypes %}
+                    {{ Button.render(type.label(), {
+                        variant: 'ghost-outline',
+                        attributes: {
+                            'data-share-type': type.value,
+                            'data-share-link': type.getShareLink(url),
+                            'data-copy-success': translate('project.show.modal.share.copied')
+                        }
+                    }) }}
+                {% endfor %}
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+
+    <script type="text/javascript">
+        window.initProjectShare('{{ path('project_api_share', routeParams) }}');
+
+        {% if app_user() %}
+        window.initProjectLike('{{ path('project_api_like', routeParams) }}');
+        window.initProjectFavorite('{{ path('project_api_favorite', routeParams) }}');
+        {% endif %}
+    </script>
+
+{% endblock %}

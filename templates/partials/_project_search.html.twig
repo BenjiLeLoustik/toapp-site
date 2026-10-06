@@ -1,0 +1,211 @@
+{# ./templates/partials/_project_search.html.twig #}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+
+{% set category = category ?? null %}
+{% set categoryName = category ? (category.translation(locale()).name ?? category.slug) : null %}
+{% set resetUrl = category ? path('category_show', { slug: category.slug }) : path('project_index') %}
+
+{% set categoryOptions = { all: translate('categories.all') } %}
+{% for item in categories %}
+    {% set categoryOptions = categoryOptions|merge({
+        (item.slug): item.translation(locale()).name ?? item.slug
+    }) %}
+{% endfor %}
+
+{% set sortOptions = {} %}
+{% for sort in sorts %}
+    {% set sortOptions = sortOptions|merge({
+        (sort.value): translate('search.sorts.' ~ sort.value)
+    }) %}
+{% endfor %}
+
+{% set dateOptions = {} %}
+{% for date in dates %}
+    {% set dateOptions = dateOptions|merge({
+        (date.value): translate('search.dates.' ~ date.value)
+    }) %}
+{% endfor %}
+
+{% set countParameters = {
+    count: projects.total,
+    counterFormatted: projects.total|format_number,
+    search: filters.search,
+    category: categoryName ?? ''
+} %}
+
+<section class="search screen screen--margin">
+
+    {{ Breadcrumb.render(category ? [
+        { label: translate('breadcrumb.home'), href: path('home_index') },
+        { label: translate('breadcrumb.categories'), href: path('category_index') },
+        { label: categoryName }
+    ] : [
+        { label: translate('breadcrumb.home'), href: path('home_index') },
+        { label: translate('breadcrumb.projects') }
+    ]) }}
+
+    <header class="search__header">
+        <h1 class="search__title">
+            {% if filters.hasSearch %}
+                {{ translate('search.title') }}
+            {% else %}
+                {{ categoryName ?? translate('search.title_all') }}
+            {% endif %}
+        </h1>
+
+        <p class="search__description">
+            {% if filters.hasSearch %}
+                {{ translate(category ? 'search.results.search_category' : 'search.results.search', countParameters) }}
+            {% else %}
+                {{ translate(category ? 'search.results.category' : 'search.results.all', countParameters) }}
+            {% endif %}
+        </p>
+    </header>
+
+    <form class="search__layout" method="get" action="{{ resetUrl }}" data-auto-submit>
+
+        <aside class="search__filters">
+
+            <header class="search__filters-header">
+                <span class="search__filters-title">
+                    {{ translate('search.filters.title') }}
+                </span>
+
+                <a href="{{ resetUrl }}" class="search__filters-reset">
+                    {{ translate('search.filters.reset') }}
+                </a>
+            </header>
+
+            <div class="search__filter">
+                <span class="search__filter-title">
+                    {{ translate('search.filters.category') }}
+                </span>
+
+                {{ Form.select('category', {
+                    id: 'filter-category',
+                    value: category ? category.slug : 'all',
+                    options: categoryOptions
+                }) }}
+            </div>
+
+            {% if technologies is not empty %}
+                <div class="search__filter">
+                    <span class="search__filter-title">
+                        {{ translate('search.filters.technologies') }}
+                    </span>
+
+                    <div class="search__filter-list">
+                        {% for technology in technologies %}
+                            {{ Form.checkbox('technologies[]', {
+                                id: 'filter-technology-' ~ technology.slug,
+                                label: technology.name,
+                                value: technology.slug,
+                                checked: filters.hasTechnology(technology.slug)
+                            }) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="search__filter">
+                <span class="search__filter-title">
+                    {{ translate('search.filters.sort') }}
+                </span>
+
+                <div class="search__filter-list">
+                    {% for value, label in sortOptions %}
+                        {{ Form.radio('sort', {
+                            id: 'filter-sort-' ~ value,
+                            value: value,
+                            label: label,
+                            checked: filters.sort.value == value
+                        }) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="search__filter">
+                <span class="search__filter-title">
+                    {{ translate('search.filters.date') }}
+                </span>
+
+                {{ Form.select('date', {
+                    id: 'filter-date',
+                    value: filters.date.value,
+                    options: dateOptions
+                }) }}
+            </div>
+
+        </aside>
+
+        <div class="search__results">
+
+            <div class="search__toolbar">
+
+                {{ Form.input('search', {
+                    id: 'filter-search',
+                    value: filters.search,
+                    iconLeft: 'search',
+                    iconSize: 'sm',
+                    placeholder: translate('search.placeholder'),
+                    class: 'search__input'
+                }) }}
+
+                <div class="search__toolbar-sort">
+                    <label for="filter-sort-toolbar" class="search__toolbar-label">
+                        {{ translate('search.filters.sort_by') }}
+                    </label>
+
+                    {{ Form.select('sort', {
+                        id: 'filter-sort-toolbar',
+                        value: filters.sort.value,
+                        options: sortOptions,
+                        attributes: { 'data-sort-sync': '' }
+                    }) }}
+                </div>
+
+            </div>
+
+            {% if projects.total > 0 %}
+
+                {{ Card.projects(projects, { class: 'cards--projects-2' }) }}
+
+                {{ Pagination.render(projects, {
+                    previousLabel: translate('pagination.previous'),
+                    nextLabel: translate('pagination.next')
+                }) }}
+
+            {% else %}
+
+                <div class="search__empty">
+                    {{ Empty.render('search-x', translate('search.empty.title'), [
+                        translate('search.empty.description_line_1'),
+                        translate('search.empty.description_line_2')
+                    ], [
+                        Button.render(translate('search.empty.explore_categories'), {
+                            href: path('category_index'),
+                            variant: 'ghost-outline',
+                            size: 'sm'
+                        }),
+                        Button.render(translate('search.empty.reset'), {
+                            href: resetUrl,
+                            variant: 'primary',
+                            size: 'sm'
+                        })
+                    ]) }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </form>
+
+</section>

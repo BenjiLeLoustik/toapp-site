@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/neutral/_colors.css */
+
+[data-theme="dark"][data-accent="neutral"] {
+    --theme-accent: var(--color-neutral-400);
+    --theme-accent-hover: var(--color-neutral-300);
+    --theme-accent-active: var(--color-neutral-200);
+    --theme-accent-foreground: var(--color-white);
+}

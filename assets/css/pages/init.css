@@ -1,0 +1,25 @@
+/** ./assets/css/pages/init.css */
+
+@import "./home/_index.css";
+@import "./home/_contact.css";
+
+@import "./project/_show.css";
+@import "./project/_mine.css";
+@import "./project/_stats.css";
+@import "./project/_form.css";
+@import "./project/_favorites.css";
+
+@import "./security/_login.css";
+@import "./security/_register.css";
+
+@import "./category/_index.css";
+
+@import "./trend/_index.css";
+
+@import "./about/_index.css";
+
+@import "./legal/_show.css";
+
+@import "./settings/_settings.css";
+
+@import "./user/_profile.css";

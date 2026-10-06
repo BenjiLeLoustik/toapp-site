@@ -1,0 +1,420 @@
+{# ./templates/components/macros/_Form.macro.html.twig #}
+
+{% macro input(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? null %}
+    {% set placeholder = options.placeholder ?? null %}
+    {% set type = options.type ?? 'text' %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+    {% set autocomplete = options.autocomplete ?? null %}
+
+    {% set iconLeft = options.iconLeft ?? null %}
+    {% set iconRight = options.iconRight ?? null %}
+    {% set iconSize = options.iconSize ?? 'sm' %}
+    {% set iconOptions = options.iconOptions ?? {} %}
+
+    {% set passwordToggle = type == 'password' and (options.passwordToggle ?? true) %}
+    {% set showPasswordLabel = options.showPasswordLabel ?? 'Show password' %}
+    {% set hidePasswordLabel = options.hidePasswordLabel ?? 'Hide password' %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        {% if label %}
+            <label for="{{ id }}" class="form__label">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <div class="form__control">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="{{ type }}"
+                    class="form__input"
+                    {% if value is not null %}value="{{ value }}"{% endif %}
+                {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >
+
+            {% if iconLeft %}
+                <span class="form__icon form__icon--left">
+                    {{ _self.render_icon(iconLeft, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+            {% if passwordToggle %}
+                <button
+                        type="button"
+                        class="form__icon form__icon--right form__password-toggle"
+                        aria-controls="{{ id }}"
+                        aria-pressed="false"
+                        aria-label="{{ showPasswordLabel }}"
+                        data-password-toggle
+                        data-show-label="{{ showPasswordLabel }}"
+                        data-hide-label="{{ hidePasswordLabel }}"
+                        {% if disabled %}disabled{% endif %}
+                >
+                    <span class="form__password-toggle-icon form__password-toggle-icon--show">
+                        {{ _self.render_icon('eye', iconSize) }}
+                    </span>
+                    <span class="form__password-toggle-icon form__password-toggle-icon--hide">
+                        {{ _self.render_icon('eye-off', iconSize) }}
+                    </span>
+                </button>
+            {% elseif iconRight %}
+                <span class="form__icon form__icon--right">
+                    {{ _self.render_icon(iconRight, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+        </div>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro select(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? null %}
+    {% set placeholder = options.placeholder ?? null %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set iconLeft = options.iconLeft ?? null %}
+    {% set iconSize = options.iconSize ?? 'sm' %}
+    {% set iconOptions = options.iconOptions ?? {} %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set choices = options.options ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        {% if label %}
+            <label for="{{ id }}" class="form__label">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <div class="form__control">
+
+            <select
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    class="form__select"
+                    {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >
+            {% if placeholder %}
+                <option value="" {% if value is null %}selected{% endif %}>
+                    {{ placeholder }}
+                </option>
+            {% endif %}
+
+            {% for optionValue, optionLabel in choices %}
+                <option value="{{ optionValue }}" {% if optionValue == value %}selected{% endif %}>
+                    {{ optionLabel }}
+                </option>
+            {% endfor %}
+            </select>
+
+            {% if iconLeft %}
+                <span class="form__icon form__icon--left">
+                    {{ _self.render_icon(iconLeft, iconSize, iconOptions) }}
+                </span>
+            {% endif %}
+
+            <span class="form__icon form__icon--right form__select-arrow">
+                {{ _self.render_icon('chevron-down', iconSize) }}
+            </span>
+
+        </div>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro checkbox(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? '1' %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field form__field--checkbox {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        <label for="{{ id }}" class="form__checkbox">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="checkbox"
+                    class="form__checkbox-input"
+                    value="{{ value }}"
+                    {% if checked %}checked{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >
+
+            <span class="form__checkbox-box" aria-hidden="true">
+                {{ _self.render_icon('check', 'xs') }}
+            </span>
+
+            {% if label %}
+                <span class="form__checkbox-label">
+                    {{ label }}
+                </span>
+            {% endif %}
+
+        </label>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro radio(name, options = {}) %}
+
+    {% set value = options.value ?? '' %}
+    {% set id = options.id ?? (name ~ '-' ~ value) %}
+    {% set label = options.label ?? null %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field form__field--radio {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        <label for="{{ id }}" class="form__radio">
+
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="radio"
+                    class="form__radio-input"
+                    value="{{ value }}"
+                    {% if checked %}checked{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >
+
+            <span class="form__radio-dot" aria-hidden="true"></span>
+
+            {% if label %}
+                <span class="form__radio-label">
+                    {{ label }}
+                </span>
+            {% endif %}
+
+        </label>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
+
+{% macro submit(label = 'Submit', options = {}) %}
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    {% set columns = options.columns ?? 1 %}
+    {% set buttonOptions = options|merge({
+        type: 'submit'
+    }) %}
+
+    <div class="form__group-item" style="--form-group-item-columns: {{ columns }};">
+        {{ Button.render(label, buttonOptions) }}
+    </div>
+
+{% endmacro %}
+
+
+{% macro reset(label = 'Reset', options = {}) %}
+
+    {% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+    {% set columns = options.columns ?? 1 %}
+    {% set buttonOptions = options|merge({
+        type: 'reset'
+    }) %}
+
+    <div class="form__group-item" style="--form-group-item-columns: {{ columns }};">
+        {{ Button.render(label, buttonOptions) }}
+    </div>
+
+{% endmacro %}
+
+
+{% macro group(fields, options = {}) %}
+
+    {% set columns = options.columns ?? 12 %}
+    {% set class = options.class ?? '' %}
+    {% set gap = options.gap ?? 'none' %}
+
+    <div class="form__group form__group--gap-{{ gap }} {{ class }}" style="--form-group-columns: {{ columns }};">
+        {% for field in fields %}
+            {{ field|raw }}
+        {% endfor %}
+    </div>
+
+{% endmacro %}
+
+
+{% macro render_error(id, error) %}
+
+    {% if error %}
+        <p id="{{ id }}-error" class="form__error">
+            {{ error }}
+        </p>
+    {% endif %}
+
+{% endmacro %}
+
+
+{% macro render_icon(name, size, options = {}) %}
+
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set iconConfig = options|merge({
+        size: size
+    }) %}
+
+    {{ Icon.lucide(name, iconConfig) }}
+
+{% endmacro %}
+
+{% macro textarea(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? null %}
+    {% set placeholder = options.placeholder ?? null %}
+    {% set rows = options.rows ?? 5 %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        {% if label %}
+            <label for="{{ id }}" class="form__label">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <div class="form__control">
+            <textarea
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    rows="{{ rows }}"
+                    class="form__textarea"
+                    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >{{ value }}</textarea>
+        </div>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
+
+{% macro switch(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set description = options.description ?? null %}
+    {% set checked = options.checked ?? false %}
+    {% set disabled = options.disabled ?? false %}
+    {% set class = options.class ?? '' %}
+
+    <div class="form__switch-row {{ class }}">
+
+        <label for="{{ id }}" class="form__switch-text">
+            {% if label %}
+                <span class="form__switch-label">{{ label }}</span>
+            {% endif %}
+            {% if description %}
+                <span class="form__switch-description">{{ description }}</span>
+            {% endif %}
+        </label>
+
+        <span class="form__switch">
+            <input type="hidden" name="{{ name }}" value="0">
+            <input
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    type="checkbox"
+                    role="switch"
+                    value="1"
+                    class="form__switch-input"
+                    {% if checked %}checked{% endif %}
+                    {% if disabled %}disabled{% endif %}
+            >
+            <span class="form__switch-track" aria-hidden="true"></span>
+        </span>
+
+    </div>
+
+{% endmacro %}

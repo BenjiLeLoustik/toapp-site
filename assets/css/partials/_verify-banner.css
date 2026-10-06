@@ -1,0 +1,28 @@
+/** ./assets/css/partials/_verify-banner.css */
+
+@layer components {
+
+    .verify-banner {
+        @apply w-full px-4 py-2;
+        background-color: var(--theme-warning-surface);
+        border-bottom: solid 1px var(--theme-warning-border);
+    }
+
+    .verify-banner__inner {
+        @apply max-w-7xl mx-auto flex items-center justify-between gap-4;
+    }
+
+    .verify-banner__text {
+        @apply inline-flex items-center gap-2 text-sm;
+        color: var(--theme-warning);
+    }
+
+    @media (max-width: 767px) {
+
+        .verify-banner__inner {
+            @apply flex-col items-start gap-2;
+        }
+
+    }
+
+}

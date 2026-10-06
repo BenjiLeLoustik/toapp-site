@@ -1,0 +1,21 @@
+{# ./templates/layouts/base_layout.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block layout %}
+
+    {% include 'partials/_header.html.twig' %}
+
+    {% include 'partials/_flashes.html.twig' %}
+
+    <main class="main">
+        {% include 'partials/_verify_email.html.twig' %}
+
+        <div class="main__content">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% include 'partials/_footer.html.twig' %}
+    </main>
+
+{% endblock %}

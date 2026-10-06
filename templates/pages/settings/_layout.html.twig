@@ -1,0 +1,73 @@
+{# ./templates/pages/settings/_layout.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block content %}
+
+    {% set settingsNav = [
+        { route: 'settings_profile', icon: 'user', label: 'profile' },
+        { route: 'settings_account', icon: 'user-cog', label: 'account' },
+        { route: 'settings_appearance', icon: 'palette', label: 'appearance' },
+        { route: 'settings_notifications', icon: 'bell', label: 'notifications' },
+        { route: 'settings_privacy', icon: 'shield', label: 'privacy' },
+        { route: 'settings_security', icon: 'key-round', label: 'security' }
+    ] %}
+
+    <section class="settings screen screen--margin">
+
+        <aside class="settings__sidebar">
+
+            <span class="settings__sidebar-title">
+                {{ translate('settings.title') }}
+            </span>
+
+            <nav class="settings__nav">
+                {% for item in settingsNav %}
+                    {{ Button.render(translate('settings.nav.' ~ item.label), {
+                        href: path(item.route),
+                        variant: app.current_route == item.route ? 'secondary' : 'ghost',
+                        size: 'sm',
+                        align: 'left',
+                        iconLeft: item.icon,
+                        iconSize: 'xs',
+                        class: 'settings__nav-item ' ~ (app.current_route == item.route ? 'settings__nav-item--active' : ''),
+                        attributes: app.current_route == item.route ? { 'aria-current': 'page' } : {}
+                    }) }}
+                {% endfor %}
+            </nav>
+
+            <div class="settings__sidebar-footer">
+                {{ Button.render(translate('settings.nav.delete_account'), {
+                    href: path('settings_delete'),
+                    variant: 'ghost',
+                    size: 'sm',
+                    align: 'left',
+                    iconLeft: 'trash-2',
+                    iconSize: 'xs',
+                    class: 'settings__nav-item settings__nav-item--danger'
+                }) }}
+            </div>
+
+        </aside>
+
+        <div class="settings__panel">
+
+            <header class="settings__header">
+                <h1 class="settings__title">{% block settings_title %}{% endblock %}</h1>
+                <p class="settings__description">{% block settings_description %}{% endblock %}</p>
+            </header>
+
+            {% if errors._form ?? null %}
+                <p class="settings__error">{{ errors._form }}</p>
+            {% endif %}
+
+            {% block settings_content %}{% endblock %}
+
+        </div>
+
+    </section>
+
+{% endblock %}

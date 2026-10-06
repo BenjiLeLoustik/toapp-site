@@ -1,0 +1,167 @@
+/** ./assets/css/components/_Button.css */
+
+@layer component {
+
+    .button {
+        @apply inline-flex items-center gap-2 rounded-md font-medium transition-colors cursor-pointer shrink-0 border border-transparent box-border align-middle py-0;
+        color: var(--theme-foreground);
+    }
+
+    /* Alignment */
+
+    .button--align-left {
+        @apply justify-start;
+    }
+
+    .button--align-center {
+        @apply justify-center;
+    }
+
+    .button--align-right {
+        @apply justify-end;
+    }
+
+    /* Sizes */
+
+    .button--xs {
+        @apply h-7 px-2 text-xs leading-none;
+    }
+
+    .button--sm {
+        @apply h-8 px-3 text-sm leading-none;
+    }
+
+    .button--base {
+        @apply h-10 px-4 text-base leading-none;
+    }
+
+    .button--lg {
+        @apply h-11 px-5 text-lg leading-none;
+    }
+
+    .button--xl {
+        @apply h-12 px-6 text-xl leading-none;
+    }
+
+    /* Icon */
+
+    .button__icon,
+    .button__icon svg {
+        @apply block shrink-0;
+        width: 1em !important;
+        height: 1em !important;
+    }
+
+    .button__label {
+        @apply min-w-0 leading-none;
+    }
+
+    /* Icon only */
+
+    .button--icon-only {
+        @apply aspect-square p-0 justify-center;
+    }
+
+    /* Colors - Solid */
+
+    .button--primary {
+        background-color: var(--theme-accent);
+        color: var(--theme-accent-foreground);
+    }
+
+    .button--primary:hover {
+        background-color: var(--theme-accent-hover);
+    }
+
+    .button--primary:active {
+        background-color: var(--theme-accent-active);
+    }
+
+    .button--secondary {
+        background-color: var(--theme-surface);
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+    .button--secondary:hover {
+        background-color: var(--theme-surface-hover);
+    }
+
+    .button--secondary:active {
+        background-color: var(--theme-surface-active);
+    }
+
+    .button--ghost {
+        background-color: transparent;
+        color: var(--theme-foreground);
+    }
+
+    .button--ghost:hover {
+        background-color: var(--theme-surface-hover);
+    }
+
+    .button--ghost:active {
+        background-color: var(--theme-surface-active);
+    }
+
+    /* Colors - Outlines */
+
+    .button--primary-outline {
+        background-color: transparent;
+        color: var(--theme-accent);
+        border-color: var(--theme-accent);
+    }
+
+    .button--primary-outline:hover {
+        background-color: var(--theme-accent);
+        color: var(--theme-accent-foreground);
+    }
+
+    .button--primary-outline:active {
+        background-color: var(--theme-accent-active);
+        color: var(--theme-accent-foreground);
+    }
+
+    .button--secondary-outline {
+        background-color: transparent;
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+    .button--secondary-outline:hover {
+        background-color: var(--theme-surface-hover);
+        border-color: var(--theme-border);
+    }
+
+    .button--secondary-outline:active {
+        background-color: var(--theme-surface-active);
+    }
+
+    .button--ghost-outline {
+        background-color: transparent;
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+    .button--ghost-outline:hover {
+        background-color: var(--theme-surface-hover);
+        border-color: transparent;
+    }
+
+    .button--ghost-outline:active {
+        background-color: var(--theme-surface-active);
+        border-color: transparent;
+    }
+
+    /* Disabled State */
+
+    .button--disabled,
+    .button:disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    .button--disabled {
+        pointer-events: none;
+    }
+
+}

@@ -1,0 +1,89 @@
+/** ./assets/css/components/_Badge.css */
+
+@layer component {
+
+    .badge {
+        @apply inline-flex items-center gap-1 rounded-md font-medium border border-transparent box-border align-middle shrink-0;
+        color: var(--theme-foreground);
+    }
+
+    /* Sizes */
+
+    .badge--xs {
+        @apply h-5 px-1.5 text-xs leading-none;
+    }
+
+    .badge--sm {
+        @apply h-6 px-2 text-sm leading-none;
+    }
+
+    .badge--base {
+        @apply h-7 px-2.5 text-base leading-none;
+    }
+
+    .badge--lg {
+        @apply h-8 px-3 text-lg leading-none;
+    }
+
+    .badge--xl {
+        @apply h-9 px-3.5 text-xl leading-none;
+    }
+
+    /* Icon */
+
+    .badge__icon,
+    .badge__icon svg {
+        @apply block shrink-0;
+        width: 1em !important;
+        height: 1em !important;
+    }
+
+    .badge__label {
+        @apply min-w-0 leading-none;
+    }
+
+    /* Icon only */
+
+    .badge--icon-only {
+        @apply aspect-square p-0 justify-center;
+    }
+
+    /* Colors - Solid */
+
+    .badge--primary {
+        background-color: var(--theme-accent);
+        color: var(--theme-accent-foreground);
+    }
+
+    .badge--secondary {
+        background-color: var(--theme-surface);
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+    .badge--ghost {
+        background-color: transparent;
+        color: var(--theme-foreground);
+    }
+
+    /* Colors - Outlines */
+
+    .badge--primary-outline {
+        background-color: transparent;
+        color: var(--theme-accent);
+        border-color: var(--theme-accent);
+    }
+
+    .badge--secondary-outline {
+        background-color: transparent;
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+    .badge--ghost-outline {
+        background-color: transparent;
+        color: var(--theme-foreground);
+        border-color: var(--theme-border);
+    }
+
+}

@@ -1,0 +1,153 @@
+{# ./templates/pages/home/index.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+
+{% block content %}
+
+    <section class="hero screen screen--full screen--no-margin">
+
+        <h1 class="hero__title">
+            {{ translate('main.hero.title.first_part') }}
+            <span class="hero__title--colored">
+                {{ translate('main.hero.title.second_part') }}
+            </span>
+        </h1>
+
+        <p class="hero__sub-title">
+            {{ translate('main.hero.sub_title') }}
+        </p>
+
+        {% set categoryOptions = {
+            all: translate('categories.all')
+        } %}
+
+        {% for category in categories %}
+            {% set categoryOptions = categoryOptions|merge({
+                (category.slug): category.translation(locale()).name ?? category.slug
+            }) %}
+        {% endfor %}
+
+        <form class="hero__search-bar" method="get" action="{{ path('project_index') }}">
+            {{ Form.group([
+                Form.input('search', {
+                    iconLeft: 'search',
+                    iconSize: 'sm',
+                    placeholder: translate('main.hero.search_bar.input'),
+                    columns: 6
+                }),
+                Form.select('category', {
+                    value: 'all',
+                    options: categoryOptions,
+                    columns: 4
+                }),
+                Form.submit(translate('main.hero.search_bar.submit'), {
+                    columns: 2
+                })
+            ], { columns: 12, gap: 'xs' }) }}
+
+        </form>
+
+        <div class="hero__actions">
+
+            {{ Button.render(translate('main.hero.actions.show_projects'), {
+                href: '#',
+                variant: 'primary'
+            }) }}
+
+            {{ Button.render(translate('main.hero.actions.publish_project'), {
+                href: '#',
+                variant: 'ghost-outline'
+            }) }}
+
+        </div>
+
+    </section>
+
+    <section class="stats screen screen--no-margin">
+        <div class="stat__block">
+            <span class="stat__icon">
+                <i data-lucide="folder"></i>
+            </span>
+            <span class="stat__value">
+                +{{ stats.published_projects|format_number }}
+            </span>
+            <span class="stat__title">
+                {{ translate('main.stats.published_project') }}
+            </span>
+        </div>
+        <div class="stat__block">
+            <span class="stat__icon">
+                <i data-lucide="users-round"></i>
+            </span>
+            <span class="stat__value">
+                +{{ stats.active_developers|format_number }}
+            </span>
+            <span class="stat__title">
+                {{ translate('main.stats.active_developers') }}
+            </span>
+        </div>
+        <div class="stat__block">
+            <span class="stat__icon">
+                <i data-lucide="cpu"></i>
+            </span>
+            <span class="stat__value">
+                {{ stats.listed_technologies|format_number }}
+            </span>
+            <span class="stat__title">
+                {{ translate('main.stats.listed_technologies') }}
+            </span>
+        </div>
+        <div class="stat__block">
+            <span class="stat__icon">
+                <i data-lucide="tag"></i>
+            </span>
+            <span class="stat__value">
+                {{ stats.categories|format_number }}
+            </span>
+            <span class="stat__title">
+                {{ translate('main.stats.categories') }}
+            </span>
+        </div>
+    </section>
+
+    <section class="popular-projects screen screen--margin">
+        <h2 class="popular-projects__title">
+            {{ translate('main.popular_projects.title') }}
+        </h2>
+        <p class="popular-projects__description">
+            {{ translate('main.popular_projects.description') }}
+        </p>
+
+        {% if popular_projects is not empty %}
+
+            {{ Card.projects(popular_projects) }}
+
+            {% if stats.published_projects > popular_projects|length %}
+                <div class="popular-projects__show-more">
+                    {{ Button.render(translate('main.popular_projects.show_more'), {
+                        href: '#',
+                        iconRight: 'arrow-right',
+                        iconOptions: {
+                            size: 'xs'
+                        }
+                    }) }}
+                </div>
+            {% endif %}
+
+        {% else %}
+            {{ Empty.render('search-x', translate('main.popular_projects.empty.title'), [
+                translate('main.popular_projects.empty.description_line_1'),
+                translate('main.popular_projects.empty.description_line_2')
+            ], [
+                Button.render(translate('main.popular_projects.empty.actions.create_project'), { href: '#' })
+            ]) }}
+        {% endif %}
+
+    </section>
+
+{% endblock %}

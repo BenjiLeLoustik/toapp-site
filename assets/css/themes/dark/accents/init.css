@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/init.css */
+
+@import "./indigo/_colors.css";
+@import "./pink/_colors.css";
+@import "./yellow/_colors.css";
+@import "./orange/_colors.css";
+@import "./purple/_colors.css";
+@import "./neutral/_colors.css";

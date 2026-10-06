@@ -1,0 +1,27 @@
+{# ./templates/pages/settings/delete.html.twig #}
+
+{% extends 'layouts/danger_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+
+{% block danger_title %}{{ translate('settings.delete.title') }}{% endblock %}
+{% block danger_description %}{{ translate('settings.delete.description') }}{% endblock %}
+
+{% block danger_losses_title %}{{ translate('settings.delete.losses.title') }}{% endblock %}
+
+{% block danger_losses %}
+    <li>{{ translate('settings.delete.losses.projects') }}</li>
+    <li>{{ translate('settings.delete.losses.interactions') }}</li>
+    <li>{{ translate('settings.delete.losses.settings') }}</li>
+    <li>{{ translate('settings.delete.losses.username', { username: user.username }) }}</li>
+{% endblock %}
+
+{% block danger_fields %}
+    {{ Form.input('delete_password', {
+        label: translate('settings.delete.fields.password'),
+        type: 'password',
+        iconLeft: 'lock',
+        autocomplete: 'current-password',
+        error: errors.delete_password ?? null
+    }) }}
+{% endblock %}

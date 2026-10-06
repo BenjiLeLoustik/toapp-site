@@ -1,0 +1,71 @@
+{# ./templates/pages/settings/notifications.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block settings_title %}{{ translate('settings.notifications.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.notifications.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    {% set frequencyOptions = {} %}
+    {% for item in frequencies %}
+        {% set frequencyOptions = frequencyOptions|merge({ (item.value): translate('settings.notifications.frequencies.' ~ item.value) }) %}
+    {% endfor %}
+
+    <form method="post" action="{{ path('settings_notifications') }}" class="settings__form">
+
+        <input type="hidden" name="_token" value="{{ csrf_token('settings_notifications') }}">
+
+        <div class="settings__section">
+            <h2 class="settings__section-title">{{ translate('settings.notifications.email') }}</h2>
+
+            {{ Form.switch('email_project_likes', {
+                label: translate('settings.notifications.fields.project_likes.label'),
+                description: translate('settings.notifications.fields.project_likes.description'),
+                checked: notifications.emailProjectLikes
+            }) }}
+
+            {{ Form.switch('email_project_favorites', {
+                label: translate('settings.notifications.fields.project_favorites.label'),
+                description: translate('settings.notifications.fields.project_favorites.description'),
+                checked: notifications.emailProjectFavorites
+            }) }}
+
+            {{ Form.switch('email_newsletter', {
+                label: translate('settings.notifications.fields.newsletter.label'),
+                description: translate('settings.notifications.fields.newsletter.description'),
+                checked: notifications.emailNewsletter
+            }) }}
+        </div>
+
+        <div class="settings__section">
+            <h2 class="settings__section-title">{{ translate('settings.notifications.digest') }}</h2>
+
+            <div class="settings__row">
+                <label class="settings__row-text" for="digest_frequency">
+                    <span class="settings__row-label">{{ translate('settings.notifications.fields.digest.label') }}</span>
+                    <span class="settings__row-description">{{ translate('settings.notifications.fields.digest.description') }}</span>
+                </label>
+
+                <div class="settings__inline-select">
+                    {{ Form.select('digest_frequency', {
+                        value: notifications.digestFrequency.value,
+                        options: frequencyOptions
+                    }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="settings__actions">
+            {{ Button.render(translate('settings.actions.save'), {
+                type: 'submit',
+                size: 'sm'
+            }) }}
+        </div>
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+/** ./assets/css/themes/light/_colors.css */
+
+@import "./accents/init.css";
+
+[data-theme="light"],
+[data-theme-preview="light"] {
+    --theme-background: var(--color-neutral-100);
+    --theme-background-secondary: var(--color-neutral-200);
+    --theme-background-tertiary: var(--color-neutral-300);
+
+    --theme-foreground: var(--color-neutral-950);
+    --theme-foreground-secondary: var(--color-neutral-700);
+    --theme-foreground-muted: var(--color-neutral-500);
+
+    --theme-border: var(--color-neutral-300);
+    --theme-border-secondary: var(--color-neutral-400);
+
+    --theme-surface: var(--color-white);
+    --theme-surface-hover: var(--color-neutral-50);
+    --theme-surface-active: var(--color-neutral-100);
+
+    --theme-danger: var(--color-red-600);
+    --theme-danger-foreground: var(--color-white);
+    --theme-danger-surface: color-mix(in oklab, var(--theme-danger) 10%, var(--theme-surface));
+    --theme-danger-border: color-mix(in oklab, var(--theme-danger) 35%, var(--theme-surface));
+
+    --theme-success: var(--color-green-600);
+    --theme-success-foreground: var(--color-white);
+    --theme-success-surface: color-mix(in oklab, var(--theme-success) 10%, var(--theme-surface));
+    --theme-success-border: color-mix(in oklab, var(--theme-success) 35%, var(--theme-surface));
+
+    --theme-warning: var(--color-amber-600);
+    --theme-warning-foreground: var(--color-white);
+    --theme-warning-surface: color-mix(in oklab, var(--theme-warning) 10%, var(--theme-surface));
+    --theme-warning-border: color-mix(in oklab, var(--theme-warning) 35%, var(--theme-surface));
+
+    --theme-info: var(--color-sky-600);
+    --theme-info-foreground: var(--color-white);
+    --theme-info-surface: color-mix(in oklab, var(--theme-info) 10%, var(--theme-surface));
+    --theme-info-border: color-mix(in oklab, var(--theme-info) 35%, var(--theme-surface));
+}

@@ -1,0 +1,225 @@
+{# ./templates/pages/project/mine.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Table.macro.html.twig' as Table %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{% block content %}
+
+    {% set statItems = [
+        { key: 'projects', icon: 'folder' },
+        { key: 'likes', icon: 'heart' },
+        { key: 'views', icon: 'eye' },
+        { key: 'shares', icon: 'share-2' }
+    ] %}
+
+    {% set columns = [
+        { key: 'project', label: translate('projects_mine.columns.project') },
+        { key: 'status', label: translate('projects_mine.columns.status') },
+        { key: 'visibility', label: translate('projects_mine.columns.visibility') },
+        { key: 'date', label: translate('projects_mine.columns.date') },
+        { key: 'views', label: translate('projects_mine.columns.views'), align: 'right' },
+        { key: 'likes', label: translate('projects_mine.columns.likes'), align: 'right' },
+        { key: 'shares', label: translate('projects_mine.columns.shares'), align: 'right' },
+        { key: 'actions', label: translate('projects_mine.columns.actions'), align: 'right' }
+    ] %}
+
+    {% set offset = (projects.page - 1) * projects.limit %}
+    {% set rows = [] %}
+
+    {% for project in projects %}
+
+        {% set routeParams = { id: project.id, slug: project.slug } %}
+        {% set projectUrl = path('project_show', routeParams) %}
+
+        {% set projectCell %}
+            <div class="my-projects__project">
+                <a href="{{ projectUrl }}" class="my-projects__project-name">{{ project.name }}</a>
+                <span class="my-projects__project-description">{{ project.shortDescription }}</span>
+            </div>
+        {% endset %}
+
+        {% set statusCell %}
+            <span class="my-projects__status my-projects__status--{{ project.status.value }}">
+                {{ translate('projects_mine.statuses.' ~ project.status.value) }}
+            </span>
+        {% endset %}
+
+        {% set visibilityCell %}
+            <span class="my-projects__visibility">
+                {{ Icon.lucide(project.visibilityEnum.value == 'private' ? 'lock' : 'globe', { size: 'xs', color: 'muted' }) }}
+                {{ translate('project_form.visibilities.' ~ project.visibilityEnum.value) }}
+            </span>
+        {% endset %}
+
+        {% set dateCell %}
+            {{ project.publishedAt ? project.publishedAt|user_date : '—' }}
+        {% endset %}
+
+        {% set actionsCell %}
+            <div class="my-projects__actions">
+                {{ Button.render(null, {
+                    href: path('project_stats', routeParams),
+                    iconLeft: 'chart-column',
+                    variant: 'ghost',
+                    size: 'sm',
+                    iconSize: 'xs',
+                    attributes: { 'aria-label': translate('projects_mine.actions.stats'), title: translate('projects_mine.actions.stats') }
+                }) }}
+                {{ Button.render(null, {
+                    href: projectUrl,
+                    iconLeft: 'eye',
+                    variant: 'ghost',
+                    size: 'sm',
+                    iconSize: 'xs',
+                    attributes: { 'aria-label': translate('projects_mine.actions.show'), title: translate('projects_mine.actions.show') }
+                }) }}
+                {{ Button.render(null, {
+                    href: path('project_edit', routeParams),
+                    iconLeft: 'pencil',
+                    variant: 'ghost',
+                    size: 'sm',
+                    iconSize: 'xs',
+                    attributes: { 'aria-label': translate('projects_mine.actions.edit'), title: translate('projects_mine.actions.edit') }
+                }) }}
+                {{ Button.render(null, {
+                    href: path('project_delete', routeParams),
+                    iconLeft: 'trash-2',
+                    variant: 'ghost',
+                    size: 'sm',
+                    iconSize: 'xs',
+                    class: 'my-projects__action--danger',
+                    attributes: { 'aria-label': translate('projects_mine.actions.delete'), title: translate('projects_mine.actions.delete') }
+                }) }}
+            </div>
+        {% endset %}
+
+        {% set rows = rows|merge([{
+            project: projectCell,
+            status: statusCell,
+            visibility: visibilityCell,
+            date: dateCell,
+            views: project.views|length|format_number,
+            likes: project.likes|length|format_number,
+            shares: project.shares|length|format_number,
+            actions: actionsCell
+        }]) %}
+
+    {% endfor %}
+
+    {% set footer %}
+        <span class="my-projects__summary">
+            {{ translate('projects_mine.summary', {
+                from: projects.total > 0 ? offset + 1 : 0,
+                to: offset + projects.items|length,
+                total: projects.total|format_number,
+                count: projects.total
+            }) }}
+        </span>
+
+        {{ Pagination.render(projects, {
+            size: 'xs',
+            compact: true,
+            previousLabel: translate('pagination.previous_short'),
+            nextLabel: translate('pagination.next_short')
+        }) }}
+    {% endset %}
+
+    <section class="my-projects screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.my_projects') }
+        ]) }}
+
+        <header class="my-projects__header">
+            <h1 class="my-projects__title">{{ translate('projects_mine.title') }}</h1>
+
+            {{ Button.render(translate('projects_mine.new'), {
+                href: path('project_new'),
+                size: 'sm',
+                iconLeft: 'plus',
+                iconSize: 'xs'
+            }) }}
+        </header>
+
+        <div class="my-projects__stats">
+            {% for item in statItems %}
+                <div class="my-projects__stat">
+                    <span class="my-projects__stat-icon my-projects__stat-icon--{{ item.key }}">
+                        <i data-lucide="{{ item.icon }}"></i>
+                    </span>
+                    <div class="my-projects__stat-content">
+                        <span class="my-projects__stat-value">{{ stats[item.key]|format_number }}</span>
+                        <span class="my-projects__stat-label">{{ translate('projects_mine.stats.' ~ item.key) }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if stats.projects > 0 %}
+
+            <div class="my-projects__panel">
+
+                <div class="my-projects__toolbar">
+
+                    <nav class="my-projects__tabs" aria-label="{{ translate('projects_mine.tabs.label') }}">
+                        {% for item in statuses %}
+                            {{ Button.render(translate('projects_mine.tabs.' ~ item.value), {
+                                href: path('project_mine', { status: item.value }),
+                                variant: item == status ? 'primary' : 'ghost',
+                                size: 'sm',
+                                attributes: item == status ? { 'aria-current': 'page' } : {}
+                            }) }}
+                        {% endfor %}
+                    </nav>
+
+                    <form method="get" action="{{ path('project_mine') }}" class="my-projects__search">
+                        <input type="hidden" name="status" value="{{ status.value }}">
+
+                        {{ Form.input('search', {
+                            id: 'my-projects-search',
+                            value: search,
+                            iconLeft: 'search',
+                            iconSize: 'sm',
+                            placeholder: translate('projects_mine.search')
+                        }) }}
+                    </form>
+
+                </div>
+
+                {{ Table.render(columns, rows, {
+                    empty: translate('projects_mine.filtered_empty'),
+                    footer: projects.total > 0 ? footer : null,
+                    class: 'my-projects__table'
+                }) }}
+
+            </div>
+
+        {% else %}
+
+            <div class="my-projects__empty">
+                {{ Empty.render('search-x', translate('projects_mine.empty.title'), [
+                    translate('projects_mine.empty.description_line_1'),
+                    translate('projects_mine.empty.description_line_2')
+                ], [
+                    Button.render(translate('projects_mine.empty.create'), {
+                        href: path('project_new'),
+                        size: 'sm',
+                        iconLeft: 'plus',
+                        iconSize: 'xs'
+                    })
+                ]) }}
+            </div>
+
+        {% endif %}
+
+    </section>
+
+{% endblock %}

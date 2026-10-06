@@ -1,0 +1,111 @@
+/** ./assets/css/partials/_footer.css */
+
+@layer components {
+
+    footer.footer {
+        @apply w-full h-auto py-6 px-2 flex flex-col gap-6;
+        background-color: var(--theme-surface);
+        border-top: solid 1px var(--theme-border);
+    }
+
+    .footer__top {
+        @apply w-full max-w-7xl mx-auto h-auto flex items-start justify-between;
+    }
+
+    section.footer__about {
+        @apply w-full h-full flex-col flex items-start justify-start gap-4;
+    }
+
+    .footer__logo {
+        @apply flex items-center justify-center gap-2;
+    }
+
+    span.footer__title {
+        @apply text-lg font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.footer__description {
+        @apply max-w-sm text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    section.footer__links {
+        @apply w-full h-auto flex items-start justify-end gap-2;
+    }
+
+    nav.footer__link-block {
+        @apply w-full h-full flex flex-col gap-2;
+    }
+
+    span.footer__link-block-title {
+        @apply font-semibold text-sm uppercase;
+        color: var(--theme-foreground);
+    }
+
+    ul.footer__link-block-list {
+        @apply flex flex-col items-start justify-start gap-2;
+    }
+
+    a.footer__link-block-list-item {
+        @apply text-sm transition-colors;
+        color: var(--theme-foreground-muted);
+    }
+
+    a.footer__link-block-list-item:hover {
+        color: var(--theme-foreground);
+    }
+
+    .footer__bottom {
+        @apply w-full max-w-7xl mx-auto h-auto flex items-center justify-between pt-6;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    section.footer__copyright {
+        @apply text-sm w-auto shrink-0;
+        color: var(--theme-foreground-muted);
+    }
+
+    .footer__bottom section.footer__links {
+        @apply w-auto flex items-center justify-center gap-2;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        footer.footer {
+            @apply px-4;
+        }
+
+        .footer__top {
+            @apply flex-col gap-6;
+        }
+
+        section.footer__about {
+            @apply w-full;
+        }
+
+        section.footer__links {
+            @apply w-full flex-col items-start justify-start gap-6;
+        }
+
+        nav.footer__link-block {
+            @apply w-full;
+        }
+
+        .footer__bottom {
+            @apply flex-col items-start justify-start gap-4;
+        }
+
+        section.footer__copyright {
+            @apply w-full;
+        }
+
+        .footer__bottom section.footer__links {
+            @apply w-full flex-row items-center justify-start gap-2;
+        }
+
+    }
+
+}

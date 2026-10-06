@@ -1,0 +1,35 @@
+/** ./assets/css/components/_Breadcrumb.css */
+
+@layer component {
+
+    .breadcrumb {
+        @apply w-full;
+    }
+
+    .breadcrumb__list {
+        @apply flex flex-wrap items-center gap-2 text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .breadcrumb__item {
+        @apply flex items-center gap-2;
+    }
+
+    .breadcrumb__link {
+        color: var(--theme-accent);
+    }
+
+    .breadcrumb__link:hover {
+        @apply underline;
+    }
+
+    .breadcrumb__current {
+        @apply font-medium;
+        color: var(--theme-foreground);
+    }
+
+    .breadcrumb__separator {
+        @apply flex items-center;
+    }
+
+}

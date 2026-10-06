@@ -1,0 +1,43 @@
+{# ./templates/components/macros/_Empty.macro.html.twig #}
+
+{#
+Usage :
+
+    {% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+
+    {{ Empty.render('search-x', 'Empty results', [
+        'No projects found',
+        'Create your own project'
+    ]) }}
+
+#}
+
+{% macro render(icon, title, descriptions = [], actions = {}, option = {}) %}
+
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set iconOptions = option.icon ?? {} %}
+
+    <div class="empty">
+        <div class="empty__icon">
+            {{ Icon.lucide(icon, iconOptions) }}
+        </div>
+        <h3 class="empty__title">{{ title }}</h3>
+        {% if descriptions is not empty %}
+            <div class="empty__descriptions">
+                {% for description in descriptions %}
+                    <p class="empty__description">
+                        {{ description }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if actions is not empty %}
+            <div class="empty__actions">
+                {% for action in actions %}
+                    {{ action|raw }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

@@ -1,0 +1,50 @@
+{# ./templates/emails/activity.html.twig #}
+
+{% extends 'emails/_layout.html.twig' %}
+
+{% block title %}{{ translate('emails.activity.subject', { app: app }) }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin:0 0 16px;font-size:22px;color:#111827;">{{ translate('emails.activity.title') }}</h1>
+
+    <p style="margin:0 0 12px;font-size:15px;line-height:1.6;">{{ translate('emails.activity.greeting', { name: name }) }}</p>
+    <p style="margin:0 0 24px;font-size:15px;line-height:1.6;">{{ translate('emails.activity.intro', { count: total }) }}</p>
+
+    {% for project in projects %}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px;border:1px solid #e5e7eb;border-radius:8px;">
+            <tr>
+                <td style="padding:16px;">
+                    <p style="margin:0 0 12px;font-size:16px;font-weight:bold;color:#111827;">
+                        <a href="{{ project.url }}" style="color:#111827;text-decoration:none;">{{ project.name }}</a>
+                    </p>
+
+                    {% if project.likes is not empty %}
+                        <p style="margin:0 0 8px;font-size:14px;line-height:1.6;">
+                            <strong>{{ translate('emails.activity.likes') }}</strong> {{ project.likes|join(', ') }}
+                        </p>
+                    {% endif %}
+
+                    {% if project.favorites is not empty %}
+                        <p style="margin:0 0 8px;font-size:14px;line-height:1.6;">
+                            <strong>{{ translate('emails.activity.favorites') }}</strong> {{ project.favorites|join(', ') }}
+                        </p>
+                    {% endif %}
+
+                    {% if project.shares is not empty or project.anonymous > 0 %}
+                        <p style="margin:0 0 8px;font-size:14px;line-height:1.6;">
+                            <strong>{{ translate('emails.activity.shares') }}</strong>
+                            {% for share in project.shares %}
+                                {{ translate('emails.activity.shared_on', { user: share.user, network: share.network }) }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                            {% if project.anonymous > 0 %}
+                                {% if project.shares is not empty %}, {% endif %}{{ translate('emails.activity.anonymous', { count: project.anonymous }) }}
+                            {% endif %}
+                        </p>
+                    {% endif %}
+
+                    <a href="{{ project.url }}" style="font-size:14px;font-weight:bold;color:#2563eb;">{{ translate('emails.activity.button') }}</a>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,117 @@
+/** ./assets/css/pages/user/_profile.css */
+
+@layer base {
+
+    section.profile {
+        @apply w-full flex flex-col;
+        background-color: var(--theme-surface);
+        border-bottom: solid 1px var(--theme-border);
+    }
+
+    .profile__banner {
+        @apply w-full h-48;
+        background: linear-gradient(120deg, var(--theme-accent), color-mix(in oklab, var(--theme-accent) 55%, #6d28d9));
+    }
+
+    .profile__inner {
+        @apply flex flex-col gap-3 pb-6;
+    }
+
+    .profile__top {
+        @apply flex items-end justify-between gap-4 -mt-12;
+    }
+
+    .profile__avatar {
+        @apply flex items-center justify-center w-24 h-24 shrink-0 rounded-full overflow-hidden text-2xl font-bold;
+        color: var(--theme-foreground-secondary);
+        background-color: var(--theme-surface-active);
+        border: solid 4px var(--theme-surface);
+    }
+
+    .profile__avatar img {
+        @apply w-full h-full object-cover;
+    }
+
+    .profile__actions {
+        @apply flex items-center gap-2 pb-1;
+    }
+
+    .profile__identity {
+        @apply flex flex-col gap-0.5;
+    }
+
+    h1.profile__name {
+        @apply inline-flex items-center gap-2 text-2xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    .profile__username {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    p.profile__biography {
+        @apply max-w-2xl text-sm;
+        color: var(--theme-foreground-secondary);
+    }
+
+    .profile__meta {
+        @apply flex flex-wrap items-center gap-x-5 gap-y-1 text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .profile__meta-item {
+        @apply inline-flex items-center gap-1.5;
+    }
+
+    .profile__meta-item a:hover {
+        color: var(--theme-accent);
+    }
+
+    .profile__stats {
+        @apply flex flex-wrap items-center gap-6 text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .profile__stats strong {
+        @apply font-bold mr-1;
+        color: var(--theme-foreground);
+    }
+
+    /* Projects */
+
+    section.profile-projects {
+        @apply flex flex-col gap-6 py-8;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        .profile__banner {
+            @apply h-32;
+        }
+
+        .profile__top {
+            @apply flex-col items-start -mt-10;
+        }
+
+        .profile__avatar {
+            @apply w-20 h-20 text-xl;
+        }
+
+        .profile__actions {
+            @apply w-full;
+        }
+
+        .profile__actions > * {
+            @apply flex-1;
+        }
+
+        section.profile-projects {
+            @apply py-6;
+        }
+
+    }
+
+}

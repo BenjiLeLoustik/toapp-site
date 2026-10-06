@@ -1,0 +1,19 @@
+header:
+    nav:
+        links:
+            home: "Home"
+            categories: "Categories"
+            trends: "Trends"
+            about: "About"
+        actions:
+            login: "Login"
+            register: "Register"
+    modal:
+        settings:
+            scale:
+                small: "Small"
+                medium: "Medium"
+                large: "Large"
+            locales:
+                en: 'English'
+                fr: 'French'

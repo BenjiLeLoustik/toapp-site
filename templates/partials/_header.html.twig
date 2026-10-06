@@ -1,0 +1,253 @@
+{# ./templates/partials/_header.html.twig #}
+
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% set headerNavItems = [
+    { label: 'home', routeName: 'home_index', activeRoutes: ['home_'] },
+    { label: 'categories', routeName: 'category_index', activeRoutes: ['category_', 'project_index'] },
+    { label: 'trends', routeName: 'trend_index', activeRoutes: ['trend_'] },
+    { label: 'about', routeName: 'about_index', activeRoutes: ['about_'] }
+] %}
+
+<header class="header">
+    <div class="header__inner">
+
+        <div class="header__logo">
+            {{ Icon.lucide(config('framework.app.icon'), {
+                color: 'accent',
+                background: true,
+                spacing: true,
+                size: 'sm'
+            }) }}
+            <span class="header__title">
+                {{ config('framework.app.name') }}
+            </span>
+        </div>
+
+        {% if app.user %}
+            <div class="header__user">
+                {% embed 'components/embeds/_Dropdown.embed.html.twig' with {
+                    dropdownName: 'user',
+                    dropdownAlign: 'end',
+                    dropdownTrigger: {
+                        avatar: app.user.avatar ?? null,
+                        avatarAlt: app.user.firstname ?? app.user.userIdentifier,
+                        label: app.user.firstname ?? app.user.userIdentifier
+                    },
+                    dropdownHeaderUser: {
+                        avatar: app.user.avatar ?? null,
+                        name: app.user.firstname ?? app.user.lastname,
+                        username: app.user.username ?? null,
+                        certified: app.user.certified
+                    },
+                    dropdownItems: [
+                        { label: 'Profile', href: path('user_show', { slug: app.user.slug }), icon: 'user' },
+                        { label: 'Settings', href: path('settings_profile'), icon: 'settings' },
+                        { label: 'Projects', href: path('project_mine'), icon: 'briefcase' },
+                        { label: 'Favorites', href: path('project_favorites'), icon: 'heart' },
+                        { divider: true },
+                        { label: 'Logout', action: logout_path(), csrf: 'logout', icon: 'log-out', variant: 'danger' }
+                    ]
+                } %}{% endembed %}
+            </div>
+        {% endif %}
+
+        {{ Button.render(null, {
+            iconLeft: 'menu',
+            variant: 'ghost-outline',
+            size: 'sm',
+            iconOptions: {
+                size: 'sm'
+            },
+            attributes: {
+                'aria-label': 'Menu',
+                'aria-expanded': 'false',
+                'data-header-menu-toggle': ''
+            },
+            class: 'header__menu-toggle'
+        }) }}
+
+        <div class="header__menu" data-header-menu>
+
+            <nav class="header__nav">
+
+                {% for item in headerNavItems %}
+
+                    {% set isActive = app.current_route == item.routeName %}
+
+                    {% for activeRoute in item.activeRoutes %}
+                        {% if app.current_route starts with activeRoute %}
+                            {% set isActive = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {{ Button.render(translate('header.nav.links.' ~ item.label, domain: 'header'), {
+                        href: item.routeName != '#' ? path(item.routeName) : '#',
+                        variant: isActive ? 'primary' : 'ghost',
+                        size: 'sm'
+                    }) }}
+
+                {% endfor %}
+
+            </nav>
+
+            <div class="header__actions">
+
+                {% if not app.user %}
+
+                    {{ Button.render(translate('header.nav.actions.login', domain: 'header'), {
+                        href: path('app_security_login'),
+                        variant: 'primary-outline',
+                        size: 'sm'
+                    }) }}
+
+                    {{ Button.render(translate('header.nav.actions.register', domain: 'header'), {
+                        href: path('app_security_register'),
+                        variant: 'primary',
+                        size: 'sm'
+                    }) }}
+
+                {% endif %}
+
+                {{ Button.render(null, {
+                    iconLeft: 'cog',
+                    variant: 'ghost-outline',
+                    size: 'sm',
+                    iconOptions: { size: 'sm' },
+                    attributes: {
+                        'data-modal-open': 'settings'
+                    }
+                }) }}
+
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+{% embed 'components/embeds/_Modal.embed.html.twig' with {
+    modalName: 'settings',
+    modalTitle: 'Settings'
+} %}
+    {% block modalContent %}
+
+        {% import 'components/macros/_Button.macro.html.twig' as Button %}
+        {% import 'components/macros/_Form.macro.html.twig' as Form %}
+
+        <div class="modal__change-blocks">
+
+            <div class="modal__change-block modal__change--theme">
+                <div class="modal__change-title">
+                    Thème
+                </div>
+
+                <div class="modal__change-content">
+                    {% for theme in config('framework.app.design_themes')|json_decode %}
+                        <button
+                                type="button"
+                                data-theme-change="{{ theme }}"
+                                data-theme-preview="{{ theme }}"
+                                class="theme-preview {{ theme == session(config('framework.app.session_theme'), config('framework.app.default_theme')) ? 'theme-active' : '' }}"
+                        >
+                            <span class="theme-preview__header"></span>
+                            <span class="theme-preview__sidebar"></span>
+                            <span class="theme-preview__content">
+                                <span class="theme-preview__title"></span>
+                                <span class="theme-preview__line"></span>
+                                <span class="theme-preview__line"></span>
+                                <span class="theme-preview__button"></span>
+                            </span>
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="modal__change-block modal__change--accent">
+                <div class="modal__change-title">
+                    Couleur d'accent
+                </div>
+                <div class="modal__change-content">
+                    {% for accent in config('framework.app.design_accents')|json_decode %}
+                        {{ Button.render('', {
+                            size: 'xs',
+                            iconOnly: true,
+                            attributes: {
+                                'data-accent-change': accent,
+                                'style': '--accent-preview: var(--color-' ~ accent ~ '-500);'
+                            },
+                            class: accent == session(config('framework.app.session_accent')) ? 'accent-active' : ''
+                        }) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="modal__change-block modal__change--scale">
+                <div class="modal__change-title">
+                    Taille du texte
+                </div>
+                <div class="modal__change-content">
+                    {% for scale in config('framework.app.design_scales')|json_decode %}
+                        {{ Button.render(translate('header.modal.settings.scale.' ~ scale, domain: 'header'), {
+                            variant: session(config('framework.app.session_scale')) == scale ? 'primary' : 'ghost-outline',
+                            attributes: {
+                                'data-scale-change': scale
+                            }
+                        }) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="modal__change-block modal__change--locale">
+                <div class="modal__change-title">
+                    Language
+                </div>
+                <div class="modal__change-content">
+                    {% set localeOptions = {} %}
+
+                    {% for locale in locales() %}
+                        {% set localeOptions = localeOptions|merge({
+                            (locale): translate('header.modal.settings.locales.' ~ locale, domain: 'header')
+                        }) %}
+                    {% endfor %}
+
+                    {{ Form.select('locale', {
+                        iconLeft: 'languages',
+                        value: locale(),
+                        options: localeOptions,
+                        attributes: {
+                            'data-locale-change': ''
+                        }
+                    }) }}
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+
+            window.initPreferenceChange('theme', '{{ path("preference_api_change_theme") }}', 'data-theme', false, theme => {
+                document.querySelectorAll('[data-theme-change]').forEach(btn => {
+                    btn.classList.toggle('theme-active', btn.dataset.themeChange === theme);
+                });
+            });
+
+            window.initPreferenceChange('accent', '{{ path("preference_api_change_accent") }}', 'data-accent', false, accent => {
+                document.querySelectorAll('[data-accent-change]').forEach(btn => {
+                    btn.classList.toggle('accent-active', btn.dataset.accentChange === accent);
+                });
+            });
+
+            window.initPreferenceChange('scale', '{{ path("preference_api_change_scale") }}', 'data-scale', false, scale => {
+                document.querySelectorAll('[data-scale-change]').forEach(btn => {
+                    window.changeButtonVariant(btn, btn.dataset.scaleChange === scale ? 'primary' : 'ghost-outline');
+                });
+            });
+
+            window.initPreferenceChange('locale', '{{ path("preference_api_change_locale") }}', 'data-locale', true);
+
+        </script>
+
+    {% endblock %}
+{% endembed %}

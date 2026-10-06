@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/orange/_colors.css */
+
+[data-theme="dark"][data-accent="orange"] {
+    --theme-accent: var(--color-orange-400);
+    --theme-accent-hover: var(--color-orange-300);
+    --theme-accent-active: var(--color-orange-200);
+    --theme-accent-foreground: var(--color-white);
+}

@@ -6,9 +6,9 @@ providers:
     #         class: App\Entity\User
     #         property: email
     users:
-        memory:
-            # e.g. admin: { password: '<hash from `php bin/neo security:hash-password`>', roles: [ROLE_ADMIN] }
-            users: {}
+        entity:
+            class: App\Entity\User
+            property: email
 
 password_hashers:
     # auto = best algorithm available (bcrypt / argon2), rehashed automatically on login
@@ -23,17 +23,18 @@ firewalls:
         pattern: ^/
         provider: users
         form_login:
-            login_path: /login
+            login_path: app_security_login
+            check_path: app_security_login
             enable_csrf: true
             # default_target_path: /dashboard
         logout:
-            path: /logout
+            path: app_security_logout
             # Page displayed after the logout
-            target: /
+            target: home_index
             # A CSRF token is required and only POST is accepted: another site cannot log your users out.
             # In the templates: {{ logout_form('Logout') }} (a small form with a button)
-            enable_csrf: true
-            methods: [POST]
+            enable_csrf: false
+            methods: [POST, GET]
         remember_me:
             # "Remember me" checkbox (_remember_me): 604800 s = 7 days
             lifetime: 604800
@@ -51,4 +52,5 @@ role_hierarchy:
 # access_control:
 #     - { path: ^/admin, roles: ROLE_ADMIN }
 #     - { path: ^/account, roles: ROLE_USER }
-access_control: []
+access_control:
+    - { path: ^/settings, roles: ROLE_USER }

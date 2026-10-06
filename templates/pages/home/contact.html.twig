@@ -1,0 +1,180 @@
+{# ./templates/pages/home/contact.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+
+{% block content %}
+
+    {% set objectOptions = {} %}
+    {% for object in objects %}
+        {% set objectOptions = objectOptions|merge({
+            (object.slug): object.translation(locale()).name ?? object.slug
+        }) %}
+    {% endfor %}
+
+    <section class="contact screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.contact') }
+        ]) }}
+
+        <header class="contact__header">
+            <h1 class="contact__title">
+                {{ translate('contact.title') }}
+            </h1>
+            <p class="contact__description">
+                {{ translate('contact.description') }}
+            </p>
+        </header>
+
+        <div class="contact__layout">
+
+            <div class="contact__informations">
+
+                <h2 class="contact__informations-title">
+                    {{ translate('contact.informations.title') }}
+                </h2>
+
+                <p class="contact__informations-description">
+                    {{ translate('contact.informations.description') }}
+                </p>
+
+                {% if configs is not empty %}
+                    <ul class="contact__informations-list">
+                        {% for config in configs %}
+                            {% set type = config.type %}
+                            {% set href = type.format.href(config.value) %}
+
+                            <li class="contact__informations-item">
+                                {{ Icon.lucide(type.icon, {
+                                    color: 'accent',
+                                    background: true,
+                                    spacing: true,
+                                    size: 'sm'
+                                }) }}
+
+                                <div class="contact__informations-content">
+                                    <span class="contact__informations-label">
+                                        {{ type.translation(locale()).name ?? type.slug }}
+                                    </span>
+
+                                    {% if href %}
+                                        <a
+                                                href="{{ href }}"
+                                                class="contact__informations-value"
+                                                {% if type.format.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                                        >
+                                            {{ config.value }}
+                                        </a>
+                                    {% else %}
+                                        <span class="contact__informations-value">
+                                            {{ config.value|nl2br }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+            </div>
+
+            <div class="contact__card">
+
+                <h2 class="contact__card-title">
+                    {{ translate('contact.form.title') }}
+                </h2>
+
+                {% if errors._form ?? null %}
+                    <p class="contact__error">
+                        {{ errors._form }}
+                    </p>
+                {% endif %}
+
+                {{ form_start(form, { attr: { class: 'contact__form', novalidate: 'novalidate' } }) }}
+
+                    {{ Form.group([
+                        Form.input('lastname', {
+                            label: translate('contact.form.fields.lastname'),
+                            placeholder: translate('contact.form.placeholders.lastname'),
+                            value: form.get('lastname').viewData,
+                            autocomplete: 'family-name',
+                            required: true,
+                            error: errors.lastname ?? null,
+                            columns: 6
+                        }),
+                        Form.input('firstname', {
+                            label: translate('contact.form.fields.firstname'),
+                            placeholder: translate('contact.form.placeholders.firstname'),
+                            value: form.get('firstname').viewData,
+                            autocomplete: 'given-name',
+                            required: true,
+                            error: errors.firstname ?? null,
+                            columns: 6
+                        })
+                    ], { columns: 12, gap: 'base' }) }}
+
+                    {{ Form.input('email', {
+                        label: translate('contact.form.fields.email'),
+                        placeholder: translate('contact.form.placeholders.email'),
+                        value: form.get('email').viewData,
+                        type: 'email',
+                        autocomplete: 'email',
+                        required: true,
+                        error: errors.email ?? null
+                    }) }}
+
+                    {{ Form.select('object', {
+                        label: translate('contact.form.fields.object'),
+                        placeholder: translate('contact.form.placeholders.object'),
+                        value: form.get('object').viewData,
+                        options: objectOptions,
+                        required: true,
+                        error: errors.object ?? null
+                    }) }}
+
+                    {{ Form.textarea('message', {
+                        label: translate('contact.form.fields.message'),
+                        placeholder: translate('contact.form.placeholders.message'),
+                        value: form.get('message').viewData,
+                        rows: 5,
+                        required: true,
+                        error: errors.message ?? null
+                    }) }}
+
+                    {{ Form.input('website', {
+                        label: translate('contact.form.fields.website'),
+                        placeholder: translate('contact.form.placeholders.website'),
+                        value: form.get('website').viewData,
+                        type: 'url',
+                        autocomplete: 'url',
+                        error: errors.website ?? null
+                    }) }}
+
+                    {{ Form.checkbox('consent', {
+                        label: translate('contact.form.fields.consent'),
+                        checked: form.get('consent').viewData ? true : false,
+                        error: errors.consent ?? null
+                    }) }}
+
+                    <div class="contact__actions">
+                        {{ Form.submit(translate('contact.form.submit'), {
+                            size: 'sm'
+                        }) }}
+                    </div>
+
+                    {{ form_widget(form['_token']) }}
+
+                {{ form_end(form, { render_rest: false }) }}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

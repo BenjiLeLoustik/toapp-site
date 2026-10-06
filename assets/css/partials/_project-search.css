@@ -1,0 +1,145 @@
+/** ./assets/css/partials/_project-search.css */
+
+@layer base {
+
+    section.search {
+        @apply h-auto flex flex-col gap-6 py-8;
+    }
+
+    .search__header {
+        @apply flex flex-col gap-2;
+    }
+
+    h1.search__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    p.search__description {
+        @apply text-base;
+        color: var(--theme-foreground-muted);
+    }
+
+    .search__layout {
+        @apply w-full flex items-start gap-6;
+    }
+
+    /* Filters */
+
+    .search__filters {
+        @apply w-64 shrink-0 flex flex-col gap-5 rounded-lg p-4 sticky top-4;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .search__filters-header {
+        @apply flex items-center justify-between;
+    }
+
+    .search__filters-title {
+        @apply text-base font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    .search__filters-reset {
+        @apply text-sm font-medium;
+        color: var(--theme-accent);
+    }
+
+    .search__filters-reset:hover {
+        @apply underline;
+    }
+
+    .search__filter {
+        @apply flex flex-col gap-2;
+    }
+
+    .search__filter-title {
+        @apply text-xs font-semibold uppercase;
+        color: var(--theme-foreground);
+    }
+
+    .search__filter-list {
+        @apply flex flex-col gap-2;
+    }
+
+    /* Results */
+
+    .search__results {
+        @apply flex-1 min-w-0 flex flex-col gap-4;
+    }
+
+    .search__toolbar {
+        @apply w-full flex items-center gap-4;
+    }
+
+    .search__input {
+        @apply flex-1;
+    }
+
+    .search__toolbar-sort {
+        @apply flex items-center gap-2 shrink-0;
+    }
+
+    .search__toolbar-label {
+        @apply text-sm whitespace-nowrap;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Tablet */
+
+    @media (max-width: 1024px) {
+
+        .search__layout {
+            @apply flex-col;
+        }
+
+        .search__filters {
+            @apply w-full static grid grid-cols-2;
+        }
+
+        .search__filters-header {
+            @apply col-span-2;
+        }
+
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.search {
+            @apply py-6 gap-4;
+        }
+
+        h1.search__title {
+            @apply text-2xl;
+        }
+
+        p.search__description {
+            @apply text-sm;
+        }
+
+        .search__filters {
+            @apply grid-cols-1;
+        }
+
+        .search__filters-header {
+            @apply col-span-1;
+        }
+
+        .search__toolbar {
+            @apply flex-col items-stretch gap-2;
+        }
+
+        .search__toolbar-sort {
+            @apply justify-between;
+        }
+
+        .cards.cards--projects-2 {
+            @apply grid-cols-1;
+        }
+
+    }
+
+}

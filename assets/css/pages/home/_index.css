@@ -1,0 +1,144 @@
+/** ./assets/css/pages/home/_index.css */
+
+@layer base {
+
+    section.hero {
+        @apply flex items-center justify-center flex flex-col gap-4;
+    }
+
+    h1.hero__title {
+        @apply text-5xl font-bold max-w-7xl mx-auto text-center;
+        color: var(--theme-foreground);
+    }
+
+    span.hero__title--colored {
+        color: var(--theme-accent);
+    }
+
+    p.hero__sub-title {
+        @apply max-w-xl mx-auto text-center font-semibold text-lg;
+        color: var(--theme-foreground-muted);
+    }
+
+    .hero__search-bar {
+        @apply max-w-3xl w-3xl mx-auto;
+    }
+
+    .hero__actions {
+        @apply max-w-2xl mx-auto flex items-center justify-center gap-2;
+    }
+
+    section.stats {
+        @apply h-50 grid items-center justify-center grid-cols-4 gap-4;
+        background-color: var(--theme-surface);
+    }
+
+    .stat__block {
+        @apply flex flex-col items-center justify-center gap-2 w-full h-full;
+    }
+
+    span.stat__icon {
+        @apply w-14 h-14 rounded-full flex items-center justify-center;
+        background-color: var(--theme-accent);
+    }
+
+    span.stat__icon svg {
+        @apply w-5 h-5;
+        color: var(--theme-accent-foreground);
+    }
+
+    span.stat__value {
+        @apply text-xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    span.stat__title {
+        @apply text-base;
+        color: var(--theme-foreground-muted);
+    }
+
+    section.popular-projects {
+        @apply h-auto flex flex-col items-center justify-center gap-4 py-12;
+    }
+
+    h2.popular-projects__title {
+        @apply w-full max-w-2xl text-center text-3xl font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.popular-projects__description {
+        @apply w-full max-w-xl text-center text-lg;
+        color: var(--theme-foreground-muted);
+    }
+
+    .popular-projects__show-more {
+        @apply w-full h-auto mt-4 flex items-center justify-center;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.hero {
+            @apply px-4 gap-3;
+        }
+
+        h1.hero__title {
+            @apply text-3xl;
+        }
+
+        p.hero__sub-title {
+            @apply text-base;
+        }
+
+        .hero__search-bar {
+            @apply w-full max-w-full;
+        }
+
+        .hero__actions {
+            @apply w-full max-w-full flex-col;
+        }
+
+        .hero__actions > * {
+            @apply w-full;
+        }
+
+        section.stats {
+            @apply h-auto grid-cols-2 gap-0;
+        }
+
+        .stat__block {
+            @apply py-6;
+        }
+
+        span.stat__icon {
+            @apply w-12 h-12;
+        }
+
+        span.stat__value {
+            @apply text-lg;
+        }
+
+        span.stat__title {
+            @apply text-sm text-center;
+        }
+
+        section.popular-projects {
+            @apply px-4 py-8;
+        }
+
+        h2.popular-projects__title {
+            @apply text-2xl;
+        }
+
+        p.popular-projects__description {
+            @apply text-base;
+        }
+
+        .cards.cards--projects {
+            @apply grid-cols-1;
+        }
+
+    }
+
+}

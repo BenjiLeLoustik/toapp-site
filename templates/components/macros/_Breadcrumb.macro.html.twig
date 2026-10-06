@@ -1,0 +1,41 @@
+{# ./templates/components/macros/_Breadcrumb.macro.html.twig #}
+
+{% macro render(items = [], options = {}) %}
+
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% if items is not empty %}
+
+        <nav class="breadcrumb {{ options.class ?? '' }}" aria-label="{{ options.label ?? 'Breadcrumb' }}">
+            <ol class="breadcrumb__list">
+
+                {% for item in items %}
+
+                    <li class="breadcrumb__item">
+
+                        {% if not loop.last and (item.href ?? null) %}
+                            <a href="{{ item.href }}" class="breadcrumb__link">
+                                {{ item.label }}
+                            </a>
+                        {% else %}
+                            <span class="breadcrumb__current" {% if loop.last %}aria-current="page"{% endif %}>
+                                {{ item.label }}
+                            </span>
+                        {% endif %}
+
+                        {% if not loop.last %}
+                            <span class="breadcrumb__separator" aria-hidden="true">
+                                {{ Icon.lucide('chevron-right', { size: 'xs', color: 'muted' }) }}
+                            </span>
+                        {% endif %}
+
+                    </li>
+
+                {% endfor %}
+
+            </ol>
+        </nav>
+
+    {% endif %}
+
+{% endmacro %}

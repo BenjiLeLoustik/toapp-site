@@ -1,0 +1,364 @@
+{# ./templates/pages/project/form.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+{% block content %}
+
+    {% set isEdit = project is not null %}
+    {% set mode = isEdit ? 'edit' : 'new' %}
+
+    {% set categoryOptions = {} %}
+    {% for category in categories %}
+        {% set categoryOptions = categoryOptions|merge({ (category.slug): category.translation(locale()).name ?? category.slug }) %}
+    {% endfor %}
+
+    {% set visibilityOptions = {} %}
+    {% for item in visibilities %}
+        {% set visibilityOptions = visibilityOptions|merge({ (item.value): translate('project_form.visibilities.' ~ item.value) }) %}
+    {% endfor %}
+
+    {% set statusOptions = {} %}
+    {% for item in statuses %}
+        {% set statusOptions = statusOptions|merge({ (item.value): translate('projects_mine.statuses.' ~ item.value) }) %}
+    {% endfor %}
+
+    {% set technologyNames = {} %}
+    {% for technology in technologies %}
+        {% set technologyNames = technologyNames|merge({ (technology.slug): technology.name }) %}
+    {% endfor %}
+
+    {% set screenshotsByPosition = {} %}
+    {% if isEdit %}
+        {% for screenshot in project.screenshots %}
+            {% set screenshotsByPosition = screenshotsByPosition|merge({ ('slot' ~ screenshot.position): screenshot }) %}
+        {% endfor %}
+    {% endif %}
+
+    <section class="project-form screen screen--margin">
+
+        {{ Breadcrumb.render(isEdit ? [
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.my_projects'), href: path('project_mine') },
+            { label: project.name, href: path('project_show', { id: project.id, slug: project.slug }) },
+            { label: translate('breadcrumb.edit') }
+        ] : [
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.my_projects'), href: path('project_mine') },
+            { label: translate('breadcrumb.new_project') }
+        ]) }}
+
+        <header class="project-form__header">
+            <h1 class="project-form__title">{{ translate('project_form.' ~ mode ~ '.title') }}</h1>
+            <p class="project-form__description">{{ translate('project_form.' ~ mode ~ '.description') }}</p>
+        </header>
+
+        <form
+                method="post"
+                action="{{ isEdit ? path('project_edit', { id: project.id, slug: project.slug }) : path('project_new') }}"
+                enctype="multipart/form-data"
+                class="project-form__card"
+                novalidate
+                data-project-form
+        >
+
+            <input type="hidden" name="_token" value="{{ csrf_token('project_form') }}">
+
+            {% if errors._form ?? null %}
+                <p class="project-form__error">{{ errors._form }}</p>
+            {% endif %}
+
+            {# Cover #}
+
+            <div class="form__field {{ errors.cover ?? null ? 'form__field--invalid' : '' }}">
+                <span class="form__label">{{ translate('project_form.fields.cover') }}</span>
+
+                <label class="project-form__cover {{ isEdit and project.cover ? 'project-form__cover--filled' : '' }}" for="cover" data-cover-dropzone>
+                    <img
+                            src="{{ isEdit and project.cover ? upload(project.cover) : '' }}"
+                            alt=""
+                            class="project-form__cover-image"
+                            data-cover-image
+                            {% if not (isEdit and project.cover) %}hidden{% endif %}
+                    >
+
+                    <span class="project-form__cover-empty">
+                        {{ Icon.lucide('upload', { color: 'accent', background: true, spacing: true, size: 'sm' }) }}
+                        <strong>{{ translate('project_form.cover.drop') }}</strong>
+                        <span>{{ translate('project_form.cover.hint') }}</span>
+                    </span>
+
+                    <span class="project-form__cover-change">
+                        {{ Icon.lucide('pencil', { size: 'xs' }) }}
+                        {{ translate('project_form.cover.change') }}
+                    </span>
+
+                    <input id="cover" name="cover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only" data-cover-input>
+                </label>
+
+                {% if isEdit and project.cover %}
+                    <label class="project-form__remove">
+                        <input type="checkbox" name="remove_cover" value="1" data-cover-remove>
+                        <span>{{ translate('project_form.cover.remove') }}</span>
+                    </label>
+                {% endif %}
+
+                {{ Form.render_error('cover', errors.cover ?? null) }}
+            </div>
+
+            {# Texts #}
+
+            {{ Form.input('name', {
+                label: translate('project_form.fields.name') ~ ' *',
+                value: values.name,
+                iconLeft: 'file-text',
+                placeholder: translate('project_form.placeholders.name'),
+                error: errors.name ?? null
+            }) }}
+
+            {{ Form.textarea('description', {
+                label: translate('project_form.fields.description') ~ ' *',
+                value: values.description,
+                rows: 4,
+                placeholder: translate('project_form.placeholders.description'),
+                error: errors.description ?? null
+            }) }}
+
+            {{ Form.input('short_description', {
+                label: translate('project_form.fields.short_description') ~ ' *',
+                value: values.short_description,
+                iconLeft: 'align-left',
+                placeholder: translate('project_form.placeholders.short_description'),
+                error: errors.short_description ?? null
+            }) }}
+
+            {{ Form.input('website_url', {
+                label: translate('project_form.fields.website_url'),
+                value: values.website_url,
+                type: 'url',
+                iconLeft: 'globe',
+                placeholder: 'https://myproject.com',
+                error: errors.website_url ?? null
+            }) }}
+
+            {{ Form.input('repository_url', {
+                label: translate('project_form.fields.repository_url'),
+                value: values.repository_url,
+                type: 'url',
+                iconLeft: 'git-branch',
+                placeholder: 'https://github.com/user/repo',
+                error: errors.repository_url ?? null
+            }) }}
+
+            {# Selects #}
+
+            {{ Form.group([
+                Form.select('category', {
+                    label: translate('project_form.fields.category') ~ ' *',
+                    value: values.category,
+                    placeholder: translate('project_form.placeholders.category'),
+                    options: categoryOptions,
+                    error: errors.category ?? null,
+                    columns: 4
+                }),
+                Form.select('visibility', {
+                    label: translate('project_form.fields.visibility'),
+                    value: values.visibility,
+                    options: visibilityOptions,
+                    iconLeft: 'globe',
+                    error: errors.visibility ?? null,
+                    columns: 4
+                }),
+                Form.select('status', {
+                    label: translate('project_form.fields.status'),
+                    value: values.status,
+                    options: statusOptions,
+                    error: errors.status ?? null,
+                    columns: 4
+                })
+            ], { columns: 12, gap: 'base' }) }}
+
+            <p class="project-form__notice">
+                {{ Icon.lucide('info', { size: 'xs' }) }}
+                <span>{{ translate('project_form.visibility_hint') }}</span>
+            </p>
+
+            {# Technologies #}
+
+            <div class="form__field {{ errors.technologies ?? null ? 'form__field--invalid' : '' }}" data-tags>
+                <label class="form__label" for="technology-input">{{ translate('project_form.fields.technologies') }} *</label>
+
+                <div class="project-form__tags-wrapper">
+
+                    <div class="project-form__tags" data-tags-list>
+                        {% for slug in values.technologies %}
+                            <span class="project-form__tag" data-tag="{{ slug }}">
+                                <span data-tag-label>{{ technologyNames[slug] ?? slug }}</span>
+                                <input type="hidden" name="technologies[]" value="{{ slug }}">
+                                <button type="button" class="project-form__tag-remove" aria-label="{{ translate('project_form.actions.remove') }}" data-tag-remove>
+                                    {{ Icon.lucide('x', { size: 'xs' }) }}
+                                </button>
+                            </span>
+                        {% endfor %}
+
+                        <input
+                                id="technology-input"
+                                type="text"
+                                class="project-form__tags-input"
+                                placeholder="{{ translate('project_form.placeholders.technologies') }}"
+                                autocomplete="off"
+                                role="combobox"
+                                aria-expanded="false"
+                                aria-controls="technology-menu"
+                                aria-autocomplete="list"
+                                data-tags-input
+                        >
+                    </div>
+
+                    <ul id="technology-menu" class="project-form__tags-menu" role="listbox" hidden data-tags-menu>
+                        {% for technology in technologies %}
+                            <li
+                                    class="project-form__tags-option"
+                                    role="option"
+                                    aria-selected="false"
+                                    data-tags-option
+                                    data-slug="{{ technology.slug }}"
+                                    data-name="{{ technology.name }}"
+                            >
+                                {{ technology.name }}
+                            </li>
+                        {% endfor %}
+                        <li class="project-form__tags-empty" hidden data-tags-empty>
+                            {{ translate('project_form.technologies.empty') }}
+                        </li>
+                    </ul>
+
+                </div>
+
+                <template data-tag-template>
+                    <span class="project-form__tag" data-tag="">
+                        <span data-tag-label></span>
+                        <input type="hidden" name="technologies[]" value="">
+                        <button type="button" class="project-form__tag-remove" aria-label="{{ translate('project_form.actions.remove') }}" data-tag-remove>
+                            {{ Icon.lucide('x', { size: 'xs' }) }}
+                        </button>
+                    </span>
+                </template>
+
+                {{ Form.render_error('technology-input', errors.technologies ?? null) }}
+            </div>
+
+            {# Features #}
+
+            <div class="form__field {{ errors.features ?? null ? 'form__field--invalid' : '' }}" data-features>
+                <label class="form__label" for="feature-input">{{ translate('project_form.fields.features') }}</label>
+
+                <div class="project-form__features" data-features-list>
+                    {% for feature in values.features %}
+                        <div class="project-form__feature" data-feature>
+                            <input type="text" name="features[]" value="{{ feature }}" class="form__input" maxlength="150">
+                            {{ Button.render(null, {
+                                iconLeft: 'x',
+                                variant: 'ghost',
+                                size: 'sm',
+                                iconSize: 'xs',
+                                attributes: { 'aria-label': translate('project_form.actions.remove'), 'data-feature-remove': '' }
+                            }) }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="project-form__feature project-form__feature--add">
+                    <input id="feature-input" type="text" class="form__input" maxlength="150" placeholder="{{ translate('project_form.placeholders.features') }}" data-feature-input>
+                    {{ Button.render(null, {
+                        iconLeft: 'plus',
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        iconSize: 'xs',
+                        attributes: { 'aria-label': translate('project_form.actions.add'), 'data-feature-add': '' }
+                    }) }}
+                </div>
+
+                <template data-feature-template>
+                    <div class="project-form__feature" data-feature>
+                        <input type="text" name="features[]" value="" class="form__input" maxlength="150">
+                        {{ Button.render(null, {
+                            iconLeft: 'x',
+                            variant: 'ghost',
+                            size: 'sm',
+                            iconSize: 'xs',
+                            attributes: { 'aria-label': translate('project_form.actions.remove'), 'data-feature-remove': '' }
+                        }) }}
+                    </div>
+                </template>
+
+                {{ Form.render_error('feature-input', errors.features ?? null) }}
+            </div>
+
+            {# Screenshots #}
+
+            <div class="form__field {{ errors.screenshots ?? null ? 'form__field--invalid' : '' }}">
+                <span class="form__label">{{ translate('project_form.fields.screenshots') }}</span>
+
+                <div class="project-form__shots">
+                    {% for index in 0..(slots - 1) %}
+                        {% set screenshot = screenshotsByPosition['slot' ~ index] ?? null %}
+
+                        <div class="project-form__shot {{ screenshot ? 'project-form__shot--filled' : '' }}" data-shot>
+                            <label class="project-form__shot-drop" for="screenshot-{{ index }}">
+                                <img
+                                        src="{{ screenshot ? upload(screenshot.image) : '' }}"
+                                        alt=""
+                                        class="project-form__shot-image"
+                                        data-shot-image
+                                        {% if not screenshot %}hidden{% endif %}
+                                >
+                                <span class="project-form__shot-empty">{{ Icon.lucide('plus', { size: 'sm', color: 'muted' }) }}</span>
+                                <input id="screenshot-{{ index }}" name="screenshots[{{ index }}]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only" data-shot-input>
+                            </label>
+
+                            {% if screenshot %}
+                                <label class="project-form__shot-remove" title="{{ translate('project_form.actions.remove') }}">
+                                    <input type="checkbox" name="remove_screenshots[{{ index }}]" value="1" class="sr-only" data-shot-remove>
+                                    {{ Icon.lucide('trash-2', { size: 'xs' }) }}
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <span class="project-form__hint">{{ translate('project_form.cover.hint') }}</span>
+
+                {{ Form.render_error('screenshots', errors.screenshots ?? null) }}
+            </div>
+
+            <div class="project-form__actions">
+                {% if isEdit %}
+                    {{ Button.render(translate('project_form.actions.cancel'), {
+                        href: path('project_mine'),
+                        variant: 'ghost-outline',
+                        size: 'sm'
+                    }) }}
+                {% endif %}
+
+                {{ Button.render(translate('project_form.' ~ mode ~ '.submit'), {
+                    type: 'submit',
+                    size: 'sm'
+                }) }}
+            </div>
+
+        </form>
+
+    </section>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            window._ProjectForm.init();
+        });
+    </script>
+
+{% endblock %}

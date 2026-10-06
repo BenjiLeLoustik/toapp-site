@@ -1,0 +1,94 @@
+{# ./templates/components/macros/_User.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_User.macro.html.twig' as User %}
+
+User.render({
+    avatar: '/images/avatar.jpg',
+    name: 'Benjamin',
+    username: '@BenjiLeLoustik',
+    certified: true
+})
+
+User.render({
+    avatar: '/images/avatar.jpg',
+    name: 'Benjamin',
+    username: '@BenjiLeLoustik',
+    certified: true,
+    showUsername: false
+})
+
+User.render({
+    name: 'Benjamin',
+    username: '@BenjiLeLoustik',
+    certified: true,
+    showAvatar: false
+})
+
+User.render({
+    avatar: '/images/avatar.jpg',
+    showName: false,
+    showUsername: false
+})
+#}
+
+{% macro render(options = {}) %}
+    {% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+    {% set avatar = options.avatar ?? null %}
+    {% set name = options.name ?? null %}
+    {% set username = options.username ?? null %}
+    {% set certified = options.certified ?? false %}
+
+    {% set showAvatar = options.showAvatar ?? true %}
+    {% set showName = options.showName ?? true %}
+    {% set showUsername = options.showUsername ?? true %}
+
+    <div class="user">
+
+        {% if showAvatar %}
+            <div class="user__avatar">
+                {% if avatar %}
+                    <img src="{{ upload(avatar) }}" alt="{{ name }}">
+                {% elseif name %}
+                    <span class="user__avatar-initial">
+                        {{ name|first|upper }}
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if showName or showUsername %}
+            <div class="user__about">
+
+                {% if showName and name %}
+                    <div class="user__name">
+
+                        {% if certified %}
+                            {{ Icon.lucide('shield-check', {
+                                color: 'accent',
+                                size: 'xs'
+                            }) }}
+                        {% endif %}
+
+                        <span>
+                            {{ name }}
+                        </span>
+
+                    </div>
+                {% endif %}
+
+                {% if showUsername and username %}
+                    <span class="user__username">
+                        {{ username }}
+                    </span>
+                {% endif %}
+
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endmacro %}

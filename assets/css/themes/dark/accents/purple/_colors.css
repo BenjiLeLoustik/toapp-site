@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/purple/_colors.css */
+
+[data-theme="dark"][data-accent="purple"] {
+    --theme-accent: var(--color-purple-400);
+    --theme-accent-hover: var(--color-purple-300);
+    --theme-accent-active: var(--color-purple-200);
+    --theme-accent-foreground: var(--color-white);
+}

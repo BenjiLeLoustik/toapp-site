@@ -1,0 +1,20 @@
+footer:
+    nav:
+        categories:
+            platform: "Platform"
+            enterprise: "Enterprise"
+        links:
+            discover: "Discover"
+            categories: "Categories"
+            trendings: "Trendings"
+            publish_project: "Publish Project"
+            about: "About"
+            contact: "Contact Us"
+            careers: "Careers"
+            help_center: "Help Center"
+            privacy_policy: "Privacy Policy"
+            terms_of_use: "Terms of Use"
+            legal_notice: "Legal notice"
+    copyright: "&copy; {year} - {appName} - All rights reserved"
+    about:
+        description: "The go-to platform for discovering and sharing innovative web projects. Connect, share and grow"

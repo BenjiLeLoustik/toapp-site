@@ -1,0 +1,57 @@
+/** ./assets/css/components/_Pagination.css */
+
+@layer component {
+
+    .pagination {
+        @apply w-full flex items-center justify-center gap-2 py-6;
+    }
+
+    .pagination__pages {
+        @apply flex items-center gap-1;
+    }
+
+    .pagination__page {
+        @apply aspect-square justify-center px-0;
+    }
+
+    .pagination__ellipsis {
+        @apply inline-flex items-center justify-center px-1 select-none;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Compact (tables, cards...) */
+
+    .pagination--compact {
+        @apply w-auto py-0 gap-1;
+    }
+
+    .pagination--compact .pagination__pages {
+        @apply gap-0.5;
+    }
+
+    .pagination--compact .pagination__previous,
+    .pagination--compact .pagination__next {
+        @apply font-normal;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        .pagination {
+            @apply gap-1;
+        }
+
+        .pagination--compact .pagination__previous .button__label,
+        .pagination--compact .pagination__next .button__label {
+            @apply hidden;
+        }
+
+        .pagination--compact .pagination__previous,
+        .pagination--compact .pagination__next {
+            @apply aspect-square px-0 justify-center;
+        }
+
+    }
+
+}

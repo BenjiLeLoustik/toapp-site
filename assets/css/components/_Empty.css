@@ -1,0 +1,38 @@
+/** ./assets/css/components/_Empty.css */
+
+@layer components {
+
+    .empty {
+        @apply w-full h-auto flex flex-col items-center justify-center gap-4 rounded-lg p-12;
+        border: dashed 2px var(--theme-border);
+    }
+
+    .empty__icon {
+        @apply w-14 h-14 rounded-lg flex items-center justify-center;
+        background-color: var(--theme-background-tertiary);
+    }
+
+    .empty__icon svg {
+        @apply w-8 h-8;
+        color: var(--theme-foreground-muted);
+    }
+
+    .empty__title {
+        @apply w-full h-auto text-center text-lg font-bold;
+        color: var(--theme-foreground);
+    }
+
+    .empty__descriptions {
+        @apply flex flex-col;
+    }
+
+    p.empty__description {
+        @apply text-sm font-medium w-full text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    .empty__actions {
+        @apply w-full max-w-7xl mx-auto flex items-center justify-center gap-4;
+    }
+
+}

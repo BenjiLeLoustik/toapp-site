@@ -1,0 +1,80 @@
+/** ./assets/css/pages/security/_login.css */
+
+@layer base {
+
+    section.login {
+        @apply py-12 flex items-center justify-center;
+    }
+
+    .login__container {
+        @apply w-full max-w-md h-auto rounded-lg p-6 flex flex-col gap-6;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .login__header {
+        @apply w-full h-auto flex flex-col gap-2;
+    }
+
+    h1.login__title {
+        @apply text-3xl font-bold text-center;
+        color: var(--theme-foreground);
+    }
+
+    p.login__description {
+        @apply w-full h-auto text-base text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    .login__form {
+        @apply w-full flex flex-col gap-4;
+    }
+
+    .login__form .login__submit,
+    .login__form .form__group-item:has(.login__submit) {
+        @apply w-full justify-center;
+    }
+
+    p.login__footer {
+        @apply text-sm text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    .login__link {
+        @apply font-medium;
+        color: var(--theme-accent);
+    }
+
+    .login__link:hover {
+        @apply underline;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.login {
+            @apply py-8;
+        }
+
+        h1.login__title {
+            @apply text-2xl;
+        }
+
+        p.login__description {
+            @apply text-sm;
+        }
+
+    }
+
+    /* Small mobile */
+
+    @media (max-width: 480px) {
+
+        .login__container {
+            @apply p-4;
+        }
+
+    }
+
+}

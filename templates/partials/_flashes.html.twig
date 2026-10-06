@@ -1,0 +1,38 @@
+{# ./templates/partials/_flashes.html.twig #}
+
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+
+{% set flashIcons = {
+    success: 'circle-check',
+    error: 'circle-x',
+    warning: 'triangle-alert',
+    info: 'info'
+} %}
+
+{% set flashes = app.flashes %}
+
+{% if flashes is not empty %}
+    <div class="flashes" aria-live="polite">
+
+        {% for type, messages in flashes %}
+            {% for message in messages %}
+                <div class="flash flash--{{ type }}" role="status" data-flash>
+
+                    <span class="flash__icon">
+                        {{ Icon.lucide(flashIcons[type] ?? 'info', { size: 'sm' }) }}
+                    </span>
+
+                    <p class="flash__message">
+                        {{ message }}
+                    </p>
+
+                    <button type="button" class="flash__close" aria-label="{{ translate('flash.close') }}" data-flash-close>
+                        {{ Icon.lucide('x', { size: 'xs' }) }}
+                    </button>
+
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+{% endif %}

@@ -1,0 +1,8 @@
+/** ./assets/css/themes/dark/accents/pink/_colors.css */
+
+[data-theme="dark"][data-accent="pink"] {
+    --theme-accent: var(--color-pink-400);
+    --theme-accent-hover: var(--color-pink-300);
+    --theme-accent-active: var(--color-pink-200);
+    --theme-accent-foreground: var(--color-white);
+}

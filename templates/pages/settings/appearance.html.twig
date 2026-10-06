@@ -1,0 +1,152 @@
+{# ./templates/pages/settings/appearance.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block settings_title %}{{ translate('settings.appearance.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.appearance.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    {% set currentTheme = preference.theme ?? session(config('framework.app.session_theme'), config('framework.app.default_theme')) %}
+    {% set currentAccent = preference.accent ?? session(config('framework.app.session_accent')) %}
+    {% set currentScale = preference.scale ?? session(config('framework.app.session_scale')) %}
+
+    {% set localeOptions = {} %}
+    {% for item in locales() %}
+        {% set localeOptions = localeOptions|merge({ (item): translate('header.modal.settings.locales.' ~ item, domain: 'header') }) %}
+    {% endfor %}
+
+    {% set dateOptions = {} %}
+    {% for item in dateFormats %}
+        {% set dateOptions = dateOptions|merge({ (item.value): item.label ~ ' (' ~ 'now'|date(item.value) ~ ')' }) %}
+    {% endfor %}
+
+    {% set numberOptions = {} %}
+    {% for item in numberFormats %}
+        {% set numberOptions = numberOptions|merge({ (item.value): item.label }) %}
+    {% endfor %}
+
+    {% set timezoneOptions = {} %}
+    {% for item in timezones %}
+        {% set timezoneOptions = timezoneOptions|merge({ (item): item|replace({'_': ' '}) }) %}
+    {% endfor %}
+
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.theme') }}</h2>
+
+        <div class="modal__change-block modal__change--theme">
+            <div class="modal__change-content">
+                {% for theme in themes %}
+                    <button
+                            type="button"
+                            data-theme-change="{{ theme }}"
+                            data-theme-preview="{{ theme }}"
+                            class="theme-preview {{ theme == currentTheme ? 'theme-active' : '' }}"
+                            aria-label="{{ translate('settings.appearance.themes.' ~ theme) }}"
+                    >
+                        <span class="theme-preview__header"></span>
+                        <span class="theme-preview__sidebar"></span>
+                        <span class="theme-preview__content">
+                            <span class="theme-preview__title"></span>
+                            <span class="theme-preview__line"></span>
+                            <span class="theme-preview__line"></span>
+                            <span class="theme-preview__button"></span>
+                        </span>
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.accent') }}</h2>
+
+        <div class="modal__change-block modal__change--accent">
+            <div class="modal__change-content">
+                {% for accent in accents %}
+                    {{ Button.render('', {
+                        size: 'xs',
+                        iconOnly: true,
+                        attributes: {
+                            'data-accent-change': accent,
+                            'style': '--accent-preview: var(--color-' ~ accent ~ '-500);',
+                            'title': accent|capitalize,
+                            'aria-label': accent|capitalize
+                        },
+                        class: accent == currentAccent ? 'accent-active' : ''
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.scale') }}</h2>
+
+        <div class="modal__change-block modal__change--scale">
+            <div class="modal__change-content">
+                {% for scale in scales %}
+                    {{ Button.render(translate('header.modal.settings.scale.' ~ scale, domain: 'header'), {
+                        variant: scale == currentScale ? 'primary' : 'ghost-outline',
+                        attributes: {
+                            'data-scale-change': scale
+                        }
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <form method="post" action="{{ path('settings_appearance') }}" class="settings__form">
+
+        <input type="hidden" name="_token" value="{{ csrf_token('settings_appearance') }}">
+
+        {{ Form.select('locale', {
+            label: translate('settings.appearance.locale'),
+            value: preference.locale ?? locale(),
+            options: localeOptions,
+            iconLeft: 'languages',
+            attributes: {
+                'data-locale-change': ''
+            }
+        }) }}
+
+        {{ Form.select('date_format', {
+            label: translate('settings.appearance.date_format'),
+            value: preference.dateFormat.value,
+            options: dateOptions,
+            iconLeft: 'calendar'
+        }) }}
+
+        {{ Form.select('timezone', {
+            label: translate('settings.appearance.timezone'),
+            value: preference.timezone,
+            options: timezoneOptions,
+            iconLeft: 'globe'
+        }) }}
+
+        {{ Form.select('number_format', {
+            label: translate('settings.appearance.number_format'),
+            value: preference.numberFormat.value,
+            options: numberOptions,
+            iconLeft: 'hash'
+        }) }}
+
+        <div class="settings__actions">
+            {{ Button.render(translate('settings.actions.cancel'), {
+                href: path('settings_appearance'),
+                variant: 'ghost-outline',
+                size: 'sm'
+            }) }}
+            {{ Button.render(translate('settings.actions.save'), {
+                type: 'submit',
+                size: 'sm'
+            }) }}
+        </div>
+
+    </form>
+
+{% endblock %}

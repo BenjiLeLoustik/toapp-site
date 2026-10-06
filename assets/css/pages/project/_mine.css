@@ -1,0 +1,207 @@
+/** ./assets/css/pages/project/_mine.css */
+
+@layer base {
+
+    section.my-projects {
+        @apply h-auto flex flex-col gap-6 py-8;
+    }
+
+    .my-projects__header {
+        @apply flex items-center justify-between gap-4;
+    }
+
+    h1.my-projects__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    /* Stats */
+
+    .my-projects__stats {
+        @apply grid grid-cols-4 gap-4;
+    }
+
+    .my-projects__stat {
+        @apply flex items-center gap-4 rounded-lg p-4;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .my-projects__stat-icon {
+        @apply flex items-center justify-center w-10 h-10 shrink-0 rounded-full;
+    }
+
+    .my-projects__stat-icon svg {
+        @apply w-5 h-5;
+    }
+
+    .my-projects__stat-icon--projects {
+        color: var(--theme-info);
+        background-color: var(--theme-info-surface);
+    }
+
+    .my-projects__stat-icon--likes {
+        color: var(--theme-danger);
+        background-color: var(--theme-danger-surface);
+    }
+
+    .my-projects__stat-icon--views {
+        color: var(--theme-success);
+        background-color: var(--theme-success-surface);
+    }
+
+    .my-projects__stat-icon--shares {
+        color: var(--theme-accent);
+        background-color: color-mix(in oklab, var(--theme-accent) 12%, var(--theme-surface));
+    }
+
+    .my-projects__stat-content {
+        @apply flex flex-col;
+    }
+
+    .my-projects__stat-value {
+        @apply text-2xl font-bold leading-tight;
+        color: var(--theme-foreground);
+    }
+
+    .my-projects__stat-label {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Panel */
+
+    .my-projects__panel {
+        @apply flex flex-col rounded-lg overflow-hidden;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .my-projects__toolbar {
+        @apply flex items-center justify-between gap-4 p-3;
+        border-bottom: solid 1px var(--theme-border);
+    }
+
+    .my-projects__tabs {
+        @apply flex items-center gap-1 flex-wrap;
+    }
+
+    .my-projects__search {
+        @apply w-full max-w-xs;
+    }
+
+    .my-projects__panel .table {
+        border: none;
+        border-radius: 0;
+    }
+
+    /* Cells */
+
+    .my-projects__project {
+        @apply flex flex-col gap-0.5 min-w-0;
+        width: 18rem;
+    }
+
+    .my-projects__project-name {
+        @apply font-semibold truncate;
+        color: var(--theme-foreground);
+    }
+
+    .my-projects__project-name:hover {
+        color: var(--theme-accent);
+    }
+
+    .my-projects__project-description {
+        @apply text-xs truncate;
+        color: var(--theme-foreground-muted);
+    }
+
+    .my-projects__status {
+        @apply inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium whitespace-nowrap;
+    }
+
+    .my-projects__status--published {
+        color: var(--theme-success);
+        background-color: var(--theme-success-surface);
+        border: solid 1px var(--theme-success-border);
+    }
+
+    .my-projects__status--draft {
+        color: var(--theme-warning);
+        background-color: var(--theme-warning-surface);
+        border: solid 1px var(--theme-warning-border);
+    }
+
+    .my-projects__status--archived {
+        color: var(--theme-danger);
+        background-color: var(--theme-danger-surface);
+        border: solid 1px var(--theme-danger-border);
+    }
+
+    .my-projects__visibility {
+        @apply inline-flex items-center gap-1.5 whitespace-nowrap;
+        color: var(--theme-foreground-secondary);
+    }
+
+    .my-projects__actions {
+        @apply flex items-center justify-end gap-0.5;
+    }
+
+    .my-projects__action--danger,
+    .my-projects__action--danger:hover {
+        color: var(--theme-danger);
+    }
+
+    .my-projects__action--danger:hover {
+        background-color: var(--theme-danger-surface);
+    }
+
+    .my-projects__summary {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Empty */
+
+    .my-projects__empty {
+        @apply flex items-center justify-center rounded-lg py-16;
+        border: dashed 2px var(--theme-border);
+    }
+
+    /* Tablet */
+
+    @media (max-width: 1024px) {
+
+        .my-projects__stats {
+            @apply grid-cols-2;
+        }
+
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.my-projects {
+            @apply py-6 gap-4;
+        }
+
+        h1.my-projects__title {
+            @apply text-2xl;
+        }
+
+        .my-projects__stats {
+            @apply grid-cols-1;
+        }
+
+        .my-projects__toolbar {
+            @apply flex-col items-stretch;
+        }
+
+        .my-projects__search {
+            @apply max-w-none;
+        }
+
+    }
+
+}

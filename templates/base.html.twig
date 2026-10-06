@@ -1,0 +1,33 @@
+{# ./templates/base.html.twig #}
+
+<!DOCTYPE html>
+<html lang="{{ locale() }}"
+      data-theme="{{ session(config('framework.app.session_theme'), config('framework.app.default_theme')) }}"
+      data-accent="{{ session(config('framework.app.session_accent'), config('framework.app.default_accent')) }}"
+      data-scale="{{ session(config('framework.app.session_scale'), config('framework.app.default_scale')) }}"
+>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ app.name }}</title>
+
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lucide@1.48.0/dist/umd/lucide.min.js"></script>
+        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    </head>
+    <body>
+        {% block layout %}{% endblock %}
+
+        <script type="text/javascript" src="{{ asset('js/partials/_Header.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/partials/_Flash.js') }}"></script>
+
+        <script type="text/javascript" src="{{ asset('js/pages/_ProjectForm.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/pages/_Profile.js') }}"></script>
+
+        <script type="text/javascript" src="{{ asset('js/components/_Dropdown.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/components/_Request.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/components/_Modal.js') }}"></script>
+    </body>
+</html>

@@ -1,22 +1,35 @@
-body {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    background: #f6f7f9;
-    color: #1d2433;
+/** ./assets/css/app.css */
+
+@import "tailwindcss";
+
+@import "./themes/init.css";
+
+@import "./layouts/_danger.css";
+
+@import "./partials/_header.css";
+@import "./partials/_main.css";
+@import "./partials/_footer.css";
+@import "./partials/_project-search.css";
+@import "./partials/_flashes.css";
+@import "./partials/_verify-banner.css";
+
+@import "./components/init.css";
+@import "./pages/init.css";
+
+:root {
+    --header-height: 50px;
 }
 
-main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
+@theme {
+    --font-sans: 'Exo 2', sans-serif;
 }
 
-h1 {
-    color: #3b1f6e;
-}
+@layer base {
 
-code {
-    background: #eceef2;
-    padding: .15rem .4rem;
-    border-radius: 4px;
+    html, body {
+        @apply w-full h-dvh overflow-hidden text-base;
+        background-color: var(--theme-background);
+        color: var(--theme-foreground);
+    }
+
 }

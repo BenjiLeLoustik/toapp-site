@@ -1,0 +1,104 @@
+{# ./templates/pages/settings/account.html.twig #}
+
+{% extends 'pages/settings/_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block settings_title %}{{ translate('settings.account.title') }}{% endblock %}
+{% block settings_description %}{{ translate('settings.account.description') }}{% endblock %}
+
+{% block settings_content %}
+
+    {% set user = app.user %}
+
+    <div class="settings__section">
+
+        <h2 class="settings__section-title">{{ translate('settings.account.informations') }}</h2>
+
+        <form method="post" action="{{ path('settings_account') }}" class="settings__form" novalidate>
+
+            <input type="hidden" name="_token" value="{{ csrf_token('settings_account') }}">
+
+            {{ Form.input('email', {
+                label: translate('settings.account.fields.email'),
+                value: user.email,
+                type: 'email',
+                iconLeft: 'mail',
+                autocomplete: 'email',
+                error: errors.email ?? null
+            }) }}
+
+            {{ Form.input('current_password', {
+                label: translate('settings.account.fields.current_password'),
+                type: 'password',
+                iconLeft: 'lock',
+                autocomplete: 'current-password',
+                placeholder: translate('settings.account.placeholders.current_password'),
+                error: errors.current_password ?? null
+            }) }}
+
+            <div class="settings__actions">
+                {{ Button.render(translate('settings.account.update_email'), {
+                    type: 'submit',
+                    size: 'sm'
+                }) }}
+            </div>
+
+        </form>
+
+        <dl class="settings__info">
+            <dt>{{ translate('settings.account.member_since') }}</dt>
+            <dd>{{ user.createdAt|user_date }}</dd>
+
+            <dt>{{ translate('settings.account.last_login') }}</dt>
+            <dd>
+                {% if lastLogin %}
+                    {{ lastLogin.createdAt|user_datetime }} · {{ lastLogin.browser }} · {{ lastLogin.platform }}
+                {% else %}
+                    {{ translate('settings.account.first_login') }}
+                {% endif %}
+            </dd>
+        </dl>
+
+    </div>
+
+    <div class="settings__section">
+
+        <h2 class="settings__section-title">{{ translate('settings.account.management') }}</h2>
+
+        <div class="settings__danger-item">
+            <div>
+                <span class="settings__item-title">{{ translate('settings.account.deactivate.title') }}</span>
+                <p class="settings__item-description">{{ translate('settings.account.deactivate.description') }}</p>
+            </div>
+
+            <form method="post" action="{{ path('settings_deactivate') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('settings_deactivate') }}">
+                {{ Button.render(translate('settings.account.deactivate.button'), {
+                    type: 'submit',
+                    variant: 'ghost-outline',
+                    size: 'sm'
+                }) }}
+            </form>
+        </div>
+
+        <div class="settings__danger-item">
+            <div>
+                <span class="settings__item-title">{{ translate('settings.account.delete.title') }}</span>
+                <p class="settings__item-description">{{ translate('settings.account.delete.description') }}</p>
+            </div>
+
+            {{ Button.render(translate('settings.account.delete.button'), {
+                href: path('settings_delete'),
+                variant: 'ghost-outline',
+                size: 'sm',
+                iconLeft: 'trash-2',
+                iconSize: 'xs',
+                class: 'settings__button--danger'
+            }) }}
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,209 @@
+{# ./templates/pages/project/stats.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Badge.macro.html.twig' as Badge %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Chart.macro.html.twig' as Chart %}
+
+{% block content %}
+
+    {% set routeParams = { id: project.id, slug: project.slug } %}
+
+    {% set cardItems = [
+        { key: 'views', icon: 'eye' },
+        { key: 'likes', icon: 'heart' },
+        { key: 'shares', icon: 'share-2' },
+        { key: 'favorites', icon: 'bookmark' }
+    ] %}
+
+    {% set segments = stats.sources.segments|map(segment => segment|merge({
+        label: translate('project_stats.sources.' ~ segment.key)
+    })) %}
+
+    <section class="project-stats-page screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.my_projects'), href: path('project_mine') },
+            { label: project.name, href: path('project_show', routeParams) },
+            { label: translate('breadcrumb.stats') }
+        ]) }}
+
+        <header class="project-stats-page__header">
+            <div class="project-stats-page__heading">
+                <div class="project-stats-page__title-row">
+                    <h1 class="project-stats-page__title">{{ translate('project_stats.title') }}</h1>
+                    {{ Badge.render(project.name, { variant: 'primary', size: 'sm' }) }}
+                </div>
+                <p class="project-stats-page__description">{{ translate('project_stats.description') }}</p>
+            </div>
+
+            <nav class="project-stats-page__periods" aria-label="{{ translate('project_stats.periods.label') }}">
+                {% for item in periods %}
+                    {{ Button.render(translate('project_stats.periods.' ~ item.value), {
+                        href: path('project_stats', routeParams|merge({ period: item.value })),
+                        variant: item == period ? 'primary' : 'ghost-outline',
+                        size: 'sm',
+                        attributes: item == period ? { 'aria-current': 'page' } : {}
+                    }) }}
+                {% endfor %}
+            </nav>
+        </header>
+
+        <div class="project-stats-page__cards">
+            {% for item in cardItems %}
+                {% set card = stats.cards[item.key] %}
+
+                <div class="project-stats-card">
+                    <div class="project-stats-card__top">
+                        <span class="project-stats-card__label">{{ translate('project_stats.cards.' ~ item.key) }}</span>
+                        {{ Icon.lucide(item.icon, { size: 'xs', color: 'muted' }) }}
+                    </div>
+
+                    <span class="project-stats-card__value">{{ card.value|user_number }}</span>
+
+                    {% if card.change is not null %}
+                        {% set trend = card.change > 0 ? 'up' : (card.change < 0 ? 'down' : 'flat') %}
+
+                        <span class="project-stats-card__change project-stats-card__change--{{ trend }}">
+                            {{ Icon.lucide(trend == 'down' ? 'trending-down' : (trend == 'up' ? 'trending-up' : 'minus'), { size: 'xs' }) }}
+                            <strong>{{ card.change > 0 ? '+' : '' }}{{ card.change|user_number(1) }}%</strong>
+                            {{ translate('project_stats.vs_previous') }}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="project-stats-page__row project-stats-page__row--main">
+
+            <div class="project-stats-panel">
+                <h2 class="project-stats-panel__title">{{ translate('project_stats.views_chart.title') }}</h2>
+
+                {% if stats.cards.views.value > 0 %}
+                    {{ Chart.line(stats.series, { label: translate('project_stats.views_chart.title') }) }}
+                {% else %}
+                    <p class="project-stats-panel__empty">{{ translate('project_stats.views_chart.empty') }}</p>
+                {% endif %}
+            </div>
+
+            <div class="project-stats-panel">
+                <h2 class="project-stats-panel__title">{{ translate('project_stats.sources.title') }}</h2>
+
+                {{ Chart.donut(segments, { label: translate('project_stats.sources.total') }) }}
+
+                <ul class="project-stats-legend">
+                    {% for segment in segments %}
+                        <li class="project-stats-legend__item">
+                            <span class="project-stats-legend__dot project-stats-legend__dot--{{ segment.key }}"></span>
+                            <span class="project-stats-legend__label">{{ segment.label }}</span>
+                            <span class="project-stats-legend__value">{{ segment.value|user_number }}</span>
+                            <strong class="project-stats-legend__percent">{{ segment.percent }}%</strong>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="project-stats-page__row">
+
+            <div class="project-stats-panel">
+                <h2 class="project-stats-panel__title">{{ translate('project_stats.countries.title') }}</h2>
+
+                {% if stats.countries is not empty %}
+                    <ul class="project-stats-bars">
+                        {% for country in stats.countries %}
+                            <li class="project-stats-bars__item">
+                                <span class="project-stats-bars__label">
+                                    <span class="project-stats-bars__flag" aria-hidden="true">{{ country.flag }}</span>
+                                    {{ country.name }}
+                                </span>
+                                <span class="project-stats-bars__track">
+                                    <span class="project-stats-bars__fill" style="width: {{ country.percent }}%;"></span>
+                                </span>
+                                <span class="project-stats-bars__percent">{{ country.percent }}%</span>
+                                <strong class="project-stats-bars__value">{{ country.value|user_number }}</strong>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="project-stats-panel__empty">{{ translate('project_stats.countries.empty') }}</p>
+                {% endif %}
+            </div>
+
+            <div class="project-stats-panel">
+                <h2 class="project-stats-panel__title">{{ translate('project_stats.networks.title') }}</h2>
+
+                {% if stats.cards.shares.value > 0 %}
+                    <ul class="project-stats-bars">
+                        {% for network in stats.networks %}
+                            <li class="project-stats-bars__item project-stats-bars__item--wide">
+                                <span class="project-stats-bars__label">{{ translate('project_stats.networks.' ~ network.key) }}</span>
+                                <span class="project-stats-bars__track">
+                                    <span class="project-stats-bars__fill" style="width: {{ network.width }}%;"></span>
+                                </span>
+                                <strong class="project-stats-bars__value">{{ translate('project_stats.networks.count', { count: network.value }) }}</strong>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="project-stats-panel__empty">{{ translate('project_stats.networks.empty') }}</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <div class="project-stats-panel">
+            <h2 class="project-stats-panel__title">{{ translate('project_stats.activity.title') }}</h2>
+
+            {% if stats.activity.items is not empty %}
+
+                <ul class="project-stats-activity">
+                    {% for item in stats.activity.items %}
+                        {% set name = item.user ? item.user.firstname ~ ' ' ~ item.user.lastname : translate('project_stats.activity.someone') %}
+
+                        <li class="project-stats-activity__item">
+                            <span class="project-stats-activity__dot project-stats-activity__dot--{{ item.type }}"></span>
+                            <span class="project-stats-activity__date">{{ item.date|user_datetime }}</span>
+                            <span class="project-stats-activity__text">
+                                {{ translate('project_stats.activity.' ~ item.type, {
+                                    name: name,
+                                    network: item.network ? translate('project_stats.networks.' ~ item.network) : ''
+                                }) }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if stats.activity.pages > 1 %}
+                    <nav class="project-stats-activity__pagination" aria-label="Pagination">
+                        {{ Button.render(translate('pagination.previous_short'), {
+                            href: stats.activity.page > 1 ? path('project_stats', routeParams|merge({ period: period.value, page: stats.activity.page - 1 })) : null,
+                            variant: 'ghost-outline',
+                            size: 'xs',
+                            disabled: stats.activity.page <= 1
+                        }) }}
+
+                        <span class="project-stats-activity__page">{{ stats.activity.page }} / {{ stats.activity.pages }}</span>
+
+                        {{ Button.render(translate('pagination.next_short'), {
+                            href: stats.activity.page < stats.activity.pages ? path('project_stats', routeParams|merge({ period: period.value, page: stats.activity.page + 1 })) : null,
+                            variant: 'ghost-outline',
+                            size: 'xs',
+                            disabled: stats.activity.page >= stats.activity.pages
+                        }) }}
+                    </nav>
+                {% endif %}
+
+            {% else %}
+                <p class="project-stats-panel__empty">{{ translate('project_stats.activity.empty') }}</p>
+            {% endif %}
+        </div>
+
+    </section>
+
+{% endblock %}

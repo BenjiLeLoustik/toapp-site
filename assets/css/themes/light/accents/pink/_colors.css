@@ -1,0 +1,8 @@
+/** ./assets/css/themes/light/accents/pink/_colors.css */
+
+[data-theme="light"][data-accent="pink"] {
+    --theme-accent: var(--color-pink-500);
+    --theme-accent-hover: var(--color-pink-600);
+    --theme-accent-active: var(--color-pink-700);
+    --theme-accent-foreground: var(--color-white);
+}

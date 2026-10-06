@@ -1,0 +1,677 @@
+main:
+    hero:
+        sub_title: "Explore millions of web projects, mobile apps, APIs, and much more. Join a community of passionate developers."
+        title:
+            first_part: "Find your"
+            second_part: "next project"
+        search_bar:
+            input: "Search project, technology, framework..."
+            submit: "Search"
+        actions:
+            publish_project: "Publish project"
+            show_projects: "Explore Projects"
+    stats:
+        active_developers: "Active developers"
+        listed_technologies: "Listed technologies"
+        published_project: "Published projects"
+        categories: "Categories"
+    popular_projects:
+        description: "Discover the projects most appreciated by the developer community"
+        title: "Popular projects"
+        empty:
+            title: "No projects available"
+            description_line_1: "No project has been published on the platform yet."
+            description_line_2: "Be the first to share your project !"
+            actions:
+                create_project: "Create project"
+        show_more: "Show all projects"
+breadcrumb:
+    home: "Home"
+    categories: "Categories"
+    projects: "Projects"
+    trends: "Trends"
+    about: "About"
+    contact: "Contact"
+    my_projects: "My projects"
+    stats: "Statistics"
+    new_project: "New project"
+    edit: "Edit"
+    favorites: "My favorites"
+categories:
+    all: "All categories"
+    card:
+        count_projects: "{counterFormatted} {count, plural, one {project} other {projects}}"
+search:
+    title: "Search results"
+    title_all: "All projects"
+    placeholder: "Search a project..."
+    results:
+        all: "{counterFormatted} {count, plural, one {project} other {projects}}"
+        category: "{counterFormatted} {count, plural, one {project} other {projects}} in {category}"
+        search: "{counterFormatted} {count, plural, one {project} other {projects}} found for \"{search}\""
+        search_category: "{counterFormatted} {count, plural, one {project} other {projects}} found for \"{search}\" in {category}"
+    filters:
+        title: "Filters"
+        reset: "Reset"
+        category: "Category"
+        technologies: "Technologies"
+        sort: "Sort by"
+        sort_by: "Sort by:"
+        date: "Date"
+    sorts:
+        relevance: "Relevance"
+        recent: "Most recent"
+        oldest: "Oldest"
+        popular: "Most popular"
+    dates:
+        all: "All dates"
+        week: "This week"
+        month: "This month"
+        year: "This year"
+    empty:
+        title: "No result found"
+        description_line_1: "We could not find any project matching your search."
+        description_line_2: "Try other keywords or explore the categories."
+        explore_categories: "Explore categories"
+        reset: "Reset the search"
+project:
+    show:
+        actions:
+            like: "Like"
+            liked: "Liked"
+            save_favorite: "Save"
+            saved_favorite: "Saved"
+            share: "Share"
+            visit_website: "Visit website"
+        stats:
+            likes: "{count, plural, one {like} other {likes}}"
+            published_at: "Published at"
+            shares: "{count, plural, one {share} other {shares}}"
+            views: "{count, plural, one {view} other {views}}"
+        author:
+            button_show_profile: "Show profile"
+            empty_biography: "This user does not have a biography."
+        informations:
+            category:
+                title: "Category"
+            published_at:
+                title: "Published at"
+            status:
+                not_published: "Not published"
+                published: "Published"
+                title: "Status"
+            updated_at:
+                title: "Updated at"
+            title: "Informations"
+            visibility:
+                title: "Visibility"
+        description: "Description"
+        features:
+            empty: "This project has no features."
+            title: "Features"
+        screenshots:
+            empty: "This project has no screenshots."
+            title: "Screenshots"
+        technologies:
+            empty: "This project does not use any technology."
+            title: "Technologies"
+        links:
+            empty: "This project has no links."
+            title: "Links"
+        modal:
+            share:
+                copied: "Copied!"
+    delete:
+        title: "Delete this project"
+        description: "\"{name}\" will be permanently deleted"
+        submit: "Permanently delete this project"
+        flash: "The project \"{name}\" has been deleted."
+        losses:
+            title: "By deleting this project, you will lose:"
+            page: "Its public page and all its content"
+            stats: "Its {views} views, {likes} likes and {shares} shares"
+            screenshots: "Its cover and screenshots"
+            favorites: "Its place in the favorites of other users"
+project_form:
+    visibility_hint: "Your project is visible to the community only when its status is \"Published\" and its visibility \"Public\". Drafts, archived and private projects are only visible to you."
+    new:
+        title: "Create a project"
+        description: "Fill in the information to publish your project"
+        submit: "Create the project"
+    edit:
+        title: "Edit the project"
+        description: "Update the information of your project to present it to the community"
+        submit: "Update"
+    fields:
+        cover: "Cover image"
+        name: "Project title"
+        description: "Description"
+        short_description: "Short description"
+        website_url: "Project URL"
+        repository_url: "GitHub repository"
+        category: "Category"
+        visibility: "Visibility"
+        status: "Status"
+        technologies: "Technologies"
+        features: "Features"
+        screenshots: "Screenshots"
+    placeholders:
+        name: "E.g. My awesome project"
+        description: "Describe your project in a few lines..."
+        short_description: "E.g. Cloud solution for DevOps teams"
+        category: "Select a category"
+        technologies: "Add a technology..."
+        features: "Add a feature..."
+    visibilities:
+        public: "Public"
+        private: "Private"
+    cover:
+        drop: "Drop an image or click to browse"
+        hint: "JPG, PNG, GIF or WebP. 5 MB max."
+        change: "Change image"
+        remove: "Remove the cover"
+    technologies:
+        empty: "No technology found."
+    actions:
+        add: "Add"
+        remove: "Remove"
+        cancel: "Cancel"
+    flash:
+        created: "The project \"{name}\" has been created."
+        updated: "The project \"{name}\" has been updated."
+    errors:
+        name: "Please enter a title (150 characters maximum)."
+        description: "Please enter a description."
+        short_description: "Please enter a short description (512 characters maximum)."
+        url: "Please enter a valid URL starting with http:// or https://."
+        category: "Please select a category."
+        visibility: "Please select a visibility."
+        status: "Please select a status."
+        technologies: "Please select at least one technology from the list."
+        features_count: "You can add 20 features maximum."
+        feature_length: "Each feature cannot be longer than 150 characters."
+        image: "The image must be a JPG, PNG, GIF or WebP file of 5 MB maximum."
+projects_mine:
+    title: "My projects"
+    new: "New project"
+    search: "Search a project..."
+    stats:
+        projects: "Projects"
+        likes: "Likes"
+        views: "Views"
+        shares: "Shares"
+    tabs:
+        label: "Project status"
+        all: "All"
+        published: "Published"
+        draft: "Draft"
+        archived: "Archived"
+    statuses:
+        published: "Published"
+        draft: "Draft"
+        archived: "Archived"
+    columns:
+        project: "Project"
+        status: "Status"
+        visibility: "Visibility"
+        date: "Date"
+        views: "Views"
+        likes: "Likes"
+        shares: "Shares"
+        actions: "Actions"
+    actions:
+        stats: "Statistics"
+        show: "Show"
+        edit: "Edit"
+        delete: "Delete"
+    summary: "Showing {from}-{to} of {total} {count, plural, one {project} other {projects}}"
+    filtered_empty: "No project matches your search."
+    empty:
+        title: "No project"
+        description_line_1: "You have not created any project yet."
+        description_line_2: "Start right now!"
+        create: "Create a project"
+project_stats:
+    title: "Project statistics"
+    description: "Follow the performance of your project in real time"
+    vs_previous: "vs previous period"
+    periods:
+        label: "Period"
+        7d: "7d"
+        30d: "30d"
+        90d: "90d"
+        12m: "12 months"
+        all: "All"
+    cards:
+        views: "Total views"
+        likes: "Likes"
+        shares: "Shares"
+        favorites: "Favorites"
+    views_chart:
+        title: "Views over time"
+        empty: "No view over this period."
+    sources:
+        title: "Traffic sources"
+        total: "views"
+        search: "Search engines"
+        direct: "Direct"
+        social: "Social networks"
+        internal: "Internal"
+        other: "Others"
+    countries:
+        title: "Top countries"
+        empty: "No country data over this period."
+    networks:
+        title: "Shares by network"
+        empty: "No share over this period."
+        count: "{count, plural, one {# share} other {# shares}}"
+        link: "Link"
+        email: "Email"
+        facebook: "Facebook"
+        x_twitter: "X (Twitter)"
+        linkedin: "LinkedIn"
+        discord: "Discord"
+    activity:
+        title: "Recent activity"
+        empty: "No activity over this period."
+        someone: "Someone"
+        like: "{name} liked your project"
+        favorite: "{name} saved your project"
+        share: "{name} shared your project on {network}"
+pagination:
+    previous: "Previous page"
+    next: "Next page"
+    previous_short: "Previous"
+    next_short: "Next"
+trends:
+    title: "Trends"
+    description: "Discover the most popular projects and creators of the community"
+    tabs:
+        label: "Trends"
+        projects: "Projects"
+        creators: "Creators"
+    search:
+        projects: "Search a project..."
+        creators: "Search a creator..."
+    sort_by: "Sort by:"
+    sorts:
+        projects:
+            views: "Views"
+            likes: "Likes"
+            shares: "Shares"
+            recent: "Most recent"
+        creators:
+            projects: "Projects"
+            likes: "Likes received"
+            views: "Views received"
+    columns:
+        rank: "Rank"
+        preview: "Preview"
+        project: "Project"
+        category: "Category"
+        creator: "Creator"
+        views: "Views"
+        likes: "Likes"
+        shares: "Shares"
+        projects: "Projects"
+        likes_received: "Likes received"
+        views_received: "Views received"
+    projects_count: "{counterFormatted} {count, plural, one {project} other {projects}}"
+    summary:
+        projects: "Showing {from}-{to} of {total} {count, plural, one {project} other {projects}}"
+        creators: "Showing {from}-{to} of {total} {count, plural, one {creator} other {creators}}"
+    empty:
+        projects: "No project matches your search."
+        creators: "No creator matches your search."
+about:
+    hero:
+        title: "About"
+        description: "{name} is the platform where developers share, discover and celebrate web projects, mobile apps and APIs built by the community."
+    mission:
+        eyebrow: "Our mission"
+        title: "Give life to ideas"
+        description: "Every project deserves to be seen. We help creators showcase their work and help everyone find their next source of inspiration."
+        values:
+            discovery:
+                title: "Discovery"
+                description: "Browse thousands of projects by category, technology or popularity and find exactly what inspires you."
+            community:
+                title: "Community"
+                description: "Like, save and share the projects you love, and connect with developers who build like you."
+            innovation:
+                title: "Innovation"
+                description: "Follow the trends, explore new technologies and see what the community is building right now."
+    stats:
+        likes: "Likes given"
+        views: "Project views"
+        shares: "Projects shared"
+        favorites: "Projects saved"
+    contributors:
+        eyebrow: "Community"
+        title: "Behind the platform"
+        description: "Meet the developers who share the most projects and make the community grow every day."
+        empty_biography: "This developer has not written a biography yet."
+        projects: "{counterFormatted} {count, plural, one {project} other {projects}} published"
+        empty: "No contributor yet: be the first to publish a project!"
+    cta:
+        title: "Join the community"
+        description: "Publish your projects, get feedback and discover what other developers are building."
+        explore: "Explore projects"
+        publish: "Publish a project"
+login:
+    title: "Sign in"
+    description: "Enter your email and password to access your account."
+    fields:
+        email: "Email"
+        password: "Password"
+        remember_me: "Remember me"
+    submit: "Sign in"
+    no_account: "Don't have an account?"
+    register: "Create one"
+register:
+    title: "Create an account"
+    description: "Join the community and start sharing your projects."
+    fields:
+        firstname: "First name"
+        lastname: "Last name"
+        username: "Username"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        terms: "I accept the terms of use and the privacy policy"
+    submit: "Create my account"
+    has_account: "Already have an account?"
+    login: "Sign in"
+    flash:
+        success: "Welcome {name}, your account has been created!"
+contact:
+    title: "Contact us"
+    description: "A question about the platform, a partnership or a project? Our team is here to help."
+    informations:
+        title: "Our contact details"
+        description: "Feel free to contact us directly or use our contact form to send us your requests."
+    form:
+        title: "Send us a message"
+        fields:
+            lastname: "Last name"
+            firstname: "First name"
+            email: "Email"
+            object: "Subject"
+            message: "Message"
+            website: "Website (optional)"
+            consent: "I agree that my data will be processed in accordance with the privacy policy."
+        placeholders:
+            lastname: "Doe"
+            firstname: "John"
+            email: "john.doe@example.com"
+            object: "Select a subject"
+            message: "How can we help you?"
+            website: "https://your-project.com"
+        submit: "Send"
+    flash:
+        success: "Thank you, your message has been sent. We will get back to you as soon as possible."
+flash:
+    close: "Close"
+legal:
+    updated_at: "Last updated: {date}"
+danger:
+    confirmation_label: "To confirm, type \"{phrase}\" below"
+    acknowledge: "I understand that this action is irreversible and that all my data will be permanently deleted."
+    cancel: "Cancel"
+    notice: "This action is immediate and cannot be undone."
+    errors:
+        confirmation: "The confirmation text does not match."
+        acknowledge: "You must confirm that you understand this action is irreversible."
+settings:
+    title: "Settings"
+    nav:
+        profile: "Profile"
+        account: "Account"
+        appearance: "Appearance"
+        notifications: "Notifications"
+        privacy: "Privacy"
+        security: "Security"
+        delete_account: "Delete account"
+    actions:
+        save: "Save changes"
+        cancel: "Cancel"
+    flash:
+        saved: "Your changes have been saved."
+    errors:
+        csrf: "Your session has expired, please try again."
+        firstname: "Please enter a first name (50 characters maximum)."
+        lastname: "Please enter a last name (50 characters maximum)."
+        username_format: "The username must contain 3 to 30 letters, numbers or underscores."
+        username_taken: "This username is already taken."
+        location: "The location cannot be longer than 100 characters."
+        website: "Please enter a valid URL starting with http:// or https://."
+        biography: "The biography cannot be longer than 512 characters."
+        avatar: "The photo must be a JPG, PNG, GIF or WebP image of 2 MB maximum."
+        email_invalid: "Please enter a valid email address."
+        email_taken: "An account already exists with this email address."
+        password_invalid: "The current password is incorrect."
+        password_weak: "The password must contain at least 8 characters, one uppercase letter and one number."
+        password_mismatch: "The passwords do not match."
+        delete_confirmation: "The confirmation text does not match."
+        delete_acknowledge: "You must confirm that you understand this action is irreversible."
+    profile:
+        title: "Edit profile"
+        description: "Update your personal information and your public presence."
+        change_photo: "Change photo"
+        remove_photo: "Remove"
+        photo_hint: "JPG, PNG, GIF or WebP. 2 MB max."
+        fields:
+            firstname: "First name"
+            lastname: "Last name"
+            username: "Username"
+            location: "Location"
+            website: "Website"
+            biography: "Biography"
+        placeholders:
+            location: "Paris, France"
+            biography: "Tell the community about yourself..."
+    account:
+        title: "Account"
+        description: "Manage your account settings."
+        informations: "Account information"
+        fields:
+            email: "Email address"
+            current_password: "Current password"
+        placeholders:
+            current_password: "Required to change your email"
+        update_email: "Update email"
+        member_since: "Member since"
+        last_login: "Last login"
+        first_login: "This is your first login"
+        management: "Account management"
+        deactivate:
+            title: "Deactivate account"
+            description: "Your profile will be hidden until you sign in again."
+            button: "Deactivate"
+        delete:
+            title: "Delete account"
+            description: "This action is irreversible. Your personal data will be deleted and your projects will be anonymized."
+            button: "Delete my account"
+    delete:
+        title: "Delete your account"
+        description: "This action is permanent and irreversible"
+        phrase: "delete my account"
+        submit: "Permanently delete my account"
+        losses:
+            title: "By deleting your account, you will lose:"
+            projects: "All your published projects and drafts"
+            interactions: "Your likes, favorites and interactions"
+            settings: "Your settings and personal preferences"
+            username: "Access to your username {username}"
+        fields:
+            password: "Current password"
+    appearance:
+        title: "Appearance"
+        description: "Customize how the application looks."
+        theme: "Theme"
+        themes:
+            light: "Light"
+            dark: "Dark"
+        accent: "Accent color"
+        scale: "Text size"
+        locale: "Language"
+        date_format: "Date format"
+        timezone: "Time zone"
+        number_format: "Number format"
+    notifications:
+        title: "Notifications"
+        description: "Choose how you want to be notified."
+        email: "Email notifications"
+        digest: "Summary"
+        fields:
+            project_likes:
+                label: "Likes and shares on my projects"
+                description: "Receive an hourly email listing who liked or shared your projects."
+            project_favorites:
+                label: "Projects saved"
+                description: "Receive an hourly email listing who saved your projects."
+            newsletter:
+                label: "Newsletter"
+                description: "Receive news and updates about ToApp."
+            digest:
+                label: "Summary frequency"
+                description: "Receive a summary of your activity by email."
+        frequencies:
+            never: "Never"
+            daily: "Daily"
+            weekly: "Weekly"
+            monthly: "Monthly"
+    privacy:
+        title: "Privacy"
+        description: "Control who can see your information."
+        visibility: "Profile visibility"
+        fields:
+            profile_public:
+                label: "Public profile"
+                description: "Everyone can see your profile and your projects."
+            show_email:
+                label: "Show email address"
+                description: "Your email address will be visible on your profile."
+            show_location:
+                label: "Show location"
+                description: "Your location will be visible on your profile."
+            show_stats:
+                label: "Show statistics"
+                description: "Your statistics (projects, likes, views) will be public."
+    security:
+        title: "Security"
+        description: "Protect your account."
+        password: "Password"
+        fields:
+            current_password: "Current password"
+            new_password: "New password"
+            new_password_confirmation: "Confirm password"
+        placeholders:
+            new_password: "Enter a password"
+            new_password_confirmation: "Enter it again"
+        update_password: "Update password"
+        password_hint: "The password must contain at least 8 characters, one uppercase letter and one number."
+        history: "Login history"
+        history_empty: "No login recorded yet."
+        columns:
+            date: "Date"
+            device: "Device"
+            ip: "IP address"
+favorites:
+    title: "My favorites"
+    count: "{count, plural, =0 {No saved project} one {{counterFormatted} saved project} other {{counterFormatted} saved projects}}"
+    empty:
+        title: "No favorite"
+        description_line_1: "You have not saved any project yet."
+        description_line_2: "Explore the community projects!"
+        explore: "Find projects"
+profile:
+    member_since: "Member since {date}"
+    actions:
+        edit: "Edit profile"
+        settings: "Settings"
+        follow: "Follow"
+        following: "Following"
+    stats:
+        projects: "{count, plural, one {Project} other {Projects}}"
+        followers: "{count, plural, one {Follower} other {Followers}}"
+        following: "Following"
+    empty:
+        own:
+            title: "No project yet"
+            description_line_1: "You have not created any project yet."
+            description_line_2: "Start right now!"
+            create: "Create a project"
+        other:
+            title: "No published project"
+            description: "This user has not published any project yet."
+emails:
+    layout:
+        reason: "You receive this email because of your notification settings on {app}."
+        unsubscribe: "Unsubscribe from these emails"
+    verify:
+        subject: "Confirm your email address on {app}"
+        title: "Confirm your email address"
+        greeting: "Hello {name},"
+        body: "Thank you for joining {app}! Please confirm your email address by clicking the button below."
+        button: "Confirm my email"
+        fallback: "If the button does not work, copy this link into your browser:"
+        expires: "This link is valid for {hours} hours."
+        ignore: "If you did not create an account, you can ignore this email."
+    activity:
+        subject: "New activity on your projects - {app}"
+        title: "New activity on your projects"
+        greeting: "Hi {name},"
+        intro: "Your projects received {count} new interaction(s) during the last hour."
+        likes: "Liked by"
+        favorites: "Added to favorites by"
+        shares: "Shared by"
+        shared_on: "{user} on {network}"
+        anonymous: "{count} anonymous share(s)"
+        button: "View the project"
+    digest:
+        subject: "Your activity summary - {app}"
+        title:
+            daily: "Your daily summary"
+            weekly: "Your weekly summary"
+            monthly: "Your monthly summary"
+        greeting: "Hi {name},"
+        intro:
+            daily: "Here is what happened on your projects yesterday."
+            weekly: "Here is what happened on your projects this week."
+            monthly: "Here is what happened on your projects this month."
+        cards:
+            views: "Views"
+            likes: "Likes"
+            shares: "Shares"
+            favorites: "Favorites"
+            followers: "Followers"
+        followers:
+            title: "New followers:"
+            others: "and {count} other(s)"
+        top: "Your top project: {project} with {views} view(s)."
+        project: "Project"
+    newsletter:
+        subject: "{subject}"
+        greeting: "Hi {name},"
+verify_email:
+    banner:
+        text: "Please confirm your email address ({email}) using the link we sent you."
+        resend: "Resend the email"
+    flash:
+        verified: "Your email address has been confirmed. Thank you!"
+        already_verified: "Your email address is already confirmed."
+        expired: "This confirmation link has expired. Sign in and request a new one."
+        invalid: "This confirmation link is not valid."
+        sent: "A confirmation email has been sent to {email}."
+        send_failed: "The email could not be sent. Please try again later."
+        wait: "Please wait {minutes} minute(s) before requesting a new email."
+notification:
+    unsubscribe:
+        types:
+            activity: "activity notifications"
+            digest: "activity summary"
+            newsletter: "newsletter"
+        flash:
+            done: "You will no longer receive the {type}."
+            invalid: "This unsubscribe link is invalid."

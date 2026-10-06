@@ -1,0 +1,364 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\Entity\Contract\AbstractEntity;
+use App\Repository\UserRepository;
+use NeoPHP\Package\Orm\Collection\ArrayCollection;
+use NeoPHP\Package\Orm\Contract\CollectionInterface;
+use NeoPHP\Package\Orm\Mapping as ORM;
+use NeoPHP\Package\Security\Contract\PasswordAuthenticatedUserInterface;
+use NeoPHP\Package\Security\Contract\UserInterface;
+
+#[ORM\Entity(repository: UserRepository::class)]
+class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface
+{
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $emailVerifiedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $verificationSentAt = null;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: false, unique: false)]
+    private string $firstname;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: false, unique: false)]
+    private string $lastname;
+
+    #[ORM\Column(type: 'string', length: 150, nullable: false, unique: true)]
+    private string $slug;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, unique: false)]
+    private ?string $avatar = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: false, unique: true)]
+    private string $username;
+
+    #[ORM\Column(type: 'boolean', nullable: false, default: 0)]
+    private bool $certified = false;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\Column(type: 'string', length: 512, nullable: true)]
+    private ?string $biography = null;
+
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $location = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $website = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $lastLoginAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $deactivatedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $deletedAt = null;
+
+    #[ORM\OneToMany(target: Project::class, mappedBy: 'user')]
+    private CollectionInterface $projects;
+
+    #[ORM\OneToMany(target: ProjectLike::class, mappedBy: 'user')]
+    private CollectionInterface $projectLikes;
+
+    #[ORM\OneToMany(target: ProjectFavorite::class, mappedBy: 'user')]
+    private CollectionInterface $projectFavorites;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->projects = new ArrayCollection();
+        $this->projectLikes = new ArrayCollection();
+        $this->projectFavorites = new ArrayCollection();
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getEmailVerifiedAt(): ?\DateTime
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    public function setEmailVerifiedAt(?\DateTime $emailVerifiedAt): self
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
+
+        return $this;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->emailVerifiedAt !== null;
+    }
+
+    public function getVerificationSentAt(): ?\DateTime
+    {
+        return $this->verificationSentAt;
+    }
+
+    public function setVerificationSentAt(?\DateTime $verificationSentAt): self
+    {
+        $this->verificationSentAt = $verificationSentAt;
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return array_values(array_unique([...$this->roles, 'ROLE_USER']));
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = '@' . $username;
+        return $this;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
+    }
+
+    public function setCertified(bool $certified): self
+    {
+        $this->certified = $certified;
+        return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): self
+    {
+        $this->biography = $biography;
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
+        return $this;
+    }
+
+    public function getLastLoginAt(): ?\DateTime
+    {
+        return $this->lastLoginAt;
+    }
+
+    public function setLastLoginAt(?\DateTime $lastLoginAt): self
+    {
+        $this->lastLoginAt = $lastLoginAt;
+        return $this;
+    }
+
+    public function getDeactivatedAt(): ?\DateTime
+    {
+        return $this->deactivatedAt;
+    }
+
+    public function setDeactivatedAt(?\DateTime $deactivatedAt): self
+    {
+        $this->deactivatedAt = $deactivatedAt;
+        return $this;
+    }
+
+    public function isDeactivated(): bool
+    {
+        return $this->deactivatedAt !== null;
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTime $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deletedAt !== null;
+    }
+
+    public function getProjects(): CollectionInterface
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        $this->projects->removeElement($project);
+
+        return $this;
+    }
+
+    public function getProjectLikes(): CollectionInterface
+    {
+        return $this->projectLikes;
+    }
+
+    public function addProjectLike(ProjectLike $projectLike): self
+    {
+        if (!$this->projectLikes->contains($projectLike)) {
+            $this->projectLikes->add($projectLike);
+            $projectLike->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectLike(ProjectLike $projectLike): self
+    {
+        $this->projectLikes->removeElement($projectLike);
+
+        return $this;
+    }
+
+    public function getProjectFavorites(): CollectionInterface
+    {
+        return $this->projectFavorites;
+    }
+
+    public function addProjectFavorite(ProjectFavorite $projectFavorite): self
+    {
+        if (!$this->projectFavorites->contains($projectFavorite)) {
+            $this->projectFavorites->add($projectFavorite);
+            $projectFavorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectFavorite(ProjectFavorite $projectFavorite): self
+    {
+        $this->projectFavorites->removeElement($projectFavorite);
+
+        return $this;
+    }
+}
