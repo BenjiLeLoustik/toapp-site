@@ -44,17 +44,18 @@
         <div class="settings__section">
             <h2 class="settings__section-title">{{ translate('settings.notifications.digest') }}</h2>
 
-            <div class="form__switch-row">
-                <div class="form__switch-text">
-                    <span class="form__switch-label">{{ translate('settings.notifications.fields.digest.label') }}</span>
-                    <span class="form__switch-description">{{ translate('settings.notifications.fields.digest.description') }}</span>
-                </div>
+            <div class="settings__row">
+                <label class="settings__row-text" for="digest_frequency">
+                    <span class="settings__row-label">{{ translate('settings.notifications.fields.digest.label') }}</span>
+                    <span class="settings__row-description">{{ translate('settings.notifications.fields.digest.description') }}</span>
+                </label>
 
-                {{ Form.select('digest_frequency', {
-                    value: notifications.digestFrequency.value,
-                    options: frequencyOptions,
-                    class: 'settings__inline-select'
-                }) }}
+                <div class="settings__inline-select">
+                    {{ Form.select('digest_frequency', {
+                        value: notifications.digestFrequency.value,
+                        options: frequencyOptions
+                    }) }}
+                </div>
             </div>
         </div>
 

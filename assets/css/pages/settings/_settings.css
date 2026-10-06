@@ -87,7 +87,8 @@
         border-bottom: solid 1px var(--theme-border);
     }
 
-    .settings__section:last-of-type {
+    .settings__section:last-of-type,
+    .settings__section:has(+ .settings__actions) {
         @apply pb-0;
         border-bottom: none;
     }
@@ -110,6 +111,30 @@
     .settings__actions--start {
         @apply justify-start pt-0;
         border-top: none;
+    }
+
+    /* Row */
+
+    .settings__row {
+        @apply flex items-center justify-between gap-6;
+    }
+
+    .settings__row-text {
+        @apply flex flex-col gap-0.5 flex-1 min-w-0;
+    }
+
+    .settings__row-label {
+        @apply text-sm font-medium;
+        color: var(--theme-foreground);
+    }
+
+    .settings__row-description {
+        @apply text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .settings__inline-select {
+        @apply w-48 shrink-0;
     }
 
     /* Avatar */
@@ -231,12 +256,6 @@
         @apply !flex !flex-wrap !gap-3;
     }
 
-    /* Notifications */
-
-    .settings__inline-select {
-        @apply w-48 shrink-0;
-    }
-
     /* Tablet */
 
     @media (max-width: 1024px) {
@@ -276,6 +295,14 @@
             @apply flex-col items-start;
         }
 
+        .settings__row {
+            @apply flex-col items-stretch gap-3;
+        }
+
+        .settings__inline-select {
+            @apply w-full;
+        }
+
         .settings__danger-item,
         .settings__delete-form {
             @apply flex-col items-stretch;
@@ -283,14 +310,6 @@
 
         .settings__delete-form .form__field {
             @apply max-w-none;
-        }
-
-        .settings__inline-select {
-            @apply w-full;
-        }
-
-        .form__switch-row:has(.settings__inline-select) {
-            @apply flex-col items-stretch;
         }
 
         .settings__actions > * {
