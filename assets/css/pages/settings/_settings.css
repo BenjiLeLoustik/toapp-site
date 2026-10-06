@@ -126,7 +126,19 @@
     }
 
     .settings__avatar-image img {
-        @apply w-full h-full object-cover;
+        @apply w-full h-full object-cover transition-opacity;
+    }
+
+    .settings__avatar-image [hidden] {
+        @apply hidden;
+    }
+
+    .settings__avatar:has([data-avatar-remove]:checked) .settings__avatar-image {
+        border-color: var(--theme-danger-border);
+    }
+
+    .settings__avatar:has([data-avatar-remove]:checked) .settings__avatar-image img {
+        @apply opacity-30 grayscale;
     }
 
     .settings__avatar-actions {
@@ -139,6 +151,11 @@
 
     .settings__avatar-buttons label.button {
         @apply cursor-pointer;
+    }
+
+    .settings__avatar-buttons:has([data-avatar-input]:focus-visible) label.button {
+        outline: solid 2px var(--theme-accent);
+        outline-offset: 2px;
     }
 
     .settings__avatar-remove {

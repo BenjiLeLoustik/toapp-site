@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     window.toggleInputPassword();
     window.initAutoSubmit();
+    window.initAvatarPreview();
 
     document.addEventListener('click', event => {
         const track = event.target.closest('.form__switch-track');
@@ -250,6 +251,71 @@ window.initAutoSubmit = function () {
 
                 form.requestSubmit();
             });
+        });
+    });
+};
+
+window.initAvatarPreview = function () {
+    document.querySelectorAll('[data-avatar-input]').forEach(input => {
+
+        if (input.dataset.avatarReady) {
+            return;
+        }
+
+        input.dataset.avatarReady = 'true';
+
+        const container = input.closest('.settings__avatar');
+        const image = container?.querySelector('[data-avatar-preview-image]');
+        const initials = container?.querySelector('[data-avatar-preview-initials]');
+        const remove = container?.querySelector('[data-avatar-remove]');
+
+        if (!image || !initials) {
+            return;
+        }
+
+        const original = image.dataset.original || '';
+        let objectUrl = null;
+
+        const show = src => {
+            image.src = src;
+            image.hidden = src === '';
+            initials.hidden = src !== '';
+        };
+
+        const reset = () => {
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+                objectUrl = null;
+            }
+
+            show(original);
+        };
+
+        input.addEventListener('change', () => {
+            const file = input.files?.[0];
+
+            if (!file || !file.type.startsWith('image/')) {
+                reset();
+                return;
+            }
+
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+            }
+
+            objectUrl = URL.createObjectURL(file);
+            show(objectUrl);
+
+            if (remove) {
+                remove.checked = false;
+            }
+        });
+
+        remove?.addEventListener('change', () => {
+            if (remove.checked) {
+                input.value = '';
+                reset();
+            }
         });
     });
 };

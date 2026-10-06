@@ -16,11 +16,16 @@
 
         <div class="settings__avatar">
             <span class="settings__avatar-image">
-                {% if user.avatar %}
-                    <img src="{{ upload(user.avatar) }}" alt="{{ user.firstname }}">
-                {% else %}
+                <img
+                        src="{{ user.avatar ? upload(user.avatar) : '' }}"
+                        alt="{{ user.firstname }}"
+                        data-avatar-preview-image
+                        data-original="{{ user.avatar ? upload(user.avatar) : '' }}"
+                        {% if not user.avatar %}hidden{% endif %}
+                >
+                <span data-avatar-preview-initials {% if user.avatar %}hidden{% endif %}>
                     {{ (user.firstname|first ~ user.lastname|first)|upper }}
-                {% endif %}
+                </span>
             </span>
 
             <div class="settings__avatar-actions">
@@ -28,11 +33,11 @@
                     <label class="button button--ghost-outline button--sm button--align-center" for="avatar">
                         {{ translate('settings.profile.change_photo') }}
                     </label>
-                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+                    <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only" data-avatar-input>
 
                     {% if user.avatar %}
                         <label class="settings__avatar-remove">
-                            <input type="checkbox" name="remove_avatar" value="1" class="sr-only">
+                            <input type="checkbox" name="remove_avatar" value="1" class="sr-only" data-avatar-remove>
                             <span>{{ translate('settings.profile.remove_photo') }}</span>
                         </label>
                     {% endif %}
