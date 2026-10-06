@@ -18,7 +18,7 @@ use NeoPHP\Package\Translation\Contract\TranslatorInterface;
 
 class NotificationMailerHelper
 {
-    public const PROJECT_ROUTE = 'app_project_show';
+    public const PROJECT_ROUTE = 'project_show';
 
     public const UNSUBSCRIBE_ROUTE = 'app_notification_unsubscribe';
 
@@ -55,7 +55,7 @@ class NotificationMailerHelper
 
         $this->mailer->send(new NotificationEmail(
             (string) $user->getEmail(),
-            $this->translator->translate($subjectKey, [...$params['subject'] ?? [], 'app' => $this->appName]),
+            $this->translator->translate($subjectKey, [...($params['subject'] ?? []), 'app' => $this->appName]),
             $html
         ));
     }
