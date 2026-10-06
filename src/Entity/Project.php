@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Contract\AbstractEntity;
+use App\Project\Enum\ProjectStatusEnum;
 use App\Project\Enum\ProjectVisibilityEnum;
 use App\Repository\ProjectRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
@@ -37,6 +38,9 @@ class Project extends AbstractEntity
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $publishedAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $archivedAt = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $features = null;
@@ -144,6 +148,31 @@ class Project extends AbstractEntity
     {
         $this->publishedAt = $publishedAt;
         return $this;
+    }
+
+    public function getArchivedAt(): ?\DateTime
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTime $archivedAt): self
+    {
+        $this->archivedAt = $archivedAt;
+        return $this;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archivedAt !== null;
+    }
+
+    public function getStatus(): ProjectStatusEnum
+    {
+        return match (true) {
+            $this->archivedAt !== null => ProjectStatusEnum::ARCHIVED,
+            $this->publishedAt !== null => ProjectStatusEnum::PUBLISHED,
+            default => ProjectStatusEnum::DRAFT,
+        };
     }
 
     public function getFeatures(): ?array
