@@ -1,0 +1,76 @@
+{# ./templates/layouts/danger_layout.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Form.macro.html.twig' as Form %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+
+{% block content %}
+
+    <section class="danger screen screen--margin">
+
+        <div class="danger__container">
+
+            <header class="danger__header">
+                <span class="danger__icon">
+                    <i data-lucide="{% block danger_icon %}triangle-alert{% endblock %}"></i>
+                </span>
+                <h1 class="danger__title">{% block danger_title %}{% endblock %}</h1>
+                <p class="danger__description">{% block danger_description %}{% endblock %}</p>
+            </header>
+
+            <div class="danger__losses">
+                <p class="danger__losses-title">{% block danger_losses_title %}{% endblock %}</p>
+                <ul class="danger__losses-list">
+                    {% block danger_losses %}{% endblock %}
+                </ul>
+            </div>
+
+            {% if errors._form ?? null %}
+                <p class="danger__error">{{ errors._form }}</p>
+            {% endif %}
+
+            <form method="post" action="{{ path(danger.action, danger.params ?? {}) }}" class="danger__form" novalidate>
+
+                <input type="hidden" name="_token" value="{{ csrf_token(danger.csrf) }}">
+
+                {{ Form.input('confirmation', {
+                    label: translate('danger.confirmation_label', { phrase: danger.phrase }),
+                    placeholder: danger.phrase,
+                    autocomplete: 'off',
+                    error: errors.confirmation ?? null
+                }) }}
+
+                {% block danger_fields %}{% endblock %}
+
+                {{ Form.checkbox('acknowledge', {
+                    label: translate('danger.acknowledge'),
+                    value: '1',
+                    error: errors.acknowledge ?? null
+                }) }}
+
+                <div class="danger__actions">
+                    {{ Button.render(translate('danger.cancel'), {
+                        href: path(danger.cancel, danger.cancelParams ?? {}),
+                        variant: 'ghost-outline',
+                        size: 'sm',
+                        class: 'danger__cancel'
+                    }) }}
+                    {{ Button.render(danger.submit, {
+                        type: 'submit',
+                        size: 'sm',
+                        iconLeft: 'trash-2',
+                        iconSize: 'xs',
+                        class: 'danger__submit'
+                    }) }}
+                </div>
+
+                <p class="danger__notice">{% block danger_notice %}{{ translate('danger.notice') }}{% endblock %}</p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+{% endblock %}

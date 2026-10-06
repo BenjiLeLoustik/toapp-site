@@ -252,6 +252,11 @@ flash:
     close: "Close"
 legal:
     updated_at: "Last updated: {date}"
+danger:
+    confirmation_label: "To confirm, type \"{phrase}\" below"
+    acknowledge: "I understand that this action is irreversible and that all my data will be permanently deleted."
+    cancel: "Cancel"
+    notice: "This action is immediate and cannot be undone."
 settings:
     title: "Settings"
     nav:
@@ -267,7 +272,6 @@ settings:
         cancel: "Cancel"
     flash:
         saved: "Your changes have been saved."
-        delete_failed: "The password is incorrect: your account has not been deleted."
     errors:
         csrf: "Your session has expired, please try again."
         firstname: "Please enter a first name (50 characters maximum)."
@@ -283,6 +287,8 @@ settings:
         password_invalid: "The current password is incorrect."
         password_weak: "The password must contain at least 8 characters, one uppercase letter and one number."
         password_mismatch: "The passwords do not match."
+        delete_confirmation: "The confirmation text does not match."
+        delete_acknowledge: "You must confirm that you understand this action is irreversible."
     profile:
         title: "Edit profile"
         description: "Update your personal information and your public presence."
@@ -320,8 +326,20 @@ settings:
         delete:
             title: "Delete account"
             description: "This action is irreversible. Your personal data will be deleted and your projects will be anonymized."
-            password: "Enter your password to confirm"
             button: "Delete my account"
+    delete:
+        title: "Delete your account"
+        description: "This action is permanent and irreversible"
+        phrase: "delete my account"
+        submit: "Permanently delete my account"
+        losses:
+            title: "By deleting your account, you will lose:"
+            projects: "All your published projects and drafts"
+            interactions: "Your likes, favorites and interactions"
+            settings: "Your settings and personal preferences"
+            username: "Access to your username {username}"
+        fields:
+            password: "Current password"
     appearance:
         title: "Appearance"
         description: "Customize how the application looks."

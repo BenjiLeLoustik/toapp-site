@@ -83,29 +83,20 @@
             </form>
         </div>
 
-        <div class="settings__danger-item settings__danger-item--delete" id="delete-account">
+        <div class="settings__danger-item">
             <div>
                 <span class="settings__item-title">{{ translate('settings.account.delete.title') }}</span>
                 <p class="settings__item-description">{{ translate('settings.account.delete.description') }}</p>
             </div>
 
-            <form method="post" action="{{ path('settings_delete') }}" class="settings__delete-form">
-                <input type="hidden" name="_token" value="{{ csrf_token('settings_delete') }}">
-
-                {{ Form.input('delete_password', {
-                    type: 'password',
-                    placeholder: translate('settings.account.delete.password'),
-                    autocomplete: 'current-password',
-                    required: true
-                }) }}
-
-                {{ Button.render(translate('settings.account.delete.button'), {
-                    type: 'submit',
-                    variant: 'ghost-outline',
-                    size: 'sm',
-                    class: 'settings__button--danger'
-                }) }}
-            </form>
+            {{ Button.render(translate('settings.account.delete.button'), {
+                href: path('settings_delete'),
+                variant: 'ghost-outline',
+                size: 'sm',
+                iconLeft: 'trash-2',
+                iconSize: 'xs',
+                class: 'settings__button--danger'
+            }) }}
         </div>
 
     </div>

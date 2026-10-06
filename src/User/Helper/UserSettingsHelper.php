@@ -231,6 +231,26 @@ class UserSettingsHelper
         return $this->passwordHasher->isPasswordValid($user, $password);
     }
 
+    public function validateDeletion(User $user, array $data, string $phrase): array
+    {
+        $errors = [];
+        $confirmation = trim((string) ($data['confirmation'] ?? ''));
+
+        if (mb_strtolower($confirmation) !== mb_strtolower($phrase)) {
+            $errors['confirmation'] = $this->trans('settings.errors.delete_confirmation');
+        }
+
+        if (!$this->checkPassword($user, (string) ($data['delete_password'] ?? ''))) {
+            $errors['delete_password'] = $this->trans('settings.errors.password_invalid');
+        }
+
+        if (!$this->bool($data, 'acknowledge')) {
+            $errors['acknowledge'] = $this->trans('settings.errors.delete_acknowledge');
+        }
+
+        return $errors;
+    }
+
     public function anonymize(User $user): void
     {
         $id = (string) $user->getId();

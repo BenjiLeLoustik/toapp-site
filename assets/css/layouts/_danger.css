@@ -1,0 +1,116 @@
+/** ./assets/css/layouts/_danger.css */
+
+@layer base {
+
+    section.danger {
+        @apply w-full flex justify-center py-12;
+    }
+
+    .danger__container {
+        @apply w-full max-w-xl flex flex-col gap-6;
+    }
+
+    .danger__header {
+        @apply flex flex-col items-center gap-2 text-center;
+    }
+
+    .danger__icon {
+        @apply flex items-center justify-center w-14 h-14 rounded-full mb-2;
+        color: var(--theme-danger);
+        background-color: var(--theme-danger-surface);
+        border: solid 1px var(--theme-danger-border);
+    }
+
+    .danger__icon svg {
+        @apply w-6 h-6;
+    }
+
+    h1.danger__title {
+        @apply text-2xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    p.danger__description {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .danger__losses {
+        @apply flex flex-col gap-3 rounded-lg p-5;
+        background-color: var(--theme-danger-surface);
+        border: solid 1px var(--theme-danger-border);
+    }
+
+    p.danger__losses-title {
+        @apply text-sm font-semibold;
+        color: var(--theme-danger);
+    }
+
+    .danger__losses-list {
+        @apply flex flex-col gap-2 text-sm;
+        color: var(--theme-foreground-secondary);
+    }
+
+    .danger__losses-list li {
+        @apply relative pl-4;
+    }
+
+    .danger__losses-list li::before {
+        @apply absolute left-0 top-2 w-1.5 h-1.5 rounded-full;
+        content: '';
+        background-color: var(--theme-danger);
+    }
+
+    .danger__error {
+        @apply rounded-lg px-4 py-3 text-sm;
+        color: var(--theme-danger);
+        background-color: var(--theme-danger-surface);
+        border: solid 1px var(--theme-danger-border);
+    }
+
+    .danger__form {
+        @apply flex flex-col gap-4 pt-6;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    .danger__actions {
+        @apply grid grid-cols-2 gap-3 pt-2;
+    }
+
+    .danger__actions > * {
+        @apply w-full justify-center;
+    }
+
+    .danger__submit,
+    .danger__submit:hover {
+        color: var(--theme-danger-foreground);
+        background-color: var(--theme-danger);
+        border-color: var(--theme-danger);
+    }
+
+    .danger__submit:hover {
+        filter: brightness(0.95);
+    }
+
+    p.danger__notice {
+        @apply text-xs text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    @media (max-width: 767px) {
+
+        section.danger {
+            @apply py-6;
+        }
+
+        .danger__actions {
+            @apply grid-cols-1;
+        }
+
+        .danger__submit {
+            @apply order-first;
+        }
+
+    }
+
+}

@@ -4,6 +4,8 @@
 
 @import "./themes/init.css";
 
+@import "./layouts/_danger.css";
+
 @import "./partials/_header.css";
 @import "./partials/_main.css";
 @import "./partials/_footer.css";

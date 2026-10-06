@@ -106,21 +106,35 @@ class SettingsController extends AbstractController
         return $this->logoutUser();
     }
 
-    #[Route('/account/delete', name: '_delete', methods: ['POST'])]
+    #[Route('/account/delete', name: '_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request): Response
     {
         $user = $this->currentUser();
+        $phrase = $this->translate('settings.delete.phrase');
+        $errors = [];
 
-        if ($this->validCsrf($request, 'settings_delete') !== null
-            || !$this->settings->checkPassword($user, (string) $request->request->get('delete_password', ''))) {
-            $this->addFlash('error', $this->translate('settings.flash.delete_failed'));
+        if ($request->isMethod('POST')) {
+            $errors = $this->validCsrf($request, 'settings_delete')
+                ?? $this->settings->validateDeletion($user, $request->request->all(), $phrase);
 
-            return $this->redirectToRoute('settings_account');
+            if ($errors === []) {
+                $this->settings->anonymize($user);
+
+                return $this->logoutUser();
+            }
         }
 
-        $this->settings->anonymize($user);
-
-        return $this->logoutUser();
+        return $this->render('pages/settings/delete.html.twig', [
+            'user' => $user,
+            'errors' => $errors,
+            'danger' => [
+                'action' => 'settings_delete',
+                'cancel' => 'settings_account',
+                'csrf' => 'settings_delete',
+                'phrase' => $phrase,
+                'submit' => $this->translate('settings.delete.submit'),
+            ],
+        ]);
     }
 
     #[Route('/appearance', name: '_appearance', methods: ['GET', 'POST'])]
@@ -133,7 +147,6 @@ class SettingsController extends AbstractController
 
         if ($request->isMethod('POST')) {
             if ($this->validCsrf($request, 'settings_appearance') === null) {
-                $locales = array_map('strval', (array) $request->attributes->get('_locales', []));
                 $preference = $this->settings->updatePreference($user, $request->request->all(), $themes, $accents, $scales, $this->availableLocales($request));
 
                 foreach ([$this->sessionTheme => $preference->getTheme(), $this->sessionAccent => $preference->getAccent(), $this->sessionScale => $preference->getScale()] as $key => $value) {
