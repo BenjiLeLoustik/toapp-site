@@ -1,0 +1,133 @@
+/** ./assets/css/pages/home/_contact.css */
+
+@layer base {
+
+    section.contact {
+        @apply h-auto flex flex-col gap-6 py-8;
+    }
+
+    .contact__header {
+        @apply flex flex-col gap-2;
+    }
+
+    h1.contact__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    p.contact__description {
+        @apply text-base;
+        color: var(--theme-foreground-muted);
+    }
+
+    .contact__layout {
+        @apply w-full grid grid-cols-2 items-start gap-8;
+    }
+
+    /* Informations */
+
+    .contact__informations {
+        @apply flex flex-col gap-4;
+        padding-top: calc(1.5rem + 1px);
+    }
+
+    h2.contact__informations-title {
+        @apply text-lg font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.contact__informations-description {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .contact__informations-list {
+        @apply flex flex-col gap-4 mt-2;
+    }
+
+    .contact__informations-item {
+        @apply flex items-center gap-3;
+    }
+
+    .contact__informations-content {
+        @apply flex flex-col min-w-0;
+    }
+
+    .contact__informations-label {
+        @apply text-xs font-semibold uppercase;
+        color: var(--theme-foreground-muted);
+    }
+
+    .contact__informations-value {
+        @apply text-sm font-medium break-all;
+        color: var(--theme-foreground);
+    }
+
+    a.contact__informations-value:hover {
+        color: var(--theme-accent);
+    }
+
+    /* Card */
+
+    .contact__card {
+        @apply w-full flex flex-col gap-4 rounded-lg p-6;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    h2.contact__card-title {
+        @apply text-lg font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    .contact__error {
+        @apply rounded-lg px-4 py-3 text-sm;
+        color: var(--theme-danger);
+        background-color: color-mix(in oklab, var(--theme-danger) 10%, var(--theme-surface));
+        border: solid 1px color-mix(in oklab, var(--theme-danger) 35%, var(--theme-surface));
+    }
+
+    .contact__form {
+        @apply w-full flex flex-col gap-4;
+    }
+
+    .contact__actions {
+        @apply w-full flex justify-end pt-4;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    /* Tablet / Mobile */
+
+    @media (max-width: 1024px) {
+
+        .contact__layout {
+            @apply grid-cols-1;
+        }
+
+        .contact__informations {
+            @apply pt-0;
+        }
+
+    }
+
+    @media (max-width: 767px) {
+
+        section.contact {
+            @apply py-6 gap-4;
+        }
+
+        h1.contact__title {
+            @apply text-2xl;
+        }
+
+        .contact__card {
+            @apply p-4;
+        }
+
+        .contact__actions > * {
+            @apply w-full;
+        }
+
+    }
+
+}

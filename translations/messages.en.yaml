@@ -31,6 +31,7 @@ breadcrumb:
     projects: "Projects"
     trends: "Trends"
     about: "About"
+    contact: "Contact"
 categories:
     all: "All categories"
     card:
@@ -191,3 +192,29 @@ register:
     login: "Sign in"
     flash:
         success: "Welcome {name}, your account has been created!"
+contact:
+    title: "Contact us"
+    description: "A question about the platform, a partnership or a project? Our team is here to help."
+    informations:
+        title: "Our contact details"
+        description: "Feel free to contact us directly or use our contact form to send us your requests."
+    form:
+        title: "Send us a message"
+        fields:
+            lastname: "Last name"
+            firstname: "First name"
+            email: "Email"
+            object: "Subject"
+            message: "Message"
+            website: "Website (optional)"
+            consent: "I agree that my data will be processed in accordance with the privacy policy."
+        placeholders:
+            lastname: "Doe"
+            firstname: "John"
+            email: "john.doe@example.com"
+            object: "Select a subject"
+            message: "How can we help you?"
+            website: "https://your-project.com"
+        submit: "Send"
+    flash:
+        success: "Thank you, your message has been sent. We will get back to you as soon as possible."

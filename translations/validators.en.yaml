@@ -26,3 +26,26 @@ register:
     terms:
         required: "You must accept the terms of use."
 "The CSRF token is invalid. Please try to resubmit the form.": "Your session has expired, please submit the form again."
+contact:
+    lastname:
+        not_blank: "Please enter your last name."
+        max_length: "The last name cannot be longer than {{ limit }} characters."
+    firstname:
+        not_blank: "Please enter your first name."
+        max_length: "The first name cannot be longer than {{ limit }} characters."
+    email:
+        not_blank: "Please enter your email address."
+        invalid: "Please enter a valid email address."
+        max_length: "The email address cannot be longer than {{ limit }} characters."
+    object:
+        not_blank: "Please select a subject."
+        invalid: "Please select a valid subject."
+    message:
+        not_blank: "Please enter your message."
+        min_length: "Your message must contain at least {{ limit }} characters."
+        max_length: "Your message cannot be longer than {{ limit }} characters."
+    website:
+        max_length: "The website address cannot be longer than {{ limit }} characters."
+        invalid: "The website address must start with http:// or https://."
+    consent:
+        required: "You must accept the processing of your data to send this message."

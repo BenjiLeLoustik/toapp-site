@@ -334,3 +334,48 @@
     {{ Icon.lucide(name, iconConfig) }}
 
 {% endmacro %}
+
+{% macro textarea(name, options = {}) %}
+
+    {% set id = options.id ?? name %}
+    {% set label = options.label ?? null %}
+    {% set value = options.value ?? null %}
+    {% set placeholder = options.placeholder ?? null %}
+    {% set rows = options.rows ?? 5 %}
+    {% set disabled = options.disabled ?? false %}
+    {% set required = options.required ?? false %}
+
+    {% set class = options.class ?? '' %}
+    {% set attributes = options.attributes ?? {} %}
+    {% set columns = options.columns ?? 1 %}
+    {% set error = options.error ?? null %}
+
+    <div class="form__field {{ error ? 'form__field--invalid' : '' }} {{ class }}" style="--form-group-item-columns: {{ columns }};">
+
+        {% if label %}
+            <label for="{{ id }}" class="form__label">
+                {{ label }}
+            </label>
+        {% endif %}
+
+        <div class="form__control">
+            <textarea
+                    id="{{ id }}"
+                    name="{{ name }}"
+                    rows="{{ rows }}"
+                    class="form__textarea"
+                    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+                {% if disabled %}disabled{% endif %}
+                {% if required %}required{% endif %}
+                    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+            {% for attribute, attributeValue in attributes %}
+                {{ attribute }}="{{ attributeValue }}"
+            {% endfor %}
+            >{{ value }}</textarea>
+        </div>
+
+        {{ _self.render_error(id, error) }}
+
+    </div>
+
+{% endmacro %}
