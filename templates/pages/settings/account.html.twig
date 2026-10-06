@@ -49,12 +49,12 @@
 
         <dl class="settings__info">
             <dt>{{ translate('settings.account.member_since') }}</dt>
-            <dd>{{ user.createdAt|date('d M. Y') }}</dd>
+            <dd>{{ user.createdAt|user_date }}</dd>
 
             <dt>{{ translate('settings.account.last_login') }}</dt>
             <dd>
                 {% if lastLogin %}
-                    {{ lastLogin.createdAt|date('d M. Y, H:i') }} · {{ lastLogin.browser }} · {{ lastLogin.platform }}
+                    {{ lastLogin.createdAt|user_datetime }} · {{ lastLogin.browser }} · {{ lastLogin.platform }}
                 {% else %}
                     {{ translate('settings.account.first_login') }}
                 {% endif %}

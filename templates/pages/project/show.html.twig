@@ -164,7 +164,7 @@
                     </span>
 
                     <span class="project-stats__item-value">
-                        {{ project.publishedAt|date('d M. Y') }}
+                        {{ project.publishedAt ? project.publishedAt|user_date : '-' }}
                     </span>
                 </div>
 
@@ -375,7 +375,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-value">
-                            {{ project.publishedAt|date('d M. Y') }}
+                            {{ project.publishedAt ? project.publishedAt|user_date : '-' }}
                         </span>
                     </li>
 
@@ -392,11 +392,7 @@
                         </span>
 
                         <span class="project-information-card__list-item-value">
-                            {% if project.updatedAt is not null %}
-                                {{ project.updatedAt|date('d M. Y') }}
-                            {% else %}
-                                -
-                            {% endif %}
+                            {{ project.updatedAt ? project.updatedAt|user_date : '-' }}
                         </span>
                     </li>
 
@@ -438,8 +434,8 @@
         }) }}');
 
         {% if app_user() %}
-            window.initProjectLike('{{ path('project_api_like', { id: project.id, slug: project.slug }) }}');
-            window.initProjectFavorite('{{ path('project_api_favorite', { id: project.id, slug: project.slug }) }}');
+        window.initProjectLike('{{ path('project_api_like', { id: project.id, slug: project.slug }) }}');
+        window.initProjectFavorite('{{ path('project_api_favorite', { id: project.id, slug: project.slug }) }}');
         {% endif %}
     </script>
 

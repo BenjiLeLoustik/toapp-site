@@ -10,13 +10,31 @@ enum UserNumberFormatEnum: string
     case COMMA_DOT = 'comma_dot';
     case DOT_COMMA = 'dot_comma';
 
-    public function format(float $number, int $decimals = 2): string
+    public static function default(): self
+    {
+        return self::COMMA_DOT;
+    }
+
+    public function decimalSeparator(): string
     {
         return match ($this) {
-            self::SPACE_COMMA => number_format($number, $decimals, ',', ' '),
-            self::COMMA_DOT => number_format($number, $decimals, '.', ','),
-            self::DOT_COMMA => number_format($number, $decimals, ',', '.'),
+            self::SPACE_COMMA, self::DOT_COMMA => ',',
+            self::COMMA_DOT => '.',
         };
+    }
+
+    public function thousandsSeparator(): string
+    {
+        return match ($this) {
+            self::SPACE_COMMA => ' ',
+            self::COMMA_DOT => ',',
+            self::DOT_COMMA => '.',
+        };
+    }
+
+    public function format(float $number, int $decimals = 2): string
+    {
+        return number_format($number, $decimals, $this->decimalSeparator(), $this->thousandsSeparator());
     }
 
     public function label(): string
