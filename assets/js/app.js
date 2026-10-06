@@ -20,33 +20,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+window._preferenceChangeReady = window._preferenceChangeReady || {};
+
 window.initPreferenceChange = function (name, route, attribute, reload = false, callback = null) {
-    document.querySelectorAll(`[data-${name}-change]`).forEach(element => {
+    if (window._preferenceChangeReady[name]) {
+        return;
+    }
 
-        const eventName = element.matches('select, input, textarea') ? 'change' : 'click';
+    window._preferenceChangeReady[name] = true;
 
-        element.addEventListener(eventName, event => {
-            const value = event.currentTarget.matches('select, input, textarea')
-                ? event.currentTarget.value
-                : event.currentTarget.dataset[`${name}Change`];
+    const selector = `[data-${name}-change]`;
+    const isField = element => element.matches('select, input, textarea');
 
-            console.log(value);
+    const send = element => {
+        const value = isField(element)
+            ? element.value
+            : element.dataset[`${name}Change`];
 
-            window._Request.GET(route, {
-                [name]: value,
-            }).then(response => {
-                if (reload) {
-                    window.location.reload();
-                    return;
-                }
+        if (value === undefined || value === '') {
+            return;
+        }
 
-                document.documentElement.setAttribute(attribute, response[name]);
+        window._Request.GET(route, {
+            [name]: value,
+        }).then(response => {
+            if (!response.success) {
+                return;
+            }
 
-                if (callback) {
-                    callback(response[name]);
-                }
+            if (reload) {
+                window.location.reload();
+                return;
+            }
+
+            document.documentElement.setAttribute(attribute, response[name]);
+
+            document.querySelectorAll(`input[type="radio"]${selector}`).forEach(radio => {
+                radio.checked = radio.value === response[name];
             });
+
+            if (callback) {
+                callback(response[name]);
+            }
         });
+    };
+
+    document.addEventListener('click', event => {
+        const element = event.target.closest(selector);
+
+        if (element && !isField(element)) {
+            send(element);
+        }
+    });
+
+    document.addEventListener('change', event => {
+        const element = event.target.closest(selector);
+
+        if (element && isField(element)) {
+            send(element);
+        }
     });
 };
 

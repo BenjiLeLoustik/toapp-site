@@ -34,88 +34,106 @@
         {% set timezoneOptions = timezoneOptions|merge({ (item): item|replace({'_': ' '}) }) %}
     {% endfor %}
 
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.theme') }}</h2>
+
+        <div class="modal__change-block modal__change--theme">
+            <div class="modal__change-content">
+                {% for theme in themes %}
+                    <button
+                            type="button"
+                            data-theme-change="{{ theme }}"
+                            data-theme-preview="{{ theme }}"
+                            class="theme-preview {{ theme == currentTheme ? 'theme-active' : '' }}"
+                            aria-label="{{ translate('settings.appearance.themes.' ~ theme) }}"
+                    >
+                        <span class="theme-preview__header"></span>
+                        <span class="theme-preview__sidebar"></span>
+                        <span class="theme-preview__content">
+                            <span class="theme-preview__title"></span>
+                            <span class="theme-preview__line"></span>
+                            <span class="theme-preview__line"></span>
+                            <span class="theme-preview__button"></span>
+                        </span>
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.accent') }}</h2>
+
+        <div class="modal__change-block modal__change--accent">
+            <div class="modal__change-content">
+                {% for accent in accents %}
+                    {{ Button.render('', {
+                        size: 'xs',
+                        iconOnly: true,
+                        attributes: {
+                            'data-accent-change': accent,
+                            'style': '--accent-preview: var(--color-' ~ accent ~ '-500);',
+                            'title': accent|capitalize,
+                            'aria-label': accent|capitalize
+                        },
+                        class: accent == currentAccent ? 'accent-active' : ''
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="settings__section">
+        <h2 class="settings__section-title">{{ translate('settings.appearance.scale') }}</h2>
+
+        <div class="modal__change-block modal__change--scale">
+            <div class="modal__change-content">
+                {% for scale in scales %}
+                    {{ Button.render(translate('header.modal.settings.scale.' ~ scale, domain: 'header'), {
+                        variant: scale == currentScale ? 'primary' : 'ghost-outline',
+                        attributes: {
+                            'data-scale-change': scale
+                        }
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <form method="post" action="{{ path('settings_appearance') }}" class="settings__form">
 
         <input type="hidden" name="_token" value="{{ csrf_token('settings_appearance') }}">
 
-        <div class="settings__section">
-            <h2 class="settings__section-title">{{ translate('settings.appearance.theme') }}</h2>
+        {{ Form.select('locale', {
+            label: translate('settings.appearance.locale'),
+            value: preference.locale ?? locale(),
+            options: localeOptions,
+            iconLeft: 'languages',
+            attributes: {
+                'data-locale-change': ''
+            }
+        }) }}
 
-            <div class="settings__choices settings__choices--themes">
-                {% for theme in themes %}
-                    <label class="settings__choice">
-                        <input type="radio" name="theme" value="{{ theme }}" class="sr-only" {% if theme == currentTheme %}checked{% endif %}>
-                        <span class="theme-preview" data-theme-preview="{{ theme }}">
-                            <span class="theme-preview__header"></span>
-                            <span class="theme-preview__sidebar"></span>
-                            <span class="theme-preview__content">
-                                <span class="theme-preview__title"></span>
-                                <span class="theme-preview__line"></span>
-                                <span class="theme-preview__line"></span>
-                                <span class="theme-preview__button"></span>
-                            </span>
-                        </span>
-                        <span class="settings__choice-label">{{ translate('settings.appearance.themes.' ~ theme) }}</span>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
+        {{ Form.select('date_format', {
+            label: translate('settings.appearance.date_format'),
+            value: preference.dateFormat.value,
+            options: dateOptions,
+            iconLeft: 'calendar'
+        }) }}
 
-        <div class="settings__section">
-            <h2 class="settings__section-title">{{ translate('settings.appearance.accent') }}</h2>
+        {{ Form.select('timezone', {
+            label: translate('settings.appearance.timezone'),
+            value: preference.timezone,
+            options: timezoneOptions,
+            iconLeft: 'globe'
+        }) }}
 
-            <div class="settings__choices settings__choices--accents">
-                {% for accent in accents %}
-                    <label class="settings__swatch" style="--accent-preview: var(--color-{{ accent }}-500);" title="{{ accent|capitalize }}">
-                        <input type="radio" name="accent" value="{{ accent }}" class="sr-only" {% if accent == currentAccent %}checked{% endif %}>
-                        <span class="settings__swatch-dot"></span>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="settings__section">
-            <h2 class="settings__section-title">{{ translate('settings.appearance.scale') }}</h2>
-
-            <div class="settings__choices settings__choices--scales">
-                {% for scale in scales %}
-                    <label class="settings__segment">
-                        <input type="radio" name="scale" value="{{ scale }}" class="sr-only" {% if scale == currentScale %}checked{% endif %}>
-                        <span>{{ translate('header.modal.settings.scale.' ~ scale, domain: 'header') }}</span>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="settings__section">
-            {{ Form.select('locale', {
-                label: translate('settings.appearance.locale'),
-                value: preference.locale ?? locale(),
-                options: localeOptions,
-                iconLeft: 'languages'
-            }) }}
-
-            {{ Form.select('date_format', {
-                label: translate('settings.appearance.date_format'),
-                value: preference.dateFormat.value,
-                options: dateOptions,
-                iconLeft: 'calendar'
-            }) }}
-
-            {{ Form.select('timezone', {
-                label: translate('settings.appearance.timezone'),
-                value: preference.timezone,
-                options: timezoneOptions,
-                iconLeft: 'globe'
-            }) }}
-
-            {{ Form.select('number_format', {
-                label: translate('settings.appearance.number_format'),
-                value: preference.numberFormat.value,
-                options: numberOptions,
-                iconLeft: 'hash'
-            }) }}
-        </div>
+        {{ Form.select('number_format', {
+            label: translate('settings.appearance.number_format'),
+            value: preference.numberFormat.value,
+            options: numberOptions,
+            iconLeft: 'hash'
+        }) }}
 
         <div class="settings__actions">
             {{ Button.render(translate('settings.actions.cancel'), {
