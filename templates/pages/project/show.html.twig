@@ -320,7 +320,7 @@
 
                 <div class="project-information-card__actions">
                     {{ Button.render(translate('project.show.author.button_show_profile'), {
-                        href: '#',
+                        href: path('user_show', { slug: project.user.slug }),
                         size: 'sm',
                         variant: 'ghost-outline'
                     }) }}

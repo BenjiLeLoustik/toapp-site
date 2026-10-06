@@ -584,3 +584,24 @@ favorites:
         description_line_1: "You have not saved any project yet."
         description_line_2: "Explore the community projects!"
         explore: "Find projects"
+profile:
+    member_since: "Member since {date}"
+    actions:
+        edit: "Edit profile"
+        settings: "Settings"
+        follow: "Follow"
+        following: "Following"
+        message: "Message"
+    stats:
+        projects: "{count, plural, one {Project} other {Projects}}"
+        followers: "{count, plural, one {Follower} other {Followers}}"
+        following: "Following"
+    empty:
+        own:
+            title: "No project yet"
+            description_line_1: "You have not created any project yet."
+            description_line_2: "Start right now!"
+            create: "Create a project"
+        other:
+            title: "No published project"
+            description: "This user has not published any project yet."

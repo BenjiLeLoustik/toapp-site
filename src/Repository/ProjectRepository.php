@@ -145,6 +145,21 @@ class ProjectRepository extends AbstractRepository
             ->addOrderBy('p.id', 'DESC');
     }
 
+    public function createProfileQueryBuilder(User $user, bool $isOwner): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.user = :profileUser')
+            ->setParameter('profileUser', $user->getId());
+
+        if (!$isOwner) {
+            $this->applyPublicFilter($queryBuilder);
+        }
+
+        return $queryBuilder
+            ->orderBy('p.createdAt', 'DESC')
+            ->addOrderBy('p.id', 'DESC');
+    }
+
     public function createFavoritesQueryBuilder(User $user): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('p')

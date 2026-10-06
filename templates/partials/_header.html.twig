@@ -42,7 +42,7 @@
                         certified: app.user.certified
                     },
                     dropdownItems: [
-                        { label: 'Profile', href: '#', icon: 'user' },
+                        { label: 'Profile', href: path('user_show', { slug: app.user.slug }), icon: 'user' },
                         { label: 'Settings', href: path('settings_profile'), icon: 'settings' },
                         { label: 'Projects', href: path('project_mine'), icon: 'briefcase' },
                         { label: 'Favorites', href: path('project_favorites'), icon: 'heart' },

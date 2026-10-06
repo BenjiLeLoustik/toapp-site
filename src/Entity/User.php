@@ -165,7 +165,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
 
     public function getUsername(): string
     {
-        return str_replace('@', '', $this->username);
+        return $this->username;
     }
 
     public function setUsername(string $username): self

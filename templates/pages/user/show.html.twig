@@ -1,0 +1,189 @@
+{# ./templates/pages/user/show.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Icon.macro.html.twig' as Icon %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{% block content %}
+
+    {% set showStats = isOwner or privacy.showStats %}
+    {% set showLocation = profile.location and (isOwner or privacy.showLocation) %}
+
+    <section class="profile">
+
+        <div class="profile__banner"></div>
+
+        <div class="profile__inner screen screen--margin">
+
+            <div class="profile__top">
+
+                <span class="profile__avatar">
+                    {% if profile.avatar %}
+                        <img src="{{ upload(profile.avatar) }}" alt="{{ profile.firstname }}">
+                    {% else %}
+                        {{ (profile.firstname|first ~ profile.lastname|first)|upper }}
+                    {% endif %}
+                </span>
+
+                <div class="profile__actions">
+                    {% if isOwner %}
+
+                        {{ Button.render(translate('profile.actions.edit'), {
+                            href: path('settings_profile'),
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'pencil',
+                            iconSize: 'xs'
+                        }) }}
+
+                        {{ Button.render(translate('profile.actions.settings'), {
+                            href: path('settings_account'),
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'settings',
+                            iconSize: 'xs'
+                        }) }}
+
+                    {% else %}
+
+                        {% if app.user %}
+                            {{ Button.render(isFollowing ? translate('profile.actions.following') : translate('profile.actions.follow'), {
+                                variant: isFollowing ? 'ghost-outline' : 'primary',
+                                size: 'sm',
+                                attributes: {
+                                    'data-follow-toggle': '',
+                                    'data-follow-label': translate('profile.actions.follow'),
+                                    'data-follow-label-following': translate('profile.actions.following'),
+                                    'aria-pressed': isFollowing ? 'true' : 'false'
+                                }
+                            }) }}
+                        {% else %}
+                            {{ Button.render(translate('profile.actions.follow'), {
+                                href: path('app_security_login'),
+                                size: 'sm'
+                            }) }}
+                        {% endif %}
+
+                        {{ Button.render(translate('profile.actions.message'), {
+                            href: '#',
+                            variant: 'ghost-outline',
+                            size: 'sm',
+                            iconLeft: 'mail',
+                            iconSize: 'xs'
+                        }) }}
+
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="profile__identity">
+                <h1 class="profile__name">
+                    {% if profile.certified %}
+                        {{ Icon.lucide('shield-check', { color: 'accent', size: 'sm' }) }}
+                    {% endif %}
+                    {{ profile.firstname }} {{ profile.lastname }}
+                </h1>
+                <span class="profile__username">{{ profile.username }}</span>
+            </div>
+
+            {% if profile.biography %}
+                <p class="profile__biography">{{ profile.biography }}</p>
+            {% endif %}
+
+            <ul class="profile__meta">
+                {% if showLocation %}
+                    <li class="profile__meta-item">
+                        {{ Icon.lucide('map-pin', { size: 'xs', color: 'muted' }) }}
+                        {{ profile.location }}
+                    </li>
+                {% endif %}
+
+                {% if profile.website %}
+                    <li class="profile__meta-item">
+                        {{ Icon.lucide('globe', { size: 'xs', color: 'muted' }) }}
+                        <a href="{{ profile.website }}" target="_blank" rel="noopener noreferrer">
+                            {{ profile.website|replace({ 'https://': '', 'http://': '' })|trim('/') }}
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="profile__meta-item">
+                    {{ Icon.lucide('calendar', { size: 'xs', color: 'muted' }) }}
+                    {{ translate('profile.member_since', { date: profile.createdAt|date('F Y') }) }}
+                </li>
+            </ul>
+
+            {% if showStats %}
+                <ul class="profile__stats">
+                    <li>
+                        <strong>{{ projects.total|format_number }}</strong>
+                        {{ translate('profile.stats.projects', { count: projects.total }) }}
+                    </li>
+                    <li>
+                        <strong data-followers-count>{{ followers|format_number }}</strong>
+                        {{ translate('profile.stats.followers', { count: followers }) }}
+                    </li>
+                    <li>
+                        <strong>{{ following|format_number }}</strong>
+                        {{ translate('profile.stats.following') }}
+                    </li>
+                </ul>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <section class="profile-projects screen screen--margin">
+
+        {% if projects.total > 0 %}
+
+            {{ Card.projects(projects) }}
+
+            {{ Pagination.render(projects, {
+                previousLabel: translate('pagination.previous'),
+                nextLabel: translate('pagination.next')
+            }) }}
+
+        {% elseif isOwner %}
+
+            <div class="profile-projects__empty">
+                {{ Empty.render('search-x', translate('profile.empty.own.title'), [
+                    translate('profile.empty.own.description_line_1'),
+                    translate('profile.empty.own.description_line_2')
+                ], [
+                    Button.render(translate('profile.empty.own.create'), {
+                        href: path('project_new'),
+                        size: 'sm',
+                        iconLeft: 'plus',
+                        iconSize: 'xs'
+                    })
+                ]) }}
+            </div>
+
+        {% else %}
+
+            <div class="profile-projects__empty">
+                {{ Empty.render('search-x', translate('profile.empty.other.title'), [
+                    translate('profile.empty.other.description')
+                ]) }}
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    {% if app.user and not isOwner %}
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                window._Profile.init('{{ path('user_api_follow', { slug: profile.slug }) }}');
+            });
+        </script>
+    {% endif %}
+
+{% endblock %}
