@@ -15,7 +15,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token('verify_email_resend') }}">
                 {{ Button.render(translate('verify_email.banner.resend'), {
                     type: 'submit',
-                    variant: 'ghost-outline',
+                    variant: 'warning',
                     size: 'xs'
                 }) }}
             </form>

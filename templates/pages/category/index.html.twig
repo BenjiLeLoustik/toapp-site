@@ -4,17 +4,38 @@
 
 {% import 'components/macros/_Card.macro.html.twig' as Card %}
 {% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
 
 {% block content %}
 
     <section class="categories screen screen--margin">
 
-        {{ Card.categories(categories, projectCounts) }}
+        {% if categories.total > 0 %}
 
-        {{ Pagination.render(categories, {
-            previousLabel: translate('pagination.previous'),
-            nextLabel: translate('pagination.next')
-        }) }}
+            {{ Card.categories(categories, projectCounts) }}
+
+            {{ Pagination.render(categories, {
+                previousLabel: translate('pagination.previous'),
+                nextLabel: translate('pagination.next')
+            }) }}
+
+        {% else %}
+
+            {{ Empty.render('folder-x', translate('categories.empty.title'), [
+                translate('categories.empty.description_line_1'),
+                translate('categories.empty.description_line_2')
+            ], [
+                Button.render(translate('categories.empty.explore'), {
+                    href: path('project_index'),
+                    size: 'sm',
+                    iconLeft: 'search',
+                    iconSize: 'xs'
+                })
+            ]) }}
+
+        {% endif %}
+
     </section>
 
 {% endblock %}

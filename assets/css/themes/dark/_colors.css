@@ -20,21 +20,29 @@
     --theme-surface-active: var(--color-neutral-700);
 
     --theme-danger: var(--color-red-500);
+    --theme-danger-hover: var(--color-red-400);
+    --theme-danger-active: var(--color-red-300);
     --theme-danger-foreground: var(--color-white);
     --theme-danger-surface: color-mix(in oklab, var(--theme-danger) 15%, var(--theme-surface));
     --theme-danger-border: color-mix(in oklab, var(--theme-danger) 40%, var(--theme-surface));
 
     --theme-success: var(--color-green-500);
+    --theme-success-hover: var(--color-green-400);
+    --theme-success-active: var(--color-green-300);
     --theme-success-foreground: var(--color-white);
     --theme-success-surface: color-mix(in oklab, var(--theme-success) 15%, var(--theme-surface));
     --theme-success-border: color-mix(in oklab, var(--theme-success) 40%, var(--theme-surface));
 
     --theme-warning: var(--color-amber-500);
+    --theme-warning-hover: var(--color-amber-400);
+    --theme-warning-active: var(--color-amber-300);
     --theme-warning-foreground: var(--color-neutral-950);
     --theme-warning-surface: color-mix(in oklab, var(--theme-warning) 15%, var(--theme-surface));
     --theme-warning-border: color-mix(in oklab, var(--theme-warning) 40%, var(--theme-surface));
 
     --theme-info: var(--color-sky-500);
+    --theme-info-hover: var(--color-sky-400);
+    --theme-info-active: var(--color-sky-300);
     --theme-info-foreground: var(--color-white);
     --theme-info-surface: color-mix(in oklab, var(--theme-info) 15%, var(--theme-surface));
     --theme-info-border: color-mix(in oklab, var(--theme-info) 40%, var(--theme-surface));

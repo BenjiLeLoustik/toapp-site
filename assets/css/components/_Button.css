@@ -104,6 +104,60 @@
         background-color: var(--theme-surface-active);
     }
 
+    /* Colors - States */
+
+    .button--danger {
+        background-color: var(--theme-danger);
+        color: var(--theme-danger-foreground);
+    }
+
+    .button--danger:hover {
+        background-color: var(--theme-danger-hover);
+    }
+
+    .button--danger:active {
+        background-color: var(--theme-danger-active);
+    }
+
+    .button--success {
+        background-color: var(--theme-success);
+        color: var(--theme-success-foreground);
+    }
+
+    .button--success:hover {
+        background-color: var(--theme-success-hover);
+    }
+
+    .button--success:active {
+        background-color: var(--theme-success-active);
+    }
+
+    .button--warning {
+        background-color: var(--theme-warning);
+        color: var(--theme-warning-foreground);
+    }
+
+    .button--warning:hover {
+        background-color: var(--theme-warning-hover);
+    }
+
+    .button--warning:active {
+        background-color: var(--theme-warning-active);
+    }
+
+    .button--info {
+        background-color: var(--theme-info);
+        color: var(--theme-info-foreground);
+    }
+
+    .button--info:hover {
+        background-color: var(--theme-info-hover);
+    }
+
+    .button--info:active {
+        background-color: var(--theme-info-active);
+    }
+
     /* Colors - Outlines */
 
     .button--primary-outline {
@@ -151,6 +205,72 @@
     .button--ghost-outline:active {
         background-color: var(--theme-surface-active);
         border-color: transparent;
+    }
+
+    /* Colors - State outlines */
+
+    .button--danger-outline {
+        background-color: transparent;
+        color: var(--theme-danger);
+        border-color: var(--theme-danger);
+    }
+
+    .button--danger-outline:hover {
+        background-color: var(--theme-danger);
+        color: var(--theme-danger-foreground);
+    }
+
+    .button--danger-outline:active {
+        background-color: var(--theme-danger-active);
+        color: var(--theme-danger-foreground);
+    }
+
+    .button--success-outline {
+        background-color: transparent;
+        color: var(--theme-success);
+        border-color: var(--theme-success);
+    }
+
+    .button--success-outline:hover {
+        background-color: var(--theme-success);
+        color: var(--theme-success-foreground);
+    }
+
+    .button--success-outline:active {
+        background-color: var(--theme-success-active);
+        color: var(--theme-success-foreground);
+    }
+
+    .button--warning-outline {
+        background-color: transparent;
+        color: var(--theme-warning);
+        border-color: var(--theme-warning);
+    }
+
+    .button--warning-outline:hover {
+        background-color: var(--theme-warning);
+        color: var(--theme-warning-foreground);
+    }
+
+    .button--warning-outline:active {
+        background-color: var(--theme-warning-active);
+        color: var(--theme-warning-foreground);
+    }
+
+    .button--info-outline {
+        background-color: transparent;
+        color: var(--theme-info);
+        border-color: var(--theme-info);
+    }
+
+    .button--info-outline:hover {
+        background-color: var(--theme-info);
+        color: var(--theme-info-foreground);
+    }
+
+    .button--info-outline:active {
+        background-color: var(--theme-info-active);
+        color: var(--theme-info-foreground);
     }
 
     /* Disabled State */

@@ -41,6 +41,11 @@ categories:
     all: "All categories"
     card:
         count_projects: "{counterFormatted} {count, plural, one {project} other {projects}}"
+    empty:
+        title: "No category"
+        description_line_1: "No category is available yet."
+        description_line_2: "Explore the projects of the community in the meantime."
+        explore: "Explore projects"
 search:
     title: "Search results"
     title_all: "All projects"
