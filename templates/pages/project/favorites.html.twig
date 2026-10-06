@@ -1,0 +1,57 @@
+{# ./templates/pages/project/favorites.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+{% import 'components/macros/_Button.macro.html.twig' as Button %}
+{% import 'components/macros/_Card.macro.html.twig' as Card %}
+{% import 'components/macros/_Empty.macro.html.twig' as Empty %}
+{% import 'components/macros/_Pagination.macro.html.twig' as Pagination %}
+
+{% block content %}
+
+    <section class="favorites screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translate('breadcrumb.favorites') }
+        ]) }}
+
+        <header class="favorites__header">
+            <h1 class="favorites__title">{{ translate('favorites.title') }}</h1>
+            <p class="favorites__description">
+                {{ translate('favorites.count', {
+                    count: projects.total,
+                    counterFormatted: projects.total|format_number
+                }) }}
+            </p>
+        </header>
+
+        {% if projects.total > 0 %}
+
+            {{ Card.projects(projects) }}
+
+            {{ Pagination.render(projects, {
+                previousLabel: translate('pagination.previous'),
+                nextLabel: translate('pagination.next')
+            }) }}
+
+        {% else %}
+
+            <div class="favorites__empty">
+                {{ Empty.render('search-x', translate('favorites.empty.title'), [
+                    translate('favorites.empty.description_line_1'),
+                    translate('favorites.empty.description_line_2')
+                ], [
+                    Button.render(translate('favorites.empty.explore'), {
+                        href: path('project_index'),
+                        size: 'sm'
+                    })
+                ]) }}
+            </div>
+
+        {% endif %}
+
+    </section>
+
+{% endblock %}

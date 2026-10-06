@@ -145,6 +145,18 @@ class ProjectRepository extends AbstractRepository
             ->addOrderBy('p.id', 'DESC');
     }
 
+    public function createFavoritesQueryBuilder(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->innerJoin('p.favorites', 'f')
+            ->where('f.user = :favoriteUser')
+            ->setParameter('favoriteUser', $user->getId());
+
+        return $this->applyPublicFilter($queryBuilder)
+            ->orderBy('f.createdAt', 'DESC')
+            ->addOrderBy('p.id', 'DESC');
+    }
+
     public function applyPublicFilter(QueryBuilder $queryBuilder, string $alias = 'p'): QueryBuilder
     {
         return ProjectStatusEnum::PUBLISHED

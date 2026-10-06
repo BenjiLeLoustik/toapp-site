@@ -1,0 +1,35 @@
+/** ./assets/css/pages/project/_favorites.css */
+
+@layer base {
+
+    section.favorites {
+        @apply h-auto flex flex-col gap-6 py-8;
+    }
+
+    .favorites__header {
+        @apply flex flex-col gap-1;
+    }
+
+    h1.favorites__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    p.favorites__description {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    @media (max-width: 767px) {
+
+        section.favorites {
+            @apply py-6 gap-4;
+        }
+
+        h1.favorites__title {
+            @apply text-2xl;
+        }
+
+    }
+
+}

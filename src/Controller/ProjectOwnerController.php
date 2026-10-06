@@ -53,6 +53,19 @@ class ProjectOwnerController extends AbstractController
         ]);
     }
 
+    #[Route('/favorites', name: 'favorites', methods: ['GET'])]
+    public function favorites(
+        #[MapPagination(defaultLimit: 6, maxLimit: 48)]
+        PageRequest $pageRequest,
+    ): Response {
+        return $this->render('pages/project/favorites.html.twig', [
+            'projects' => $this->paginate(
+                $this->entityManager->getRepository(Project::class)->createFavoritesQueryBuilder($this->currentUser()),
+                $pageRequest
+            ),
+        ]);
+    }
+
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {

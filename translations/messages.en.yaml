@@ -36,6 +36,7 @@ breadcrumb:
     stats: "Statistics"
     new_project: "New project"
     edit: "Edit"
+    favorites: "My favorites"
 categories:
     all: "All categories"
     card:
@@ -575,3 +576,11 @@ settings:
             date: "Date"
             device: "Device"
             ip: "IP address"
+favorites:
+    title: "My favorites"
+    count: "{count, plural, =0 {No saved project} one {{counterFormatted} saved project} other {{counterFormatted} saved projects}}"
+    empty:
+        title: "No favorite"
+        description_line_1: "You have not saved any project yet."
+        description_line_2: "Explore the community projects!"
+        explore: "Find projects"
