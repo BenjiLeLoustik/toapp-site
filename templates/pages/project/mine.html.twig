@@ -204,19 +204,17 @@
 
         {% else %}
 
-            <div class="my-projects__empty">
-                {{ Empty.render('search-x', translate('projects_mine.empty.title'), [
-                    translate('projects_mine.empty.description_line_1'),
-                    translate('projects_mine.empty.description_line_2')
-                ], [
-                    Button.render(translate('projects_mine.empty.create'), {
-                        href: path('project_new'),
-                        size: 'sm',
-                        iconLeft: 'plus',
-                        iconSize: 'xs'
-                    })
-                ]) }}
-            </div>
+            {{ Empty.render('search-x', translate('projects_mine.empty.title'), [
+                translate('projects_mine.empty.description_line_1'),
+                translate('projects_mine.empty.description_line_2')
+            ], [
+                Button.render(translate('projects_mine.empty.create'), {
+                    href: path('project_new'),
+                    size: 'sm',
+                    iconLeft: 'plus',
+                    iconSize: 'xs'
+                })
+            ]) }}
 
         {% endif %}
 
