@@ -12,6 +12,8 @@ use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class CategoryAdminHelper
 {
+    use AdminValidationTrait;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
@@ -19,21 +21,14 @@ class CategoryAdminHelper
 
     public function all(string $locale): array
     {
-        return array_map(function (Category $category) use ($locale): array {
-            $translation = $this->translation($category, $locale);
-
-            return [
-                'id' => $category->getId(),
-                'slug' => $category->getSlug(),
-                'icon' => $category->getIcon(),
-                'name' => $translation?->getName() ?? '-',
-                'locales' => implode(', ', array_map(
-                    static fn (CategoryTranslated $item): string => (string) $item->getLocale(),
-                    iterator_to_array($category->getTranslations())
-                )),
-                'projects' => count($category->getProjects()),
-            ];
-        }, $this->entityManager->getRepository(Category::class)->findBy([], ['slug' => 'ASC']));
+        return array_map(fn (Category $category): array => [
+            'id' => $category->getId(),
+            'slug' => $category->getSlug(),
+            'icon' => $category->getIcon(),
+            'name' => $this->findTranslation($category->getTranslations(), $locale)?->getName() ?? '-',
+            'locales' => $this->locales($category->getTranslations()),
+            'projects' => count($category->getProjects()),
+        ], $this->entityManager->getRepository(Category::class)->findBy([], ['slug' => 'ASC']));
     }
 
     public function slugs(): array
@@ -49,7 +44,7 @@ class CategoryAdminHelper
         $category = $this->entityManager->getRepository(Category::class)->findOneBy(['slug' => $slug]);
 
         if (!$category instanceof Category) {
-            throw new AdminException(sprintf('The category "%s" does not exist.', $slug));
+            throw new AdminException('The category "{slug}" does not exist.', 0, null, ['slug' => $slug]);
         }
 
         return $category;
@@ -117,7 +112,12 @@ class CategoryAdminHelper
         }
 
         if ($projects !== [] && $target === null) {
-            throw new AdminException(sprintf('The category "%s" contains %d project(s): use --move-to=<slug> to move them.', $slug, count($projects)));
+            throw new AdminException(
+                'The category "{slug}" contains {count} project(s): use --move-to=<slug> to move them.',
+                0,
+                null,
+                ['slug' => $slug, 'count' => count($projects)]
+            );
         }
 
         foreach ($projects as $project) {
@@ -132,21 +132,10 @@ class CategoryAdminHelper
 
     private function applyTranslation(Category $category, string $locale, string $name, string $description): void
     {
-        $locale = strtolower(trim($locale));
-        $name = trim($name);
-        $description = trim($description);
+        $locale = $this->locale($locale);
+        $translation = $this->findTranslation($category->getTranslations(), $locale);
 
-        if (preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $locale) !== 1) {
-            throw new AdminException(sprintf('The locale "%s" is not valid (e.g. en, fr).', $locale));
-        }
-
-        if ($name === '') {
-            throw new AdminException('The name of the category cannot be empty.');
-        }
-
-        $translation = $this->translation($category, $locale);
-
-        if ($translation === null) {
+        if (!$translation instanceof CategoryTranslated) {
             $translation = (new CategoryTranslated())
                 ->setCategory($category)
                 ->setLocale($locale);
@@ -156,30 +145,8 @@ class CategoryAdminHelper
         }
 
         $translation
-            ->setName($name)
-            ->setDescription($description);
-    }
-
-    private function translation(Category $category, string $locale): ?CategoryTranslated
-    {
-        foreach ($category->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
-                return $translation;
-            }
-        }
-
-        return null;
-    }
-
-    private function icon(string $icon): string
-    {
-        $icon = strtolower(trim($icon));
-
-        if (preg_match('/^[a-z0-9-]+$/', $icon) !== 1) {
-            throw new AdminException(sprintf('The icon "%s" is not a valid Lucide icon name (e.g. layout-dashboard).', $icon));
-        }
-
-        return $icon;
+            ->setName($this->notEmpty($name, 'name of the category'))
+            ->setDescription(trim($description));
     }
 
     private function assertFreeSlug(string $slug): void
@@ -189,7 +156,7 @@ class CategoryAdminHelper
         }
 
         if ($this->entityManager->getRepository(Category::class)->findOneBy(['slug' => $slug]) !== null) {
-            throw new AdminException(sprintf('A category with the slug "%s" already exists.', $slug));
+            throw new AdminException('A category with the slug "{slug}" already exists.', 0, null, ['slug' => $slug]);
         }
     }
 }

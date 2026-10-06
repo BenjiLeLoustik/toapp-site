@@ -14,7 +14,7 @@ trait AdminValidationTrait
         $locale = strtolower(trim($locale));
 
         if (preg_match('/^[a-z]{2}(_[a-z]{2})?$/', $locale) !== 1) {
-            throw new AdminException(sprintf('The locale "%s" is not valid (e.g. en, fr).', $locale));
+            throw new AdminException('The locale "{locale}" is not valid (e.g. en, fr).', 0, null, ['locale' => $locale]);
         }
 
         return $locale;
@@ -25,7 +25,7 @@ trait AdminValidationTrait
         $icon = strtolower(trim($icon));
 
         if (preg_match('/^[a-z0-9-]+$/', $icon) !== 1) {
-            throw new AdminException(sprintf('The icon "%s" is not a valid Lucide icon name (e.g. mail, phone).', $icon));
+            throw new AdminException('The icon "{icon}" is not a valid Lucide icon name (e.g. mail, globe).', 0, null, ['icon' => $icon]);
         }
 
         return $icon;
@@ -36,7 +36,7 @@ trait AdminValidationTrait
         $value = trim($value);
 
         if ($value === '') {
-            throw new AdminException(sprintf('The %s cannot be empty.', $label));
+            throw new AdminException('The {label} cannot be empty.', 0, null, ['label' => $label]);
         }
 
         return $value;

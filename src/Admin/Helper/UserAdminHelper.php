@@ -49,7 +49,7 @@ class UserAdminHelper
                 ?? $repository->findOneBy(['slug' => strtolower(ltrim($identifier, '@'))]));
 
         if (!$user instanceof User) {
-            throw new AdminException(sprintf('No user found for "%s" (id, email, username or slug).', $identifier));
+            throw new AdminException('No user found for "{identifier}" (id, email, username or slug).', 0, null, ['identifier' => $identifier]);
         }
 
         return $user;
@@ -78,9 +78,8 @@ class UserAdminHelper
     public function addRole(User $user, string $role): void
     {
         $role = $this->role($role);
-        $roles = array_values(array_unique([...$this->customRoles($user), $role]));
 
-        $user->setRoles($roles);
+        $user->setRoles(array_values(array_unique([...$this->customRoles($user), $role])));
         $this->entityManager->flush();
     }
 
@@ -89,7 +88,7 @@ class UserAdminHelper
         $role = $this->role($role);
 
         if (in_array($role, self::PROTECTED_ROLES, true)) {
-            throw new AdminException(sprintf('The role "%s" is given to every user and cannot be removed.', $role));
+            throw new AdminException('The role "{role}" is given to every user and cannot be removed.', 0, null, ['role' => $role]);
         }
 
         $user->setRoles(array_values(array_diff($this->customRoles($user), [$role])));
@@ -132,7 +131,7 @@ class UserAdminHelper
         $role = str_starts_with($role, 'ROLE_') ? $role : 'ROLE_' . $role;
 
         if (preg_match('/^ROLE_[A-Z0-9_]+$/', $role) !== 1) {
-            throw new AdminException(sprintf('The role "%s" is not valid (e.g. ROLE_ADMIN).', $role));
+            throw new AdminException('The role "{role}" is not valid (e.g. ROLE_ADMIN).', 0, null, ['role' => $role]);
         }
 
         return $role;
@@ -141,7 +140,7 @@ class UserAdminHelper
     private function assertNotDeleted(User $user): void
     {
         if ($user->isDeleted()) {
-            throw new AdminException('This account has already been deleted.');
+            throw new AdminException('The account #{id} has already been deleted.', 0, null, ['id' => $user->getId()]);
         }
     }
 }

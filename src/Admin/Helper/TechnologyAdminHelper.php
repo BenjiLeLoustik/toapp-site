@@ -11,6 +11,8 @@ use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class TechnologyAdminHelper
 {
+    use AdminValidationTrait;
+
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
@@ -36,7 +38,7 @@ class TechnologyAdminHelper
         $technology = $this->entityManager->getRepository(Technology::class)->findOneBy(['slug' => $slug]);
 
         if (!$technology instanceof Technology) {
-            throw new AdminException(sprintf('The technology "%s" does not exist.', $slug));
+            throw new AdminException('The technology "{slug}" does not exist.', 0, null, ['slug' => $slug]);
         }
 
         return $technology;
@@ -44,12 +46,8 @@ class TechnologyAdminHelper
 
     public function add(string $name, ?string $slug = null): Technology
     {
-        $name = trim($name);
+        $name = $this->notEmpty($name, 'name of the technology');
         $slug = SlugHelper::slugify($slug ?? $name);
-
-        if ($name === '' || $slug === '') {
-            throw new AdminException('The name of the technology cannot be empty.');
-        }
 
         $this->assertFreeSlug($slug);
 
@@ -66,13 +64,7 @@ class TechnologyAdminHelper
     public function rename(string $slug, string $name, ?string $newSlug = null): Technology
     {
         $technology = $this->get($slug);
-        $name = trim($name);
-
-        if ($name === '') {
-            throw new AdminException('The name of the technology cannot be empty.');
-        }
-
-        $technology->setName($name);
+        $technology->setName($this->notEmpty($name, 'name of the technology'));
 
         if ($newSlug !== null) {
             $newSlug = SlugHelper::slugify($newSlug);
@@ -94,7 +86,12 @@ class TechnologyAdminHelper
         $projects = iterator_to_array($technology->getProjects());
 
         if ($projects !== [] && !$detach) {
-            throw new AdminException(sprintf('The technology "%s" is used by %d project(s): merge it or use --force to detach it.', $slug, count($projects)));
+            throw new AdminException(
+                'The technology "{slug}" is used by {count} project(s): merge it or use --force to detach it.',
+                0,
+                null,
+                ['slug' => $slug, 'count' => count($projects)]
+            );
         }
 
         foreach ($projects as $project) {
@@ -130,8 +127,12 @@ class TechnologyAdminHelper
 
     private function assertFreeSlug(string $slug): void
     {
+        if ($slug === '') {
+            throw new AdminException('The slug of the technology cannot be empty.');
+        }
+
         if ($this->entityManager->getRepository(Technology::class)->findOneBy(['slug' => $slug]) !== null) {
-            throw new AdminException(sprintf('A technology with the slug "%s" already exists.', $slug));
+            throw new AdminException('A technology with the slug "{slug}" already exists.', 0, null, ['slug' => $slug]);
         }
     }
 }

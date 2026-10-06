@@ -44,7 +44,7 @@ class ProjectAdminHelper
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
         if (!$project instanceof Project) {
-            throw new AdminException(sprintf('The project #%d does not exist.', $id));
+            throw new AdminException('The project #{id} does not exist.', 0, null, ['id' => $id]);
         }
 
         return $project;
@@ -68,7 +68,7 @@ class ProjectAdminHelper
     public function archive(Project $project): void
     {
         if ($project->isArchived()) {
-            throw new AdminException('This project is already archived.');
+            throw new AdminException('The project #{id} is already archived.', 0, null, ['id' => $project->getId()]);
         }
 
         $project->setArchivedAt(new \DateTime());
@@ -78,7 +78,12 @@ class ProjectAdminHelper
     public function unpublish(Project $project): void
     {
         if ($project->getStatus() !== ProjectStatusEnum::PUBLISHED) {
-            throw new AdminException('This project is not published.');
+            throw new AdminException(
+                'The project #{id} is not published (status: {status}).',
+                0,
+                null,
+                ['id' => $project->getId(), 'status' => $project->getStatus()->value]
+            );
         }
 
         $project->setPublishedAt(null);

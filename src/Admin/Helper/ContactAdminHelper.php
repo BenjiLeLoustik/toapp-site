@@ -58,7 +58,7 @@ class ContactAdminHelper
         $type = $this->entityManager->getRepository(WebsiteContactType::class)->findOneBy(['slug' => $slug]);
 
         if (!$type instanceof WebsiteContactType) {
-            throw new AdminException(sprintf('The contact type "%s" does not exist.', $slug));
+            throw new AdminException('The contact type "{slug}" does not exist.', 0, null, ['slug' => $slug]);
         }
 
         return $type;
@@ -67,8 +67,12 @@ class ContactAdminHelper
     public function addType(string $slug, string $icon, string $format, string $locale, string $name): WebsiteContactType
     {
         $slug = $this->freeSlug(WebsiteContactType::class, $slug, 'contact type');
-        $formatEnum = WebsiteContactFormatEnum::tryFrom($format)
-            ?? throw new AdminException(sprintf('Unknown format "%s": use %s.', $format, implode(', ', $this->formats())));
+        $formatEnum = WebsiteContactFormatEnum::tryFrom($format) ?? throw new AdminException(
+            'Unknown format "{format}": use {formats}.',
+            0,
+            null,
+            ['format' => $format, 'formats' => implode(', ', $this->formats())]
+        );
 
         $type = (new WebsiteContactType())
             ->setSlug($slug)
@@ -91,9 +95,15 @@ class ContactAdminHelper
     public function deleteType(string $slug): void
     {
         $type = $this->type($slug);
+        $count = count($type->getConfigs());
 
-        if (count($type->getConfigs()) > 0) {
-            throw new AdminException(sprintf('The contact type "%s" still has %d contact detail(s): delete them first.', $slug, count($type->getConfigs())));
+        if ($count > 0) {
+            throw new AdminException(
+                'The contact type "{slug}" still has {count} contact detail(s): delete them first.',
+                0,
+                null,
+                ['slug' => $slug, 'count' => $count]
+            );
         }
 
         $this->entityManager->remove($type);
@@ -107,7 +117,7 @@ class ContactAdminHelper
         return array_map(fn (WebsiteContactConfig $config): array => [
             $config->getId(),
             $config->getType()?->getSlug() ?? '-',
-            $config->getType() ? ($this->findTranslation($config->getType()->getTranslations(), $locale)?->getName() ?? '-') : '-',
+            $config->getType() !== null ? ($this->findTranslation($config->getType()->getTranslations(), $locale)?->getName() ?? '-') : '-',
             $config->getValue(),
             $config->isEnabled() ? 'yes' : 'no',
         ], $this->entityManager->getRepository(WebsiteContactConfig::class)->findBy([], ['id' => 'ASC']));
@@ -118,7 +128,7 @@ class ContactAdminHelper
         $config = $this->entityManager->getRepository(WebsiteContactConfig::class)->find($id);
 
         if (!$config instanceof WebsiteContactConfig) {
-            throw new AdminException(sprintf('The contact detail #%d does not exist.', $id));
+            throw new AdminException('The contact detail #{id} does not exist.', 0, null, ['id' => $id]);
         }
 
         return $config;
@@ -187,7 +197,7 @@ class ContactAdminHelper
         $object = $this->entityManager->getRepository(WebsiteContactObject::class)->findOneBy(['slug' => $slug]);
 
         if (!$object instanceof WebsiteContactObject) {
-            throw new AdminException(sprintf('The contact subject "%s" does not exist.', $slug));
+            throw new AdminException('The contact subject "{slug}" does not exist.', 0, null, ['slug' => $slug]);
         }
 
         return $object;
@@ -213,9 +223,15 @@ class ContactAdminHelper
     public function deleteObject(string $slug): void
     {
         $object = $this->object($slug);
+        $count = count($object->getMessages());
 
-        if (count($object->getMessages()) > 0) {
-            throw new AdminException(sprintf('The contact subject "%s" is used by %d message(s) and cannot be deleted.', $slug, count($object->getMessages())));
+        if ($count > 0) {
+            throw new AdminException(
+                'The contact subject "{slug}" is used by {count} message(s) and cannot be deleted.',
+                0,
+                null,
+                ['slug' => $slug, 'count' => $count]
+            );
         }
 
         $this->entityManager->remove($object);
@@ -231,12 +247,7 @@ class ContactAdminHelper
 
     public function messages(?string $status, int $limit): array
     {
-        $statusEnum = null;
-
-        if ($status !== null && $status !== '') {
-            $statusEnum = WebsiteContactMessageStatusEnum::tryFrom($status)
-                ?? throw new AdminException(sprintf('Unknown status "%s": use %s.', $status, implode(', ', $this->statuses())));
-        }
+        $statusEnum = $status !== null && $status !== '' ? $this->status($status) : null;
 
         return array_map(static fn (WebsiteContactMessage $message): array => [
             $message->getId(),
@@ -253,7 +264,7 @@ class ContactAdminHelper
         $message = $this->entityManager->getRepository(WebsiteContactMessage::class)->find($id);
 
         if (!$message instanceof WebsiteContactMessage) {
-            throw new AdminException(sprintf('The message #%d does not exist.', $id));
+            throw new AdminException('The message #{id} does not exist.', 0, null, ['id' => $id]);
         }
 
         return $message;
@@ -275,16 +286,23 @@ class ContactAdminHelper
 
     public function setMessageStatus(int $id, string $status): WebsiteContactMessage
     {
-        $statusEnum = WebsiteContactMessageStatusEnum::tryFrom($status)
-            ?? throw new AdminException(sprintf('Unknown status "%s": use %s.', $status, implode(', ', $this->statuses())));
-
-        $message = $this->message($id)->setStatus($statusEnum);
+        $message = $this->message($id)->setStatus($this->status($status));
         $this->entityManager->flush();
 
         return $message;
     }
 
     /* Internals */
+
+    private function status(string $status): WebsiteContactMessageStatusEnum
+    {
+        return WebsiteContactMessageStatusEnum::tryFrom($status) ?? throw new AdminException(
+            'Unknown status "{status}": use {statuses}.',
+            0,
+            null,
+            ['status' => $status, 'statuses' => implode(', ', $this->statuses())]
+        );
+    }
 
     private function translateType(WebsiteContactType $type, string $locale, string $name): void
     {
@@ -319,11 +337,11 @@ class ContactAdminHelper
         $slug = SlugHelper::slugify($slug, 100);
 
         if ($slug === '') {
-            throw new AdminException(sprintf('The slug of the %s cannot be empty.', $label));
+            throw new AdminException('The slug of the {label} cannot be empty.', 0, null, ['label' => $label]);
         }
 
         if ($this->entityManager->getRepository($class)->findOneBy(['slug' => $slug]) !== null) {
-            throw new AdminException(sprintf('A %s with the slug "%s" already exists.', $label, $slug));
+            throw new AdminException('A {label} with the slug "{slug}" already exists.', 0, null, ['label' => $label, 'slug' => $slug]);
         }
 
         return $slug;

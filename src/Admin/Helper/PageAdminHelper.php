@@ -21,18 +21,14 @@ class PageAdminHelper
 
     public function all(string $locale): array
     {
-        return array_map(function (WebsitePage $page) use ($locale): array {
-            $translation = $this->findTranslation($page->getTranslations(), $locale);
-
-            return [
-                $page->getId(),
-                $page->getSlug(),
-                $translation?->getName() ?? '-',
-                $this->locales($page->getTranslations()),
-                $page->isPublished() ? 'yes' : 'no',
-                $page->getUpdatedAt()?->format('Y-m-d H:i') ?? '-',
-            ];
-        }, $this->entityManager->getRepository(WebsitePage::class)->findBy([], ['slug' => 'ASC']));
+        return array_map(fn (WebsitePage $page): array => [
+            $page->getId(),
+            $page->getSlug(),
+            $this->findTranslation($page->getTranslations(), $locale)?->getName() ?? '-',
+            $this->locales($page->getTranslations()),
+            $page->isPublished() ? 'yes' : 'no',
+            $page->getUpdatedAt()?->format('Y-m-d H:i') ?? '-',
+        ], $this->entityManager->getRepository(WebsitePage::class)->findBy([], ['slug' => 'ASC']));
     }
 
     public function slugs(): array
@@ -48,7 +44,7 @@ class PageAdminHelper
         $page = $this->entityManager->getRepository(WebsitePage::class)->findOneBy(['slug' => $slug]);
 
         if (!$page instanceof WebsitePage) {
-            throw new AdminException(sprintf('The page "%s" does not exist.', $slug));
+            throw new AdminException('The page "{slug}" does not exist.', 0, null, ['slug' => $slug]);
         }
 
         return $page;
@@ -63,7 +59,7 @@ class PageAdminHelper
         }
 
         if ($this->entityManager->getRepository(WebsitePage::class)->findOneBy(['slug' => $slug]) !== null) {
-            throw new AdminException(sprintf('A page with the slug "%s" already exists.', $slug));
+            throw new AdminException('A page with the slug "{slug}" already exists.', 0, null, ['slug' => $slug]);
         }
 
         $page = (new WebsitePage())
@@ -114,7 +110,7 @@ class PageAdminHelper
     public function readFile(string $path): string
     {
         if (!is_file($path) || !is_readable($path)) {
-            throw new AdminException(sprintf('The file "%s" cannot be read.', $path));
+            throw new AdminException('The file "{path}" cannot be read.', 0, null, ['path' => $path]);
         }
 
         return (string) file_get_contents($path);
@@ -139,6 +135,6 @@ class PageAdminHelper
         $translation
             ->setName($title)
             ->setContent($content)
-            ->setMetaDescription($metaDescription !== '' ? mb_substr((string) $metaDescription, 0, 255) : null);
+            ->setMetaDescription($metaDescription !== null && $metaDescription !== '' ? mb_substr($metaDescription, 0, 255) : null);
     }
 }
