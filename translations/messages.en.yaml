@@ -220,3 +220,5 @@ contact:
         success: "Thank you, your message has been sent. We will get back to you as soon as possible."
 flash:
     close: "Close"
+legal:
+    updated_at: "Last updated: {date}"

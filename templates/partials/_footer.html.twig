@@ -63,13 +63,19 @@
         </section>
         <section class="footer__links">
 
-            <a class="footer__link-block-list-item" href="#">
+            <a class="footer__link-block-list-item" href="{{ path('legal_show', { slug: 'legal-notice' }) }}">
+                {{ translate('footer.nav.links.legal_notice', domain: 'footer') }}
+            </a>
+
+            &bullet;
+
+            <a class="footer__link-block-list-item" href="{{ path('legal_show', { slug: 'privacy-policy' }) }}">
                 {{ translate('footer.nav.links.privacy_policy', domain: 'footer') }}
             </a>
 
             &bullet;
 
-            <a class="footer__link-block-list-item" href="#">
+            <a class="footer__link-block-list-item" href="{{ path('legal_show', { slug: 'terms-of-use' }) }}">
                 {{ translate('footer.nav.links.terms_of_use', domain: 'footer') }}
             </a>
 

@@ -1,0 +1,33 @@
+{# ./templates/pages/legal/show.html.twig #}
+
+{% extends 'layouts/base_layout.html.twig' %}
+
+{% import 'components/macros/_Breadcrumb.macro.html.twig' as Breadcrumb %}
+
+{% block content %}
+
+    <section class="legal screen screen--margin">
+
+        {{ Breadcrumb.render([
+            { label: translate('breadcrumb.home'), href: path('home_index') },
+            { label: translation.name }
+        ]) }}
+
+        <header class="legal__header">
+            <h1 class="legal__title">
+                {{ translation.name }}
+            </h1>
+
+            {% set lastUpdate = page.updatedAt ?? page.createdAt %}
+            <p class="legal__updated">
+                {{ translate('legal.updated_at', { date: lastUpdate|date('d M. Y') }) }}
+            </p>
+        </header>
+
+        <article class="legal__content">
+            {{ translation.content|markdown }}
+        </article>
+
+    </section>
+
+{% endblock %}

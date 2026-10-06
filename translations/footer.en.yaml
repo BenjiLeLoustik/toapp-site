@@ -14,6 +14,7 @@ footer:
             help_center: "Help Center"
             privacy_policy: "Privacy Policy"
             terms_of_use: "Terms of Use"
+            legal_notice: "Legal notice"
     copyright: "&copy; {year} - {appName} - All rights reserved"
     about:
         description: "The go-to platform for discovering and sharing innovative web projects. Connect, share and grow"
