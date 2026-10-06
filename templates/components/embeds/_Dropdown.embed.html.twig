@@ -41,7 +41,7 @@
             {% if triggerAvatar or triggerAvatarAlt %}
                 <span class="dropdown__avatar">
                     {% if triggerAvatar %}
-                        <img src="{{ triggerAvatar }}" alt="{{ triggerAvatarAlt ?? '' }}">
+                        <img src="{{ upload(triggerAvatar) }}" alt="{{ triggerAvatarAlt ?? '' }}">
                     {% else %}
                         {{ triggerAvatarAlt|first|upper }}
                     {% endif %}

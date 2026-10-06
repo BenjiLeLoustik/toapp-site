@@ -27,6 +27,7 @@ class UserSettingsHelper
         private UserPasswordHasher $passwordHasher,
         private UploaderInterface $uploader,
         private TranslatorInterface $translator,
+        private UserPathHelper $paths,
     ) {
     }
 
@@ -91,15 +92,12 @@ class UserSettingsHelper
 
         if ($avatar !== null && $avatar->getError() !== UPLOAD_ERR_NO_FILE) {
             try {
-                $path = $this->uploader->store($avatar, 'avatars/' . $user->getId(), ['max_size' => self::AVATAR_MAX_SIZE]);
-                $this->uploader->delete($user->getAvatar());
-                $user->setAvatar($path);
+                $this->updateAvatar($user, $avatar);
             } catch (UploadException) {
                 return ['avatar' => $this->trans('settings.errors.avatar')];
             }
         } elseif ($removeAvatar) {
-            $this->uploader->delete($user->getAvatar());
-            $user->setAvatar(null);
+            $this->removeAvatar($user);
         }
 
         $user
@@ -114,6 +112,22 @@ class UserSettingsHelper
         $this->entityManager->flush();
 
         return [];
+    }
+
+    public function updateAvatar(User $user, UploadedFile $avatar): string
+    {
+        $path = $this->uploader->store($avatar, $this->paths->avatarDirectory($user), ['max_size' => self::AVATAR_MAX_SIZE]);
+
+        $this->uploader->delete($user->getAvatar());
+        $user->setAvatar($path);
+
+        return $path;
+    }
+
+    public function removeAvatar(User $user): void
+    {
+        $this->uploader->delete($user->getAvatar());
+        $user->setAvatar(null);
     }
 
     public function updateEmail(User $user, array $data): array
@@ -221,7 +235,7 @@ class UserSettingsHelper
     {
         $id = (string) $user->getId();
 
-        $this->uploader->delete($user->getAvatar());
+        $this->removeAvatar($user);
 
         $user
             ->setFirstname('Deleted')
@@ -230,7 +244,6 @@ class UserSettingsHelper
             ->setSlug('deleted-' . $id)
             ->setEmail('deleted-' . $id . '-' . bin2hex(random_bytes(4)) . '@deleted.invalid')
             ->setPassword($this->passwordHasher->hashPassword($user, bin2hex(random_bytes(32))))
-            ->setAvatar(null)
             ->setBiography(null)
             ->setLocation(null)
             ->setWebsite(null)

@@ -51,7 +51,7 @@ User.render({
         {% if showAvatar %}
             <div class="user__avatar">
                 {% if avatar %}
-                    <img src="{{ avatar }}" alt="{{ name }}">
+                    <img src="{{ upload(avatar) }}" alt="{{ name }}">
                 {% elseif name %}
                     <span class="user__avatar-initial">
                         {{ name|first|upper }}
