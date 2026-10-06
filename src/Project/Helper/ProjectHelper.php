@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Project\Helper;
 
 use App\Entity\Project;
@@ -9,12 +11,15 @@ use App\Entity\ProjectShare;
 use App\Entity\ProjectView;
 use App\Entity\User;
 use App\Project\Enum\ProjectShareEnum;
+use App\Project\Enum\ProjectViewSourceEnum;
+use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class ProjectHelper
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private VisitorCountryResolver $countryResolver,
     ) {
     }
 
@@ -30,7 +35,7 @@ class ProjectHelper
         return $project;
     }
 
-    public function addView(Project $project, ?User $user, ?string $ip): void
+    public function addView(Project $project, ?User $user, Request $request): void
     {
         $projectViewRepository = $this->entityManager->getRepository(ProjectView::class);
 
@@ -39,9 +44,15 @@ class ProjectHelper
         }
 
         $view = new ProjectView();
-        $view->setProject($project);
-        $view->setUser($user);
-        $view->setIp($ip);
+        $view
+            ->setProject($project)
+            ->setUser($user)
+            ->setIp($request->getClientIp())
+            ->setSource(ProjectViewSourceEnum::fromReferer(
+                $request->headers->get('Referer'),
+                (string) parse_url($request->getUri(), PHP_URL_HOST)
+            ))
+            ->setCountry($this->countryResolver->resolve($request));
 
         $this->entityManager->persist($view);
         $this->entityManager->flush();
@@ -66,9 +77,9 @@ class ProjectHelper
         }
 
         return $this->entityManager->getRepository(ProjectLike::class)->findOneBy([
-            'project' => $project,
-            'user' => $user,
-        ]) !== null;
+                'project' => $project,
+                'user' => $user,
+            ]) !== null;
     }
 
     public function toggleLike(Project $project, User $user): bool
@@ -107,9 +118,9 @@ class ProjectHelper
         }
 
         return $this->entityManager->getRepository(ProjectFavorite::class)->findOneBy([
-            'project' => $project,
-            'user' => $user,
-        ]) !== null;
+                'project' => $project,
+                'user' => $user,
+            ]) !== null;
     }
 
     public function toggleFavorite(Project $project, User $user): bool
@@ -135,5 +146,4 @@ class ProjectHelper
 
         return true;
     }
-
 }

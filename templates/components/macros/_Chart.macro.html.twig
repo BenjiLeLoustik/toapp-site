@@ -1,0 +1,113 @@
+{# ./templates/components/macros/_Chart.macro.html.twig #}
+
+{#
+Usage :
+
+{% import 'components/macros/_Chart.macro.html.twig' as Chart %}
+
+{{ Chart.line([{ label: '01/09', value: 12 }, { label: '02/09', value: 30 }], { label: 'Views' }) }}
+
+{{ Chart.donut([{ key: 'search', label: 'Search', value: 120 }], { label: 'views' }) }}
+#}
+
+{% macro line(points = [], options = {}) %}
+
+    {% set width = options.width ?? 640 %}
+    {% set height = options.height ?? 260 %}
+    {% set padLeft = 44 %}
+    {% set padRight = 12 %}
+    {% set padTop = 12 %}
+    {% set padBottom = 28 %}
+
+    {% set count = points|length %}
+    {% set values = points|map(p => p.value) %}
+    {% set rawMax = count > 0 ? max(values) : 0 %}
+    {% set step = ((rawMax > 0 ? rawMax : 1) / 4)|round(0, 'ceil') %}
+    {% set step = step > 0 ? step : 1 %}
+    {% set top = step * 4 %}
+
+    {% set plotWidth = width - padLeft - padRight %}
+    {% set plotHeight = height - padTop - padBottom %}
+    {% set bottom = padTop + plotHeight %}
+    {% set stepX = count > 1 ? plotWidth / (count - 1) : 0 %}
+    {% set labelEvery = (count / 6)|round(0, 'ceil') %}
+    {% set labelEvery = labelEvery > 0 ? labelEvery : 1 %}
+
+    {% set path = '' %}
+    {% for point in points %}
+        {% set x = padLeft + loop.index0 * stepX %}
+        {% set y = bottom - (point.value / top * plotHeight) %}
+        {% set path = path ~ (loop.first ? 'M' : ' L') ~ x|round(2) ~ ' ' ~ y|round(2) %}
+    {% endfor %}
+
+    <svg class="chart chart--line {{ options.class ?? '' }}" viewBox="0 0 {{ width }} {{ height }}" role="img" aria-label="{{ options.label ?? '' }}">
+
+        {% for index in 0..4 %}
+            {% set gridY = bottom - (index / 4 * plotHeight) %}
+            <line class="chart__grid" x1="{{ padLeft }}" x2="{{ width - padRight }}" y1="{{ gridY|round(2) }}" y2="{{ gridY|round(2) }}"></line>
+            <text class="chart__axis" x="{{ padLeft - 8 }}" y="{{ (gridY + 4)|round(2) }}" text-anchor="end">{{ (step * index)|format_number }}</text>
+        {% endfor %}
+
+        {% if count > 0 %}
+
+            <path class="chart__area" d="{{ path }} L{{ (padLeft + (count - 1) * stepX)|round(2) }} {{ bottom }} L{{ padLeft }} {{ bottom }} Z"></path>
+            <path class="chart__line" d="{{ path }}"></path>
+
+            {% for point in points %}
+                {% set x = padLeft + loop.index0 * stepX %}
+                {% set y = bottom - (point.value / top * plotHeight) %}
+
+                <circle class="chart__point" cx="{{ x|round(2) }}" cy="{{ y|round(2) }}" r="3">
+                    <title>{{ point.label }} : {{ point.value|user_number }}</title>
+                </circle>
+
+                {% if loop.index0 % labelEvery == 0 or loop.last %}
+                    <text class="chart__axis" x="{{ x|round(2) }}" y="{{ height - 8 }}" text-anchor="middle">{{ point.label }}</text>
+                {% endif %}
+            {% endfor %}
+
+        {% endif %}
+
+    </svg>
+
+{% endmacro %}
+
+
+{% macro donut(segments = [], options = {}) %}
+
+    {% set total = segments|reduce((carry, segment) => carry + segment.value, 0) %}
+    {% set offset = 25 %}
+
+    <div class="chart chart--donut {{ options.class ?? '' }}">
+
+        <svg class="chart__donut" viewBox="0 0 42 42" role="img" aria-label="{{ options.label ?? '' }}">
+            <circle class="chart__donut-track" cx="21" cy="21" r="15.9155"></circle>
+
+            {% if total > 0 %}
+                {% for segment in segments|filter(s => s.value > 0) %}
+                    {% set percent = segment.value / total * 100 %}
+
+                    <circle
+                            class="chart__donut-segment chart__donut-segment--{{ segment.key }}"
+                            cx="21" cy="21" r="15.9155"
+                            stroke-dasharray="{{ percent|round(3) }} {{ (100 - percent)|round(3) }}"
+                            stroke-dashoffset="{{ offset|round(3) }}"
+                    >
+                        <title>{{ segment.label ?? segment.key }} : {{ segment.value|user_number }}</title>
+                    </circle>
+
+                    {% set offset = offset - percent %}
+                {% endfor %}
+            {% endif %}
+        </svg>
+
+        <div class="chart__donut-center">
+            <span class="chart__donut-value">{{ total|format_number }}</span>
+            {% if options.label ?? null %}
+                <span class="chart__donut-label">{{ options.label }}</span>
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endmacro %}

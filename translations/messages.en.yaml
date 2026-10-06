@@ -33,6 +33,7 @@ breadcrumb:
     about: "About"
     contact: "Contact"
     my_projects: "My projects"
+    stats: "Statistics"
 categories:
     all: "All categories"
     card:
@@ -168,6 +169,53 @@ projects_mine:
         description_line_1: "You have not created any project yet."
         description_line_2: "Start right now!"
         create: "Create a project"
+project_stats:
+    title: "Project statistics"
+    description: "Follow the performance of your project in real time"
+    vs_previous: "vs previous period"
+    periods:
+        label: "Period"
+        7d: "7d"
+        30d: "30d"
+        90d: "90d"
+        12m: "12 months"
+        all: "All"
+    cards:
+        views: "Total views"
+        likes: "Likes"
+        shares: "Shares"
+        favorites: "Favorites"
+    views_chart:
+        title: "Views over time"
+        empty: "No view over this period."
+    sources:
+        title: "Traffic sources"
+        total: "views"
+        search: "Search engines"
+        direct: "Direct"
+        social: "Social networks"
+        internal: "Internal"
+        other: "Others"
+    countries:
+        title: "Top countries"
+        empty: "No country data over this period."
+    networks:
+        title: "Shares by network"
+        empty: "No share over this period."
+        count: "{count, plural, one {# share} other {# shares}}"
+        link: "Link"
+        email: "Email"
+        facebook: "Facebook"
+        x_twitter: "X (Twitter)"
+        linkedin: "LinkedIn"
+        discord: "Discord"
+    activity:
+        title: "Recent activity"
+        empty: "No activity over this period."
+        someone: "Someone"
+        like: "{name} liked your project"
+        favorite: "{name} saved your project"
+        share: "{name} shared your project on {network}"
 pagination:
     previous: "Previous page"
     next: "Next page"

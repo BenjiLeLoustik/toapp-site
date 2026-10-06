@@ -6,8 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Project\Enum\ProjectStatsPeriodEnum;
 use App\Project\Enum\ProjectStatusEnum;
 use App\Project\Helper\ProjectOwnerHelper;
+use App\Project\Helper\ProjectStatsHelper;
 use NeoPHP\Component\Api\Attribute\MapPagination;
 use NeoPHP\Component\Api\Pagination\PageRequest;
 use NeoPHP\Component\Controller\Contract\AbstractController;
@@ -22,6 +24,7 @@ class ProjectOwnerController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ProjectOwnerHelper $ownerHelper,
+        private ProjectStatsHelper $statsHelper,
     ) {
     }
 
@@ -44,6 +47,25 @@ class ProjectOwnerController extends AbstractController
                 $this->entityManager->getRepository(Project::class)->createOwnerQueryBuilder($user, $status, $search),
                 $pageRequest
             ),
+        ]);
+    }
+
+    #[Route('/{id}/{slug}/stats', name: 'stats', methods: ['GET'])]
+    public function stats(int $id, string $slug, Request $request): Response
+    {
+        $project = $this->ownerHelper->findOwned($this->currentUser(), $id, $slug);
+
+        if ($project === null) {
+            return $this->redirectToRoute('project_mine');
+        }
+
+        $period = ProjectStatsPeriodEnum::tryFrom((string) $request->query->get('period', '')) ?? ProjectStatsPeriodEnum::MONTH;
+
+        return $this->render('pages/project/stats.html.twig', [
+            'project' => $project,
+            'period' => $period,
+            'periods' => ProjectStatsPeriodEnum::cases(),
+            'stats' => $this->statsHelper->build($project, $period, (int) $request->query->get('page', 1)),
         ]);
     }
 

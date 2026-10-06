@@ -71,7 +71,7 @@ class ProjectController extends AbstractController
         $user = $this->getUser();
         $user = $user instanceof User ? $user : null;
 
-        $this->projectHelper->addView($project, $this->getUser(), $request->getClientIp());
+        $this->projectHelper->addView($project, $user, $request);
 
         return $this->render('pages/project/show.html.twig', [
             'project' => $project,

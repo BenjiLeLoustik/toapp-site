@@ -1,0 +1,362 @@
+/** ./assets/css/pages/project/_stats.css */
+
+@layer base {
+
+    section.project-stats-page {
+        @apply h-auto flex flex-col gap-6 py-8;
+    }
+
+    .project-stats-page__header {
+        @apply flex items-end justify-between gap-4;
+    }
+
+    .project-stats-page__heading {
+        @apply flex flex-col gap-1;
+    }
+
+    .project-stats-page__title-row {
+        @apply flex items-center gap-3 flex-wrap;
+    }
+
+    h1.project-stats-page__title {
+        @apply text-3xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    p.project-stats-page__description {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-page__periods {
+        @apply flex items-center gap-1 flex-wrap;
+    }
+
+    .project-stats-page__cards {
+        @apply grid grid-cols-4 gap-4;
+    }
+
+    .project-stats-page__row {
+        @apply grid grid-cols-2 gap-4;
+    }
+
+    .project-stats-page__row--main {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    /* Cards */
+
+    .project-stats-card {
+        @apply flex flex-col gap-2 rounded-lg p-4;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    .project-stats-card__top {
+        @apply flex items-center justify-between;
+    }
+
+    .project-stats-card__label {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-card__value {
+        @apply text-3xl font-bold leading-tight;
+        color: var(--theme-foreground);
+    }
+
+    .project-stats-card__change {
+        @apply inline-flex items-center gap-1 text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-card__change--up strong,
+    .project-stats-card__change--up .icon {
+        color: var(--theme-success);
+    }
+
+    .project-stats-card__change--down strong,
+    .project-stats-card__change--down .icon {
+        color: var(--theme-danger);
+    }
+
+    /* Panels */
+
+    .project-stats-panel {
+        @apply flex flex-col gap-4 rounded-lg p-5 min-w-0;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+    }
+
+    h2.project-stats-panel__title {
+        @apply text-base font-semibold;
+        color: var(--theme-foreground);
+    }
+
+    p.project-stats-panel__empty {
+        @apply text-sm py-8 text-center;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Charts */
+
+    .chart--line {
+        @apply w-full h-auto;
+    }
+
+    .chart__grid {
+        stroke: var(--theme-border);
+        stroke-width: 1;
+    }
+
+    .chart__axis {
+        font-size: 10px;
+        fill: var(--theme-foreground-muted);
+    }
+
+    .chart__area {
+        fill: color-mix(in oklab, var(--theme-accent) 12%, transparent);
+    }
+
+    .chart__line {
+        fill: none;
+        stroke: var(--theme-accent);
+        stroke-width: 2;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+    }
+
+    .chart__point {
+        fill: var(--theme-surface);
+        stroke: var(--theme-accent);
+        stroke-width: 2;
+    }
+
+    .chart--donut {
+        @apply relative w-40 h-40 mx-auto;
+    }
+
+    .chart__donut {
+        @apply w-full h-full;
+        transform: rotate(-90deg);
+    }
+
+    .chart__donut-track,
+    .chart__donut-segment {
+        fill: none;
+        stroke-width: 5;
+    }
+
+    .chart__donut-track {
+        stroke: var(--theme-surface-active);
+    }
+
+    .chart__donut-center {
+        @apply absolute inset-0 flex flex-col items-center justify-center;
+    }
+
+    .chart__donut-value {
+        @apply text-xl font-bold;
+        color: var(--theme-foreground);
+    }
+
+    .chart__donut-label {
+        @apply text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .chart__donut-segment--search,
+    .project-stats-legend__dot--search {
+        stroke: var(--theme-info);
+        background-color: var(--theme-info);
+    }
+
+    .chart__donut-segment--direct,
+    .project-stats-legend__dot--direct {
+        stroke: var(--theme-success);
+        background-color: var(--theme-success);
+    }
+
+    .chart__donut-segment--social,
+    .project-stats-legend__dot--social {
+        stroke: var(--theme-warning);
+        background-color: var(--theme-warning);
+    }
+
+    .chart__donut-segment--internal,
+    .project-stats-legend__dot--internal {
+        stroke: var(--theme-accent);
+        background-color: var(--theme-accent);
+    }
+
+    .chart__donut-segment--other,
+    .project-stats-legend__dot--other {
+        stroke: var(--theme-foreground-muted);
+        background-color: var(--theme-foreground-muted);
+    }
+
+    /* Legend */
+
+    .project-stats-legend {
+        @apply flex flex-col gap-2 text-sm;
+    }
+
+    .project-stats-legend__item {
+        @apply grid items-center gap-2;
+        grid-template-columns: auto 1fr auto 3rem;
+    }
+
+    .project-stats-legend__dot {
+        @apply w-2.5 h-2.5 rounded-sm;
+    }
+
+    .project-stats-legend__label {
+        color: var(--theme-foreground);
+    }
+
+    .project-stats-legend__value {
+        @apply text-xs;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-legend__percent {
+        @apply text-right;
+        color: var(--theme-foreground);
+    }
+
+    /* Bars */
+
+    .project-stats-bars {
+        @apply flex flex-col gap-3 text-sm;
+    }
+
+    .project-stats-bars__item {
+        @apply grid items-center gap-3;
+        grid-template-columns: 9rem 1fr 3rem 4rem;
+    }
+
+    .project-stats-bars__item--wide {
+        grid-template-columns: 9rem 1fr 6rem;
+    }
+
+    .project-stats-bars__label {
+        @apply inline-flex items-center gap-2 truncate;
+        color: var(--theme-foreground);
+    }
+
+    .project-stats-bars__track {
+        @apply block h-2 rounded-full overflow-hidden;
+        background-color: var(--theme-surface-active);
+    }
+
+    .project-stats-bars__fill {
+        @apply block h-full rounded-full;
+        background-color: var(--theme-accent);
+    }
+
+    .project-stats-bars__percent {
+        @apply text-xs text-right;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-bars__value {
+        @apply text-right whitespace-nowrap;
+        color: var(--theme-foreground);
+    }
+
+    /* Activity */
+
+    .project-stats-activity {
+        @apply flex flex-col gap-3 text-sm;
+    }
+
+    .project-stats-activity__item {
+        @apply flex items-center gap-3;
+    }
+
+    .project-stats-activity__dot {
+        @apply w-2 h-2 shrink-0 rounded-full;
+    }
+
+    .project-stats-activity__dot--like {
+        background-color: var(--theme-danger);
+    }
+
+    .project-stats-activity__dot--favorite {
+        background-color: var(--theme-warning);
+    }
+
+    .project-stats-activity__dot--share {
+        background-color: var(--theme-success);
+    }
+
+    .project-stats-activity__date {
+        @apply text-xs whitespace-nowrap;
+        color: var(--theme-foreground-muted);
+    }
+
+    .project-stats-activity__text {
+        color: var(--theme-foreground);
+    }
+
+    .project-stats-activity__pagination {
+        @apply flex items-center justify-center gap-3 pt-4;
+        border-top: solid 1px var(--theme-border);
+    }
+
+    .project-stats-activity__page {
+        @apply text-sm;
+        color: var(--theme-foreground-muted);
+    }
+
+    /* Tablet */
+
+    @media (max-width: 1024px) {
+
+        .project-stats-page__cards {
+            @apply grid-cols-2;
+        }
+
+        .project-stats-page__row,
+        .project-stats-page__row--main {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+    }
+
+    /* Mobile */
+
+    @media (max-width: 767px) {
+
+        section.project-stats-page {
+            @apply py-6 gap-4;
+        }
+
+        .project-stats-page__header {
+            @apply flex-col items-stretch;
+        }
+
+        h1.project-stats-page__title {
+            @apply text-2xl;
+        }
+
+        .project-stats-page__cards {
+            @apply grid-cols-1;
+        }
+
+        .project-stats-bars__item {
+            grid-template-columns: 7rem 1fr 3.5rem;
+        }
+
+        .project-stats-bars__percent {
+            @apply hidden;
+        }
+
+        .project-stats-activity__item {
+            @apply flex-wrap gap-x-3 gap-y-1;
+        }
+
+    }
+
+}
