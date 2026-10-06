@@ -11,6 +11,7 @@
 @import "./partials/_footer.css";
 @import "./partials/_project-search.css";
 @import "./partials/_flashes.css";
+@import "./partials/_verify-banner.css";
 
 @import "./components/init.css";
 @import "./pages/init.css";

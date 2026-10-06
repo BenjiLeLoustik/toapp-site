@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\UserPreference;
 use App\User\Enum\UserDateFormatEnum;
 use App\User\Enum\UserNumberFormatEnum;
+use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 use NeoPHP\Package\Security\Contract\SecurityInterface;
 
 class UserFormatHelper
@@ -24,7 +25,7 @@ class UserFormatHelper
 
     public function __construct(
         private SecurityInterface $security,
-        private UserSettingsHelper $settings,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -107,7 +108,9 @@ class UserFormatHelper
             $this->loaded = true;
             $user = $this->security->getUser();
 
-            $this->preference = $user instanceof User ? $this->settings->getPreference($user) : null;
+            $this->preference = $user instanceof User
+                ? $this->entityManager->getRepository(UserPreference::class)->findOneBy(['user' => $user])
+                : null;
         }
 
         return $this->preference;
