@@ -38,6 +38,17 @@
         color: var(--theme-foreground-muted);
     }
 
+    .project-form__notice {
+        @apply flex items-start gap-2 rounded-md px-3 py-2 text-xs;
+        color: var(--theme-info);
+        background-color: var(--theme-info-surface);
+        border: solid 1px var(--theme-info-border);
+    }
+
+    .project-form__notice .icon {
+        @apply mt-0.5 shrink-0;
+    }
+
     /* Cover */
 
     .project-form__cover {

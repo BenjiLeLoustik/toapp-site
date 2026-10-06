@@ -133,6 +133,7 @@ project:
             screenshots: "Its cover and screenshots"
             favorites: "Its place in the favorites of other users"
 project_form:
+    visibility_hint: "Your project is visible to the community only when its status is \"Published\" and its visibility \"Public\". Drafts, archived and private projects are only visible to you."
     new:
         title: "Create a project"
         description: "Fill in the information to publish your project"

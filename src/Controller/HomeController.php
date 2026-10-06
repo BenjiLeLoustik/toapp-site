@@ -32,8 +32,8 @@ class HomeController extends AbstractController
         return $this->render('pages/home/index.html.twig', [
             'categories' => $categoryRepository->findBy([], ['slug' => 'ASC']),
             'stats' => [
-                'published_projects' => $projectRepository->count(),
-                'active_developers' => $userRepository->count(),
+                'published_projects' => $projectRepository->countPublic(),
+                'active_developers' => $userRepository->countActiveCreators(),
                 'listed_technologies' => $technologyRepository->count(),
                 'categories' => $categoryRepository->count(),
             ],

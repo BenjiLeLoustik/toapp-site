@@ -15,6 +15,17 @@ class UserRepository extends AbstractRepository
 {
     protected string $entityClass = User::class;
 
+    public function countActiveCreators(): int
+    {
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->select('COUNT(DISTINCT u.id) AS total')
+            ->innerJoin('u.projects', 'p')
+            ->where('u.deletedAt IS NULL')
+            ->andWhere('u.deactivatedAt IS NULL');
+
+        return (int) $this->applyPublicProjects($queryBuilder)->getSingleScalarResult();
+    }
+
     public function findTopContributors(int $limit = 8): array
     {
         $queryBuilder = $this->createQueryBuilder('u')

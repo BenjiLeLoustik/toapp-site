@@ -182,6 +182,11 @@
                 })
             ], { columns: 12, gap: 'base' }) }}
 
+            <p class="project-form__notice">
+                {{ Icon.lucide('info', { size: 'xs' }) }}
+                <span>{{ translate('project_form.visibility_hint') }}</span>
+            </p>
+
             {# Technologies #}
 
             <div class="form__field {{ errors.technologies ?? null ? 'form__field--invalid' : '' }}" data-tags>
