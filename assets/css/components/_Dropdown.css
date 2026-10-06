@@ -110,7 +110,7 @@
 
     .dropdown__item--danger:hover,
     .dropdown__item--danger:focus-visible {
-        background-color: color-mix(in oklab, var(--theme-danger) 10%, var(--theme-surface));
+        background-color: var(--theme-danger-surface);
     }
 
     @media (max-width: 767px) {

@@ -21,4 +21,21 @@
 
     --theme-danger: var(--color-red-500);
     --theme-danger-foreground: var(--color-white);
+    --theme-danger-surface: color-mix(in oklab, var(--theme-danger) 15%, var(--theme-surface));
+    --theme-danger-border: color-mix(in oklab, var(--theme-danger) 40%, var(--theme-surface));
+
+    --theme-success: var(--color-green-500);
+    --theme-success-foreground: var(--color-white);
+    --theme-success-surface: color-mix(in oklab, var(--theme-success) 15%, var(--theme-surface));
+    --theme-success-border: color-mix(in oklab, var(--theme-success) 40%, var(--theme-surface));
+
+    --theme-warning: var(--color-amber-500);
+    --theme-warning-foreground: var(--color-neutral-950);
+    --theme-warning-surface: color-mix(in oklab, var(--theme-warning) 15%, var(--theme-surface));
+    --theme-warning-border: color-mix(in oklab, var(--theme-warning) 40%, var(--theme-surface));
+
+    --theme-info: var(--color-sky-500);
+    --theme-info-foreground: var(--color-white);
+    --theme-info-surface: color-mix(in oklab, var(--theme-info) 15%, var(--theme-surface));
+    --theme-info-border: color-mix(in oklab, var(--theme-info) 40%, var(--theme-surface));
 }

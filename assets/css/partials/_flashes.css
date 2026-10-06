@@ -1,0 +1,82 @@
+/** ./assets/css/partials/_flashes.css */
+
+@layer component {
+
+    .flashes {
+        @apply fixed z-[120] top-4 right-4 flex flex-col gap-2 w-full max-w-sm pointer-events-none;
+        top: calc(var(--header-height) + 1rem);
+    }
+
+    .flash {
+        @apply flex items-start gap-3 rounded-lg p-4 shadow-lg pointer-events-auto transition-all duration-300;
+        background-color: var(--theme-surface);
+        border: solid 1px var(--theme-border);
+        border-left-width: 4px;
+    }
+
+    .flash--success {
+        border-left-color: var(--theme-success);
+    }
+
+    .flash--success .flash__icon {
+        color: var(--theme-success);
+    }
+
+    .flash--error {
+        border-left-color: var(--theme-danger);
+    }
+
+    .flash--error .flash__icon {
+        color: var(--theme-danger);
+    }
+
+    .flash--warning {
+        border-left-color: var(--theme-warning);
+    }
+
+    .flash--warning .flash__icon {
+        color: var(--theme-warning);
+    }
+
+    .flash--info {
+        border-left-color: var(--theme-info);
+    }
+
+    .flash--info .flash__icon {
+        color: var(--theme-info);
+    }
+
+    .flash__icon {
+        @apply shrink-0 flex items-center pt-0.5;
+    }
+
+    .flash__message {
+        @apply flex-1 text-sm;
+        color: var(--theme-foreground);
+    }
+
+    .flash__close {
+        @apply shrink-0 flex items-center rounded-sm cursor-pointer transition-colors;
+        color: var(--theme-foreground-muted);
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .flash__close:hover {
+        color: var(--theme-foreground);
+    }
+
+    .flash--hidden {
+        @apply opacity-0 translate-x-4;
+    }
+
+    @media (max-width: 767px) {
+
+        .flashes {
+            @apply left-4 right-4 max-w-none w-auto;
+        }
+
+    }
+
+}

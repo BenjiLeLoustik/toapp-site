@@ -8,6 +8,7 @@
 @import "./partials/_main.css";
 @import "./partials/_footer.css";
 @import "./partials/_project-search.css";
+@import "./partials/_flashes.css";
 
 @import "./components/init.css";
 @import "./pages/init.css";
