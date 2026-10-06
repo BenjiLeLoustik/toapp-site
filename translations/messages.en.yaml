@@ -592,7 +592,6 @@ profile:
         settings: "Settings"
         follow: "Follow"
         following: "Following"
-        message: "Message"
     stats:
         projects: "{count, plural, one {Project} other {Projects}}"
         followers: "{count, plural, one {Follower} other {Followers}}"

@@ -48,32 +48,24 @@
                             iconSize: 'xs'
                         }) }}
 
+                    {% elseif app.user %}
+
+                        {{ Button.render(isFollowing ? translate('profile.actions.following') : translate('profile.actions.follow'), {
+                            variant: isFollowing ? 'ghost-outline' : 'primary',
+                            size: 'sm',
+                            attributes: {
+                                'data-follow-toggle': '',
+                                'data-follow-label': translate('profile.actions.follow'),
+                                'data-follow-label-following': translate('profile.actions.following'),
+                                'aria-pressed': isFollowing ? 'true' : 'false'
+                            }
+                        }) }}
+
                     {% else %}
 
-                        {% if app.user %}
-                            {{ Button.render(isFollowing ? translate('profile.actions.following') : translate('profile.actions.follow'), {
-                                variant: isFollowing ? 'ghost-outline' : 'primary',
-                                size: 'sm',
-                                attributes: {
-                                    'data-follow-toggle': '',
-                                    'data-follow-label': translate('profile.actions.follow'),
-                                    'data-follow-label-following': translate('profile.actions.following'),
-                                    'aria-pressed': isFollowing ? 'true' : 'false'
-                                }
-                            }) }}
-                        {% else %}
-                            {{ Button.render(translate('profile.actions.follow'), {
-                                href: path('app_security_login'),
-                                size: 'sm'
-                            }) }}
-                        {% endif %}
-
-                        {{ Button.render(translate('profile.actions.message'), {
-                            href: '#',
-                            variant: 'ghost-outline',
-                            size: 'sm',
-                            iconLeft: 'mail',
-                            iconSize: 'xs'
+                        {{ Button.render(translate('profile.actions.follow'), {
+                            href: path('app_security_login'),
+                            size: 'sm'
                         }) }}
 
                     {% endif %}
