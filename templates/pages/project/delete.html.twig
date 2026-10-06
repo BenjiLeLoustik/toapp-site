@@ -1,0 +1,19 @@
+{# ./templates/pages/project/delete.html.twig #}
+
+{% extends 'layouts/danger_layout.html.twig' %}
+
+{% block danger_title %}{{ translate('project.delete.title') }}{% endblock %}
+{% block danger_description %}{{ translate('project.delete.description', { name: project.name }) }}{% endblock %}
+
+{% block danger_losses_title %}{{ translate('project.delete.losses.title') }}{% endblock %}
+
+{% block danger_losses %}
+    <li>{{ translate('project.delete.losses.page') }}</li>
+    <li>{{ translate('project.delete.losses.stats', {
+            views: project.views|length|format_number,
+            likes: project.likes|length|format_number,
+            shares: project.shares|length|format_number
+        }) }}</li>
+    <li>{{ translate('project.delete.losses.screenshots') }}</li>
+    <li>{{ translate('project.delete.losses.favorites') }}</li>
+{% endblock %}

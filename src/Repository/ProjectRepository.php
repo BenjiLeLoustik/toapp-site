@@ -6,7 +6,9 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Project;
+use App\Entity\User;
 use App\Project\Enum\ProjectSortEnum;
+use App\Project\Enum\ProjectStatusEnum;
 use App\Project\Search\ProjectSearchFilters;
 use App\Trend\Enum\TrendProjectSortEnum;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
@@ -27,6 +29,7 @@ class ProjectRepository extends AbstractRepository
             ->leftJoin('p.likes', 'l')
             ->leftJoin('p.views', 'v')
             ->where('p.publishedAt IS NOT NULL')
+            ->andWhere('p.archivedAt IS NULL')
             ->groupBy('p.id');
 
         if ($category !== null) {
@@ -73,6 +76,7 @@ class ProjectRepository extends AbstractRepository
             ->leftJoin('p.views', 'v')
             ->leftJoin('p.shares', 's')
             ->where('p.publishedAt IS NOT NULL')
+            ->andWhere('p.archivedAt IS NULL')
             ->groupBy('p.id');
 
         if ($search !== '') {
@@ -89,5 +93,24 @@ class ProjectRepository extends AbstractRepository
         };
 
         return $queryBuilder->addOrderBy('p.id', 'DESC');
+    }
+
+    public function createOwnerQueryBuilder(User $user, ProjectStatusEnum $status, string $search): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.user = :user')
+            ->setParameter('user', $user->getId());
+
+        $status->apply($queryBuilder);
+
+        if ($search !== '') {
+            $queryBuilder
+                ->andWhere('(p.name LIKE :search OR p.shortDescription LIKE :search)')
+                ->setParameter('search', '%' . addcslashes($search, '%_') . '%');
+        }
+
+        return $queryBuilder
+            ->orderBy('p.createdAt', 'DESC')
+            ->addOrderBy('p.id', 'DESC');
     }
 }
