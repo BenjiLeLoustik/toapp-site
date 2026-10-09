@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "neophp/framework": "^1.0",
+        "neophp/framework": "^v2.0",
         "twig/twig": "^3.30",
         "ext-intl": "*"
     },
