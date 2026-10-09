@@ -10,11 +10,11 @@ use App\Entity\User;
 use App\Notification\Enum\NotificationTypeEnum;
 use App\User\Helper\UserSettingsHelper;
 use NeoPHP\Component\Container\Attribute\Autowire;
-use NeoPHP\Component\Mailer\Contract\MailerInterface;
-use NeoPHP\Component\Routing\Contract\RoutingInterface;
-use NeoPHP\Component\View\Contract\ViewInterface;
+use NeoPHP\Component\Mailer\MailerManagerInterface;
+use NeoPHP\Component\Routing\RoutingManagerInterface;
+use NeoPHP\Component\View\ViewManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class NotificationMailerHelper
 {
@@ -24,10 +24,10 @@ class NotificationMailerHelper
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MailerInterface $mailer,
-        private RoutingInterface $routing,
-        private ViewInterface $view,
-        private TranslatorInterface $translator,
+        private MailerManagerInterface $mailer,
+        private RoutingManagerInterface $routing,
+        private ViewManagerInterface $view,
+        private TranslationManagerInterface $translator,
         private UserSettingsHelper $settings,
         #[Autowire(env: 'APP_SECRET')]
         private string $secret,

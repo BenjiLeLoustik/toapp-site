@@ -10,7 +10,7 @@ use App\Entity\UserFollow;
 use App\Entity\UserNotificationSetting;
 use App\Notification\Enum\NotificationTypeEnum;
 use App\Project\Helper\ProjectStatsHelper;
-use NeoPHP\Component\Logger\Contract\LoggerInterface;
+use NeoPHP\Component\Logger\LoggerManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class DigestHelper
@@ -20,7 +20,7 @@ class DigestHelper
     public function __construct(
         private EntityManagerInterface $entityManager,
         private NotificationMailerHelper $mailer,
-        private LoggerInterface $logger,
+        private LoggerManagerInterface $logger,
     ) {
     }
 

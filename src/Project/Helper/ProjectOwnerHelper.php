@@ -6,16 +6,16 @@ namespace App\Project\Helper;
 
 use App\Entity\Project;
 use App\Entity\User;
-use NeoPHP\Component\Upload\Contract\UploaderInterface;
+use NeoPHP\Component\Upload\UploadManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class ProjectOwnerHelper
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private UploaderInterface $uploader,
-        private TranslatorInterface $translator,
+        private UploadManagerInterface $uploader,
+        private TranslationManagerInterface $translator,
     ) {
     }
 

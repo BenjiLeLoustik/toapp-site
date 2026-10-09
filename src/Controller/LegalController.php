@@ -9,7 +9,7 @@ use NeoPHP\Component\Controller\Contract\AbstractController;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 #[Route(path: '/legal', name: 'legal')]
 class LegalController extends AbstractController
@@ -18,7 +18,7 @@ class LegalController extends AbstractController
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected TranslatorInterface $translator,
+        protected TranslationManagerInterface $translator,
     ) {
     }
 

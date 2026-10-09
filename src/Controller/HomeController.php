@@ -13,7 +13,7 @@ use App\Entity\WebsiteContactObject;
 use App\Form\Website\ContactForm;
 use App\Website\Helper\ContactHelper;
 use NeoPHP\Component\Controller\Contract\AbstractController;
-use NeoPHP\Component\Form\Contract\FormManagerInterface;
+use NeoPHP\Component\Form\FormManagerInterface;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;

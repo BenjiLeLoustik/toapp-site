@@ -13,11 +13,11 @@ use App\User\Enum\UserDigestFrequencyEnum;
 use App\User\Enum\UserNumberFormatEnum;
 use NeoPHP\Component\Http\Request\UploadedFile;
 use NeoPHP\Component\Logger\Contract\LoggerInterface;
-use NeoPHP\Component\Upload\Contract\UploaderInterface;
 use NeoPHP\Component\Upload\Exception\UploadException;
+use NeoPHP\Component\Upload\UploadManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class UserSettingsHelper
 {
@@ -26,8 +26,8 @@ class UserSettingsHelper
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasher $passwordHasher,
-        private UploaderInterface $uploader,
-        private TranslatorInterface $translator,
+        private UploadManagerInterface $uploader,
+        private TranslationManagerInterface $translator,
         private UserPathHelper $paths,
         private EmailVerificationHelper $verification,
         private LoggerInterface $logger,

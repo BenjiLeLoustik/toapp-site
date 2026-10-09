@@ -9,7 +9,7 @@ use App\Entity\UserLoginHistory;
 use App\User\Helper\UserSettingsHelper;
 use NeoPHP\Component\Container\Attribute\Autowire;
 use NeoPHP\Component\Event\Attribute\AsListener;
-use NeoPHP\Component\Session\Contract\SessionInterface;
+use NeoPHP\Component\Session\SessionManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 use NeoPHP\Package\Security\Event\LoginSuccessEvent;
 
@@ -19,7 +19,7 @@ class LoginSuccessListener
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserSettingsHelper $settings,
-        private SessionInterface $session,
+        private SessionManagerInterface $session,
         #[Autowire(env: 'APP_SESSION_THEME')]
         private string $sessionTheme,
         #[Autowire(env: 'APP_SESSION_ACCENT')]

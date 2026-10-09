@@ -7,7 +7,7 @@ namespace App\Notification\Helper;
 use App\Entity\User;
 use App\Entity\UserNotificationSetting;
 use App\Notification\Enum\NotificationTypeEnum;
-use NeoPHP\Component\Logger\Contract\LoggerInterface;
+use NeoPHP\Component\Logger\LoggerManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class NewsletterHelper
@@ -17,7 +17,7 @@ class NewsletterHelper
     public function __construct(
         private EntityManagerInterface $entityManager,
         private NotificationMailerHelper $mailer,
-        private LoggerInterface $logger,
+        private LoggerManagerInterface $logger,
     ) {
     }
 

@@ -11,7 +11,7 @@ use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\JsonResponse;
 use NeoPHP\Component\Routing\Attribute\Route;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 #[Route(path: '/preference', name: 'preference_')]
 class PreferenceController extends AbstractController
@@ -95,7 +95,7 @@ class PreferenceController extends AbstractController
     }
 
     #[Route(path: '/api/change/locale', name: 'api_change_locale', methods: ['GET'])]
-    public function api_changeLocale(Request $request, TranslatorInterface $translator): JsonResponse
+    public function api_changeLocale(Request $request, TranslationManagerInterface $translator): JsonResponse
     {
         $locale = $request->query->get('locale');
 
