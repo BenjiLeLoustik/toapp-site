@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "neophp-package/neo-admin",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NeoPHP-Framework/neo-package-admin.git",
-                "reference": "3ef21bd5033a16839e8b51b69042b78f0b4a41f1"
+                "reference": "cefd3c02da57ee6d49fa94f75f10663908827d49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NeoPHP-Framework/neo-package-admin/zipball/3ef21bd5033a16839e8b51b69042b78f0b4a41f1",
-                "reference": "3ef21bd5033a16839e8b51b69042b78f0b4a41f1",
+                "url": "https://api.github.com/repos/NeoPHP-Framework/neo-package-admin/zipball/cefd3c02da57ee6d49fa94f75f10663908827d49",
+                "reference": "cefd3c02da57ee6d49fa94f75f10663908827d49",
                 "shasum": ""
             },
             "require": {
@@ -53,9 +53,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NeoPHP-Framework/neo-package-admin/issues",
-                "source": "https://github.com/NeoPHP-Framework/neo-package-admin/tree/v1.0.1"
+                "source": "https://github.com/NeoPHP-Framework/neo-package-admin/tree/v1.0.2"
             },
-            "time": "2026-10-10T15:38:26+00:00"
+            "time": "2026-10-11T07:37:05+00:00"
         },
         {
             "name": "neophp/framework",

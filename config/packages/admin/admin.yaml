@@ -1,13 +1,38 @@
-title: Administration
+title: ToApp
 role: ROLE_ADMIN
 per_page: 25
 entity_namespace: App\Entity
 
 menu:
     - { type: dashboard }
+    - { type: section, label: Content }
+    - { type: link, label: Projects, route: admin_project, icon: box }
+    - type: submenu
+      label: Catalog
+      icon: folder
+      children:
+          - { type: link, label: Categories, route: admin_category, icon: folder }
+          - { type: link, label: Technologies, route: admin_technology, icon: tag }
+    - { type: link, label: Pages, route: admin_page, icon: file }
+    - { type: link, label: Contact, route: admin_contact, icon: mail }
+    - { type: section, label: Community }
+    - { type: link, label: Users, route: admin_user, icon: users }
+    - { type: section, label: Site }
+    - { type: link, label: Maintenance, route: admin_maintenance, icon: settings }
 
 dashboard:
-    widgets: []
+    widgets:
+        - type: links
+          label: Shortcuts
+          icon: link
+          size: small
+          links:
+              - { label: Messages, route: admin_contact, icon: mail }
+              - { label: Projects, route: admin_project, icon: box }
+              - { label: Users, route: admin_user, icon: users }
+              - { label: Maintenance, route: admin_maintenance, icon: settings }
+        - { type: custom, widget: App\Admin\Widget\LatestMessagesWidget, size: large }
+        - { type: custom, widget: App\Admin\Widget\LatestProjectsWidget }
 
 assets:
     stylesheets: []
