@@ -9,7 +9,7 @@ use App\Entity\WebsiteContactObject;
 use App\Website\Enum\WebsiteContactMessageStatusEnum;
 use NeoPHP\Component\Form\Contract\FormInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class ContactHelper
 {
@@ -17,7 +17,7 @@ class ContactHelper
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TranslatorInterface $translator,
+        private TranslationManagerInterface $translator,
     ) {
     }
 

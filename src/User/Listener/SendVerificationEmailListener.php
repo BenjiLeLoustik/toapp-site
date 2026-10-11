@@ -7,14 +7,14 @@ namespace App\User\Listener;
 use App\User\Event\UserRegisteredEvent;
 use App\User\Helper\EmailVerificationHelper;
 use NeoPHP\Component\Event\Attribute\AsListener;
-use NeoPHP\Component\Logger\Contract\LoggerInterface;
+use NeoPHP\Component\Logger\LoggerManagerInterface;
 
 #[AsListener]
 class SendVerificationEmailListener
 {
     public function __construct(
         private EmailVerificationHelper $verification,
-        private LoggerInterface $logger,
+        private LoggerManagerInterface $logger,
     ) {
     }
 

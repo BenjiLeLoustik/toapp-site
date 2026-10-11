@@ -10,7 +10,7 @@ use App\Entity\ProjectView;
 use App\Entity\User;
 use App\Entity\UserLoginHistory;
 use App\User\Helper\UserPathHelper;
-use NeoPHP\Component\Upload\Contract\UploaderInterface;
+use NeoPHP\Component\Upload\UploadManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
 
 class MaintenanceHelper
@@ -19,7 +19,7 @@ class MaintenanceHelper
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private UploaderInterface $uploader,
+        private UploadManagerInterface $uploader,
     ) {
     }
 

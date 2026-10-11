@@ -13,10 +13,10 @@ use App\Project\Enum\ProjectStatusEnum;
 use App\Project\Enum\ProjectVisibilityEnum;
 use App\User\Helper\UserPathHelper;
 use NeoPHP\Component\Http\Request\UploadedFile;
-use NeoPHP\Component\Upload\Contract\UploaderInterface;
 use NeoPHP\Component\Upload\Exception\UploadException;
+use NeoPHP\Component\Upload\UploadManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class ProjectFormHelper
 {
@@ -30,8 +30,8 @@ class ProjectFormHelper
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private UploaderInterface $uploader,
-        private TranslatorInterface $translator,
+        private UploadManagerInterface $uploader,
+        private TranslationManagerInterface $translator,
         private UserPathHelper $paths,
     ) {
     }

@@ -9,7 +9,7 @@ use App\Entity\UserPreference;
 use App\User\Enum\UserDateFormatEnum;
 use App\User\Enum\UserNumberFormatEnum;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Security\Contract\SecurityInterface;
+use NeoPHP\Package\Security\SecurityManagerInterface;
 
 class UserFormatHelper
 {
@@ -24,7 +24,7 @@ class UserFormatHelper
     private bool $loaded = false;
 
     public function __construct(
-        private SecurityInterface $security,
+        private SecurityManagerInterface $security,
         private EntityManagerInterface $entityManager,
     ) {
     }

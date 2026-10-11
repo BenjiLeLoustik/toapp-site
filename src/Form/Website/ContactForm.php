@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Website;
 
 use NeoPHP\Component\Form\Contract\AbstractForm;
-use NeoPHP\Component\Form\FormBuilder;
+use NeoPHP\Component\Form\Model\FormBuilder;
 use NeoPHP\Component\Form\Type\CheckboxType;
 use NeoPHP\Component\Form\Type\EmailType;
 use NeoPHP\Component\Form\Type\TextareaType;

@@ -8,11 +8,11 @@ use App\Email\VerifyEmail;
 use App\Entity\User;
 use App\User\Enum\EmailVerificationResultEnum;
 use NeoPHP\Component\Container\Attribute\Autowire;
-use NeoPHP\Component\Mailer\Contract\MailerInterface;
-use NeoPHP\Component\Routing\Contract\RoutingInterface;
-use NeoPHP\Component\View\Contract\ViewInterface;
+use NeoPHP\Component\Mailer\MailerManagerInterface;
+use NeoPHP\Component\Routing\RoutingManagerInterface;
+use NeoPHP\Component\View\ViewManagerInterface;
 use NeoPHP\Package\Orm\Contract\EntityManagerInterface;
-use NeoPHP\Package\Translation\Contract\TranslatorInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class EmailVerificationHelper
 {
@@ -22,10 +22,10 @@ class EmailVerificationHelper
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MailerInterface $mailer,
-        private RoutingInterface $routing,
-        private ViewInterface $view,
-        private TranslatorInterface $translator,
+        private MailerManagerInterface $mailer,
+        private RoutingManagerInterface $routing,
+        private ViewManagerInterface $view,
+        private TranslationManagerInterface $translator,
         #[Autowire(env: 'APP_SECRET')]
         private string $secret,
         #[Autowire(env: 'APP_NAME')]
