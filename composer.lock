@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6780c6a9de73237bc772aca79c168363",
+    "content-hash": "5e299f28410f215e39821e8ffff57f20",
     "packages": [
+        {
+            "name": "neophp-package/neo-admin",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NeoPHP-Framework/neo-package-admin.git",
+                "reference": "3ef21bd5033a16839e8b51b69042b78f0b4a41f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NeoPHP-Framework/neo-package-admin/zipball/3ef21bd5033a16839e8b51b69042b78f0b4a41f1",
+                "reference": "3ef21bd5033a16839e8b51b69042b78f0b4a41f1",
+                "shasum": ""
+            },
+            "require": {
+                "neophp/framework": "^2.1",
+                "php": ">=8.2",
+                "twig/twig": "^3.0"
+            },
+            "type": "neophp-package",
+            "extra": {
+                "neophp": {
+                    "name": "admin",
+                    "modules": [
+                        "NeoPHP\\NeoAdmin\\NeoAdminManager"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NeoPHP\\NeoAdmin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Modular administration area for NeoPHP",
+            "keywords": [
+                "admin",
+                "crud",
+                "dashboard",
+                "neophp",
+                "neophp-package"
+            ],
+            "support": {
+                "issues": "https://github.com/NeoPHP-Framework/neo-package-admin/issues",
+                "source": "https://github.com/NeoPHP-Framework/neo-package-admin/tree/v1.0.1"
+            },
+            "time": "2026-10-10T15:38:26+00:00"
+        },
         {
             "name": "neophp/framework",
             "version": "v2.1.2",

@@ -10,9 +10,10 @@
     ],
     "require": {
         "php": ">=8.2",
+        "ext-intl": "*",
+        "neophp-package/neo-admin": "^1.0",
         "neophp/framework": "^2.0",
-        "twig/twig": "^3.30",
-        "ext-intl": "*"
+        "twig/twig": "^3.30"
     },
     "autoload": {
         "psr-4": {

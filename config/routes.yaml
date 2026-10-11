@@ -15,3 +15,6 @@ controllers:
 #     type: attribute
 #     prefix: /admin
 #     name_prefix: admin_
+
+package_admin:
+    resource: '@admin'

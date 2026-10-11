@@ -1,0 +1,7 @@
+{
+    "package": "neophp-package/neo-admin",
+    "version": "v1.0.1",
+    "files": {
+        "admin.yaml": "d72ea0798ab755cf247b7e73a5ce00486d38934c"
+    }
+}
